@@ -46,5 +46,11 @@
 		</trim>
 		 where member_id = #{memberId}
 	</update>
+	
+	<delete id="deleteMember" parameterType="String">
+		delete 
+		  from members
+		 where member_id = #{memberId}
+	</delete>
 
 </mapper>

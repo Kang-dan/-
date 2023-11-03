@@ -9,5 +9,6 @@ public interface MemberService{
 	Member loginMember(Member member); //로그인 
 	Member detailMember(String memberId);
 	void updateMember(Member member);
+	void deleteMember(String memberId);
 
 }
