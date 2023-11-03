@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.ssafy.enjoytrip.attraction.model.Attraction;
 import com.ssafy.enjoytrip.food.model.FoodDto;
 import com.ssafy.enjoytrip.food.model.mapper.FoodMapper;
 
@@ -27,11 +28,12 @@ public class FoodServiceImpl implements FoodService {
 //	public static FoodService getFoodService() {
 //		return foodService;
 //	}
-//
-//	
+////	
+
+
 	@Override
-	public List<FoodDto> listFood(int areaCode, int foodCode) throws Exception {
-		return foodMapper.listFood(areaCode, foodCode);
+	public List<FoodDto> listFood(Attraction attraction) {		
+		return foodMapper.listFood(attraction);
 	}
 	
 }
