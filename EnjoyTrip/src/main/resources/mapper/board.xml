@@ -18,13 +18,13 @@
 	</resultMap>
 	
 	<select id="selectBoard" resultMap="boardMap">
-		select no, title, member_id, hit, register_time
+		select no, title, member_id, hit, register_time, content
 		from board
 		order by no desc
 	</select>
 	
 	<select id="selectBoardOne" resultMap="boardMap" parameterType="int">
-		select no, title, member_id, hit, register_time
+		select no, title, member_id, hit, register_time, content
 		from board
 		 where no = #{no}
 	</select>
@@ -39,9 +39,10 @@
 	
 	<update id="updateBoard" parameterType="board">
 		update board
-		set
-		title = #{title},
-		content = #{content}
+		<trim prefix="set" suffixOverrides=",">
+			<if test="title != null">title = #{title},</if>
+			<if test="content != null">content = #{content},</if>
+		</trim>
 		where no = #{no}
 	</update>
 	
