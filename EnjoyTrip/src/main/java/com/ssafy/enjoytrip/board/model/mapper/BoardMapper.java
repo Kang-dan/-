@@ -28,7 +28,7 @@ public interface BoardMapper {
 
 	void insertBoard(Board board);
 
-	Board selectBoard(int no);
+	Board selectBoardOne(int no);
 
 	void updateBoard(Board board);
 

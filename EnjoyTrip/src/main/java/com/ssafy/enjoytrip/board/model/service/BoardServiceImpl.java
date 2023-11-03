@@ -38,7 +38,7 @@ public class BoardServiceImpl implements BoardSerivce {
 
 	@Override
 	public Board view(int no) {
-		return boardMapper.selectBoard(no);
+		return boardMapper.selectBoardOne(no);
 	}
 
 	@Override
