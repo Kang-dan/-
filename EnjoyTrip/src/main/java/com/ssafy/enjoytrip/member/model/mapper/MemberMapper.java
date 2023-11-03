@@ -1,12 +1,15 @@
 package com.ssafy.enjoytrip.member.model.mapper;
 
-import java.sql.SQLException;
+import org.apache.ibatis.annotations.Mapper;
 
 import com.ssafy.enjoytrip.member.model.Member;
 
+@Mapper
 public interface MemberMapper {
 	
-	int idCheck(String userId) throws SQLException;
-	void regist(Member memberDto) throws SQLException; //회원가입 
-	Member loginMember(Member member) throws SQLException; //로그인 
+	int idCheck(String memberId);
+	void registMember(Member member); //회원가입 
+	Member loginMember(Member member); //로그인 
+	Member detailMember(String memberId);
+	void updateMember(Member member);
 }

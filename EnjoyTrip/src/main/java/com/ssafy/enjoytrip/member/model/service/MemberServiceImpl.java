@@ -1,37 +1,40 @@
 package com.ssafy.enjoytrip.member.model.service;
 
-import java.sql.SQLException;
-
-import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.stereotype.Service;
 
 import com.ssafy.enjoytrip.member.model.Member;
 import com.ssafy.enjoytrip.member.model.mapper.MemberMapper;
-import com.ssafy.enjoytrip.member.model.mapper.MemberMapper;
 
+@Service
 public class MemberServiceImpl implements MemberService {
-    private static MemberService memberService = new MemberServiceImpl();
-    private MemberMapper memberDao;
+    private final MemberMapper memberMapper;
     
-    private MemberServiceImpl() {
-        memberDao = MemberDaoImpl.getInstance();
-    }
+    public MemberServiceImpl(MemberMapper memberMapper) {
+		this.memberMapper = memberMapper;
+	}
     
-    public static MemberService getMemberService() {
-        return memberService;
-    }
-    
-    @Override
-    public int idCheck(String userId) throws SQLException {
-        return 0;
+	@Override
+    public int idCheck(String memberId) {
+        return memberMapper.idCheck(memberId);
     }
     @Override
-    public void regist(Member member) throws SQLException {
-        member.setUserPwd(BCrypt.hashpw(member.getUserPwd(), BCrypt.gensalt()));
-        memberDao.regist(member);
+    public void registMember(Member member) {        
+        memberMapper.registMember(member);
     }
     @Override
-    public Member loginMember(Member member) throws SQLException {
-        return memberDao.loginMember(member);
+    public Member loginMember(Member member) {
+        return memberMapper.loginMember(member);
     }
+
+	@Override
+	public Member detailMember(String memberId) {
+		return memberMapper.detailMember(memberId);
+	}
+
+	@Override
+	public void updateMember(Member member) {
+		memberMapper.updateMember(member);
+		
+	}
 
 }

@@ -1,6 +1,5 @@
 package com.ssafy.enjoytrip.board.model.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,5 +18,5 @@ public interface BoardSerivce {
 	
 	List<Board> list();
 	
-	Map<String, Object> listBoard1(Page page) throws Exception;
+	Map<String, Object> listBoard1(Page page);
 }

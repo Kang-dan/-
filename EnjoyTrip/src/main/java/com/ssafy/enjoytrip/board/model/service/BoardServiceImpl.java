@@ -54,7 +54,7 @@ public class BoardServiceImpl implements BoardSerivce {
 
 	//페이지??
 	@Override
-	public Map<String, Object> listBoard1(Page page) throws Exception {
+	public Map<String, Object> listBoard1(Page page){
 		List<Board> list = boardMapper.selectBoard(page);
 		int count = boardMapper.selectBoardCount();
 		PageResult pg = new PageResult(page.getPageNo(), count);

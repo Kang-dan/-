@@ -20,11 +20,11 @@ public interface BoardMapper {
 //
 //	void delete(int articleNo);
 //
-	List<Board> list(HashMap<String, Object> params) throws SQLException;
+	List<Board> list(HashMap<String, Object> params);
 //	
-	public List<Board> selectBoard(Page search) throws SQLException;
+	public List<Board> selectBoard(Page search);
 	
-	public int selectBoardCount() throws SQLException;
+	public int selectBoardCount();
 
 	void insertBoard(Board board);
 

@@ -1,9 +1,6 @@
 package com.ssafy.enjoytrip.board.controller;
 
-
 import java.util.List;
-
-import javax.servlet.http.HttpServlet;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +19,9 @@ import com.ssafy.enjoytrip.board.model.service.BoardSerivce;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/api/board")
-public class BoardController extends HttpServlet {
-	private static BoardSerivce boardSerivce;
+@RequestMapping("/board")
+public class BoardController {
+	private final BoardSerivce boardSerivce;
 	public BoardController(BoardSerivce boardSerivce) {
 		this.boardSerivce = boardSerivce;
 	}
@@ -85,7 +82,6 @@ public class BoardController extends HttpServlet {
 //			throw new ServletException(e);
 //		}
 //	}
-	
 	
 //	private void list(HttpServletRequest request, HttpServletResponse response)  {
 //		try {

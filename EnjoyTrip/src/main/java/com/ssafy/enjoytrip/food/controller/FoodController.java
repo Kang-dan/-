@@ -22,7 +22,7 @@ import com.ssafy.enjoytrip.food.model.service.FoodService;
 import com.ssafy.enjoytrip.food.model.service.FoodServiceImpl;
 
 @CrossOrigin("*")
-@RestController
+//@RestController
 @RequestMapping("/api/food")
 public class FoodController extends HttpServlet {
 	
