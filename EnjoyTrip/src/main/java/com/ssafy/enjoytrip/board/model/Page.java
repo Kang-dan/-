@@ -1,5 +1,7 @@
 package com.ssafy.enjoytrip.board.model;
 
+import lombok.Data;
+
 public class Page {
 	private int pageNo;
 	private int listSize;

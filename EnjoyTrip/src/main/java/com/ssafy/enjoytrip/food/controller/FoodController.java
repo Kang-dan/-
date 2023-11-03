@@ -12,19 +12,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.enjoytrip.food.model.FoodDto;
 import com.ssafy.enjoytrip.food.model.service.FoodService;
 import com.ssafy.enjoytrip.food.model.service.FoodServiceImpl;
 
-
-@WebServlet("/food")
+@CrossOrigin("*")
+@RestController
+@RequestMapping("/api/food")
 public class FoodController extends HttpServlet {
 	
 	private FoodService foodService;
-	
-	public void init (ServletConfig config) {
-		foodService = FoodServiceImpl.getFoodService();
+	public FoodController(FoodService foodService) {
+		this.foodService = foodService;
 	}
 
 	@Override

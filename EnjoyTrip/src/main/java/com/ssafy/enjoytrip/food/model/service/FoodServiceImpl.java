@@ -2,25 +2,36 @@ package com.ssafy.enjoytrip.food.model.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.ssafy.enjoytrip.food.model.FoodDto;
 import com.ssafy.enjoytrip.food.model.mapper.FoodMapper;
-import com.ssafy.enjoytrip.food.model.mapper.FoodMapper;
 
+@Service
 public class FoodServiceImpl implements FoodService {
-	private static FoodService foodService = new FoodServiceImpl();
-	private FoodMapper foodDao;
 	
-	private FoodServiceImpl() {
-		foodDao = FoodDaoImpl.getInstance();
+	private final FoodMapper foodMapper;
+	public FoodServiceImpl(FoodMapper foodMapper) {
+		super();
+		this.foodMapper = foodMapper;
 	}
-	public static FoodService getFoodService() {
-		return foodService;
-	}
-
 	
+	
+	
+//	private static FoodService foodService = new FoodServiceImpl();
+//	private FoodMapper foodDao;
+//	
+//	private FoodServiceImpl() {
+//		foodDao = FoodDaoImpl.getInstance();
+//	}
+//	public static FoodService getFoodService() {
+//		return foodService;
+//	}
+//
+//	
 	@Override
 	public List<FoodDto> listFood(int areaCode, int foodCode) throws Exception {
-		return foodDao.listFood(areaCode, foodCode);
-	} 
+		return foodMapper.listFood(areaCode, foodCode);
+	}
 	
 }

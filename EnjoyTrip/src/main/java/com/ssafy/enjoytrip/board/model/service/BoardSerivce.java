@@ -9,15 +9,15 @@ import com.ssafy.enjoytrip.board.model.Page;
 
 public interface BoardSerivce {
 
-	void write(Board board);
+	void write(Board board); 
 
-	Board view(int articleNo);
+	Board view(int no);
 
 	void modify(Board board);
 
-	void delete(int articleNo);
+	void delete(int no);
 	
-	List<Board> list(HashMap<String, String> map) throws Exception;
+	List<Board> list();
 	
 	Map<String, Object> listBoard1(Page page) throws Exception;
 }
