@@ -1,142 +1,44 @@
-<script setup></script>
+<script setup>
+const left = [0, 280, 360, 430, 510, 570, 430, 300, 360, 210, 260, 170, 330, 450, 500, 620, 670, 410];
+const top = [0, 320, 260, 350, 300, 550, 500, 530, 620, 570, 750, 810, 830, 800, 700, 750, 830, 920];
+const imgTitle = ['', '인천', '서울', '경기', '강원', '경북', '충북', '세종', '대전', '충남', '전북', '광주', '전남', '경남', '대구', '울산', '부산', '제주'];
+</script>
 <template>
-  <div id="treeMap">
-    <div id="star">
-      <img id="TreeStar" src="./TreeStar.png" alt="별" title="로그인" />
+  <div id="treeMap">    
+    <div id="treeParent">      
+      <div id="star">
+        <img id="TreeStar" src="../assets/TreeStar.png" alt="별" title="로그인" />
+      </div>
+      <img id="treeImg" src="../assets/treeMap.png" alt="트리지도" title="전구 위에 마우스를 올려주세요" />      
+      <span id="treeBalls">
+        <!-- 라우터 링크 달기 <RouterLink :to=""}>이미지</RouterLink>-->
+        <!-- 전구(도시)17개:relative -->
+        <img
+          v-for="n in 17"
+          :id="`ball${n}`" 
+          :src="`src/assets/cityLight/treeBall${Math.floor(Math.random() * 5) + 1}.png`" 
+          :alt="n"
+          :title="imgTitle[n]"
+          :style="`position: absolute; width: 130px; left: ${left[n]}px; top: ${top[n]}px; z-index: 3`"
+          />
+      </span>
+      <span id="present">
+        <!-- 선물상자(마이페이지) -->
+        <img id="PresentCloseGreen" src="../assets/PresentCloseGreen.png" alt="선물상자" />
+      </span>
     </div>
-    <img id="treeImg" src="./treeMap.png" alt="트리지도" title="전구 위에 마우스를 올려주세요" />
-    <span id="treeBalls">
-      <!-- 라우터 링크 달기 <RouterLink :to=""}>이미지</RouterLink>-->
-      <img
-        id="ball1"
-        src="./cityLight/treeBall.png"
-        alt="1"
-        title="인천"
-        style="position: absolute; width: 100px; left: 280px; top: 320px; z-index: 3"
-      />
-      <img
-        id="ball2"
-        src="./cityLight/treeBall2.png"
-        alt="2"
-        title="서울"
-        style="position: absolute; width: 100px; left: 360px; top: 260px; z-index: 3"
-      />
-      <img
-        id=" ball3"
-        src="./cityLight/treeBall3.png"
-        alt="3"
-        title="경기"
-        style="position: absolute; width: 100px; left: 430px; top: 350px; z-index: 3"
-      />
-      <img
-        id="ball4"
-        src="./cityLight/treeBall4.png"
-        alt="4"
-        title="강원"
-        style="position: absolute; width: 100px; left: 510px; top: 300px; z-index: 3"
-      />
-      <img
-        id="ball5"
-        src="./cityLight/treeBall.png"
-        alt="5"
-        title="경북"
-        style="position: absolute; width: 100px; left: 570px; top: 550px; z-index: 3"
-      />
-      <img
-        id="ball6"
-        src="./cityLight/treeBall2.png"
-        alt="6"
-        title="충북"
-        style="position: absolute; width: 100px; left: 430px; top: 500px; z-index: 3"
-      />
-      <img
-        id="ball7"
-        src="./cityLight/treeBall.png"
-        alt="7"
-        title="세종"
-        style="position: absolute; width: 100px; left: 300px; top: 530px; z-index: 3"
-      />
-      <img
-        id="ball8"
-        src="./cityLight/treeBall3.png"
-        alt="8"
-        title="대전"
-        style="position: absolute; width: 100px; left: 360px; top: 620px; z-index: 3"
-      />
-      <img
-        id="ball9"
-        src="./cityLight/treeBall4.png"
-        alt="9"
-        title="충남"
-        style="position: absolute; width: 100px; left: 210px; top: 570px; z-index: 3"
-      />
-      <img
-        id="ball10"
-        src="./cityLight/treeBall5.png"
-        alt="10"
-        title="전북"
-        style="position: absolute; width: 100px; left: 260px; top: 750px; z-index: 3"
-      />
-      <img
-        id="ball11"
-        src="./cityLight/treeBall.png"
-        alt="11"
-        title="광주"
-        style="position: absolute; width: 100px; left: 170px; top: 810px; z-index: 3"
-      />
-      <img
-        id="ball12"
-        src="./cityLight/treeBall3.png"
-        alt="12"
-        title="전남"
-        style="position: absolute; width: 100px; left: 330px; top: 830px; z-index: 3"
-      />
-      <img
-        id="ball13"
-        src="./cityLight/treeBall.png"
-        alt="13"
-        title="경남"
-        style="position: absolute; width: 100px; left: 450px; top: 800px; z-index: 3"
-      />
-      <img
-        id="ball14"
-        src="./cityLight/treeBall5.png"
-        alt="14"
-        title="대구"
-        style="position: absolute; width: 100px; left: 500px; top: 700px; z-index: 3"
-      />
-      <img
-        id="ball15"
-        src="./cityLight/treeBall4.png"
-        alt="15"
-        title="울산"
-        style="position: absolute; width: 100px; left: 620px; top: 750px; z-index: 3"
-      />
-      <img
-        id="ball16"
-        src="./cityLight/treeBall2.png"
-        alt="16"
-        title="부산"
-        style="position: absolute; width: 100px; left: 670px; top: 830px; z-index: 3"
-      />
-      <img
-        id="ball17"
-        src="./cityLight/treeBall2.png"
-        alt="17"
-        title="제주"
-        style="position: absolute; width: 100px; left: 410px; top: 920px; z-index: 3"
-      />
-    </span>
 
-    <!-- 전구(도시)17개:relative -->
-    <span id="present">
-      <!-- 선물상자(마이페이지) -->
-      <img id="PresentCloseGreen" src="./PresentCloseGreen.png" alt="선물상자" />
-    </span>
+    
+    
   </div>
 </template>
 
 <style scoped>
+#treeParent {
+  position: relative;
+}
+
+
 #TreeStar:hover {
   transform: scale(1.5);
   -webkit-transform: scale(1.5);
@@ -151,19 +53,20 @@
 
 #present {
   position: absolute;
-  left: 780px;
+  left: 850px;
   width: 100px;
-  margin-top: 880px;
+  margin-top: 1010px;
+  z-index: 4;
 }
 
 #PresentCloseGreen {
-  width: 250px;
+  width: 320px;
   /* margin-left: 100px; */
 }
 
 #TreeStar {
   margin-top: 50px;
-  width: 150px;
+  width: 200px;
 }
 
 #star {
@@ -178,17 +81,19 @@
 }
 
 #treeMap {
+  display: flex;
+  justify-content: center;
   position: relative;
   /* display: block; */
   /* position: relative; */
   /* top: 0px; */
   /* left: 0px; */
-  width: 1000px;
-  height: 2000px;
-  margin-left: 100px;
+  width: 100%;
+  height: 100%;
+  /* margin-left: 100px; */
   z-index: 1;
   /* border: 1px solid; */
-  margin: auto;
+  margin: 0 auto;
   /* text-align: center; */
   /* margin-top: 100px; */
 }
@@ -199,25 +104,9 @@
   z-index: 1;
   text-align: center;
   margin-top: 150px;
-  width: 900px;
+  width: 1150px;
+  left: -100px;
 }
-
-/* 
-        #embedImSnowInfo {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 300px;
-            padding: 20px;
-            display: none;
-            background: #fff;
-            height: 100vh;
-            overflow-y: auto;
-            padding-top: 70px;
-            z-index: 10;
-            box-shadow: 10px 10px 25px -10px rgba(0, 0, 0, 0.5);
-        } */
-
 body {
   background: linear-gradient(to bottom, #000118, #002c5a);
   min-height: 100vh;

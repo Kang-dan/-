@@ -9,4 +9,5 @@ import TheHeadingNavbar from "./components/layout/TheHeadingNavbar.vue";
 </template>
 
 <style scoped>
+
 </style>
