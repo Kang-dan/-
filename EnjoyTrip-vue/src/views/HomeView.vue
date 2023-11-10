@@ -1,4 +1,8 @@
 <script setup>
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
 const left = [
   0, 280, 360, 430, 510, 570, 430, 300, 360, 210, 260, 170, 330, 450, 500, 620, 670, 410,
 ];
@@ -25,15 +29,17 @@ const imgTitle = [
   "부산",
   "제주",
 ];
+
+const moveLogin = () => {
+  if (!window.localStorage.getItem('id')) router.push({ name: 'member-login' });
+}
 </script>
 <template>
   <div id="treeMap">
     <div id="treeParent">
-      <router-link :to="{ name: 'member-login' }">
-        <div id="star">
+        <div id="star" @click="moveLogin">
           <img id="TreeStar" src="../assets/TreeStar.png" alt="별" title="로그인" />
         </div>
-      </router-link>
       <img
         id="treeImg"
         src="../assets/treeMap.png"

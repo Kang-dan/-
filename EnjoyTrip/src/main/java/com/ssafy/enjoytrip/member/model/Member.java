@@ -9,6 +9,7 @@ public class Member {
 	private String memberName;
 	private String memberEmail;
 	private int age;
-	private String joinDate;	
+	private String joinDate;
+	private int memberBoardCount;
 	
 }

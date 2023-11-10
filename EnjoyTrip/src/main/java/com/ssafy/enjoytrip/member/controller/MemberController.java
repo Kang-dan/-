@@ -1,7 +1,5 @@
 package com.ssafy.enjoytrip.member.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -40,10 +38,9 @@ public class MemberController {
 	}
 	
 	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestBody Member member, HttpSession session) {
+	public ResponseEntity<String> login(@RequestBody Member member) {
 		member = memberService.loginMember(member);
 		if (member != null) {
-			session.setAttribute("memberInfo", member);
 			return ResponseEntity.ok("로그인 성공!");// 201번 보냄
 		}
 		return ResponseEntity.ok("로그인 실패");// 201번 보냄

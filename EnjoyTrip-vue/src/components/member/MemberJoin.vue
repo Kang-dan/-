@@ -1,20 +1,120 @@
-<script setup></script>
+<script setup>
+import { ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { registMember } from "@/api/member"
+
+const router = useRouter();
+const route = useRoute();
+
+const member = ref({
+    memberId: "",
+    memberPw: "",
+    memberName: "",
+    memberEmail: "",
+    age: 0
+});
+
+const memberPwCheck = ref("");
+
+const memberIdErrMsg = ref("");
+const memberPwErrMsg = ref("");
+const memberNameErrMsg = ref("");
+const memberEmailErrMsg = ref("");
+watch(
+    () => member.value.memberId,
+    (value) => {
+        let len = value.length;
+        if (len < 2 || len > 30) {
+            memberIdErrMsg.value = "아이디를 확인해 주세요!";
+        }
+        else memberIdErrMsg.value = "";
+    },
+    { immediate: true }
+);
+
+watch(
+    () => member.value.memberPw,
+    (value) => {
+        let len = value.length;
+        if (len < 2 || len > 60) {
+            memberPwErrMsg.value = "비밀번호를 확인해 주세요!";
+        }
+        else memberPwErrMsg.value = "";
+    },
+    { immediate: true }
+);
+
+watch(
+    () => member.value.memberName,
+    (value) => {
+        let len = value.length;
+        if (len == 0 || len > 60) {
+            memberNameErrMsg.value = "이름을 확인해 주세요!";
+        }
+        else memberNameErrMsg.value = "";
+    },
+    { immediate: true }
+);
+
+watch(
+    () => member.value.memberEmail,
+    (value) => {
+        let len = value.length;
+        if (len < 3 || len > 100) {
+            memberEmailErrMsg.value = "이메일을 확인해 주세요!";
+        }
+        else memberEmailErrMsg.value = "";
+    },
+    { immediate: true }
+);
+
+function onSubmit() {
+    if (memberIdErrMsg.value) {
+        alert(memberIdErrMsg.value);
+    } else if (memberPwErrMsg.value) {
+        alert(memberPwErrMsg.value);
+    } else if (memberNameErrMsg.value) {
+        alert(memberNameErrMsg.value);
+    } else if (memberEmailErrMsg.value) {
+        alert(memberEmailErrMsg.value);
+    } else if (memberPwCheck.value !== member.value.memberPw) {
+        alert("비밀번호가 서로 다릅니다.");
+    } else {
+        regist();
+    }
+}
+
+function regist() {  
+  registMember(member.value, () => {
+    console.log("완료");
+  },),
+    (error) => {
+      console.log(error);
+  };
+
+}
+
+const moveLogin = () => {
+  router.push({ name: "member-login" });
+};
+
+</script>
 
 <template>
   <div id="login">
     <div class="login_moon_img" title="환영합니다">
       <div id="loginWrite">
-        <form>
+        <form @submit.prevent="onSubmit">
           <h1>Welcome</h1>
-          <input type="text" placeholder="아이디를 입력해주세요" />
-          <input class="pw" type="password" placeholder="비밀번호를 입력해주세요" />
-          <input class="pw" type="password" placeholder="비밀번호 확인" />
-          <input type="text" placeholder="이름을 입력해주세요" />
-          <input type="email" placeholder="이메일을 입력해주세요" />
-          <input type="number" placeholder="나이를 입력해주세요" />
-          <button class="form_btn1">Sign UP</button>
-          <button class="form_btn2">Sign In</button>
-        </form>
+          <input type="text" v-model="member.memberId" placeholder="아이디를 입력해주세요" />
+          <input class="pw" type="password" v-model="member.memberPw" placeholder="비밀번호를 입력해주세요" />
+          <input class="pw" type="password" v-model="memberPwCheck" placeholder="비밀번호 확인" />
+          <input type="text" v-model="member.memberName" placeholder="이름을 입력해주세요" />
+          <input type="email" v-model="member.memberEmail" placeholder="이메일을 입력해주세요" />
+          <input type="number" v-model="member.age" placeholder="나이를 입력해주세요" />
+          <button type="submit" class="form_btn1">Sign UP</button>
+          <button type="button" class="form_btn2" @click="moveLogin">Sign In</button>
+      </form>
       </div>
     </div>
   </div>

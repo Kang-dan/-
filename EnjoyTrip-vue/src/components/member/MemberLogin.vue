@@ -1,7 +1,71 @@
 <script setup>
-import { useRouter } from "vue-router";
+import { ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { loginMember } from "@/api/member";
 
 const router = useRouter();
+
+const member = ref({
+    memberId: "",
+    memberPw: "",
+});
+
+const memberIdErrMsg = ref("");
+const memberPwErrMsg = ref("");
+
+watch(
+    () => member.value.memberId,
+    (value) => {
+        let len = value.length;
+        if (len == 0 || len > 30) {
+            memberIdErrMsg.value = "아이디를 확인해 주세요!";
+        }
+        else memberIdErrMsg.value = "";
+    },
+    { immediate: true }
+);
+
+watch(
+    () => member.value.memberPw,
+    (value) => {
+        let len = value.length;
+        if (len == 0 || len > 60) {
+            memberPwErrMsg.value = "비밀번호를 확인해 주세요!";
+        }
+        else memberPwErrMsg.value = "";
+    },
+    { immediate: true }
+);
+
+function onSubmit() {
+    if (memberIdErrMsg.value) {
+        alert(memberIdErrMsg.value);
+    } else if (memberPwErrMsg.value) {
+        alert(memberPwErrMsg.value);
+    } else {
+        login();
+    }
+}
+
+function login() {  
+  loginMember(member.value, ({data}) => {
+    if (data === "로그인 성공!") {      
+      window.localStorage.setItem("id", member.value.memberId);
+      moveMain();
+    }
+    else {
+      console.log("로그인 실패함");
+    }
+  },),
+    (error) => {
+      console.log(error);
+  };
+
+}
+
+const moveMain = () => {
+  router.replace({ name: "main" });
+}
 
 const moveJoin = () => {
   router.push({ name: "member-join" });
@@ -12,11 +76,11 @@ const moveJoin = () => {
   <div id="login">
     <div class="login_moon_img" title="환영합니다">
       <div id="loginWrite">
-        <form>
+        <form @submit.prevent="onSubmit">
           <h1>Login</h1>
-          <input type="text" placeholder="아이디를 입력해주세요" />
-          <input type="password" placeholder="비밀번호를 입력해주세요" />
-          <button class="form_btn1">Sign IN</button>
+          <input type="text" v-model="member.memberId" placeholder="아이디를 입력해주세요" />
+          <input type="password" v-model="member.memberPw" placeholder="비밀번호를 입력해주세요" />
+          <button type="submit" class="form_btn1">Sign IN</button>
           <button class="form_btn2" @click="moveJoin">Sign UP</button>
         </form>
       </div>

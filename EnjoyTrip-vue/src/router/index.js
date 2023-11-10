@@ -12,12 +12,12 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: "/login",
+      path: "/member/login",
       name: "member-login",
       component: MemberLogin,
     },
     {
-      path: "/join",
+      path: "/member/regist",
       name: "member-join",
       component: MemberJoin,
     },
