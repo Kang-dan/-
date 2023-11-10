@@ -1,35 +1,63 @@
 <script setup>
-const left = [0, 280, 360, 430, 510, 570, 430, 300, 360, 210, 260, 170, 330, 450, 500, 620, 670, 410];
-const top = [0, 320, 260, 350, 300, 550, 500, 530, 620, 570, 750, 810, 830, 800, 700, 750, 830, 920];
-const imgTitle = ['', '인천', '서울', '경기', '강원', '경북', '충북', '세종', '대전', '충남', '전북', '광주', '전남', '경남', '대구', '울산', '부산', '제주'];
+const left = [
+  0, 280, 360, 430, 510, 570, 430, 300, 360, 210, 260, 170, 330, 450, 500, 620, 670, 410,
+];
+const top = [
+  0, 320, 260, 350, 300, 550, 500, 530, 620, 570, 750, 810, 830, 800, 700, 750, 830, 920,
+];
+const imgTitle = [
+  "",
+  "인천",
+  "서울",
+  "경기",
+  "강원",
+  "경북",
+  "충북",
+  "세종",
+  "대전",
+  "충남",
+  "전북",
+  "광주",
+  "전남",
+  "경남",
+  "대구",
+  "울산",
+  "부산",
+  "제주",
+];
 </script>
 <template>
-  <div id="treeMap">    
-    <div id="treeParent">      
-      <div id="star">
-        <img id="TreeStar" src="../assets/TreeStar.png" alt="별" title="로그인" />
-      </div>
-      <img id="treeImg" src="../assets/treeMap.png" alt="트리지도" title="전구 위에 마우스를 올려주세요" />      
+  <div id="treeMap">
+    <div id="treeParent">
+      <router-link :to="{ name: 'member-login' }">
+        <div id="star">
+          <img id="TreeStar" src="../assets/TreeStar.png" alt="별" title="로그인" />
+        </div>
+      </router-link>
+      <img
+        id="treeImg"
+        src="../assets/treeMap.png"
+        alt="트리지도"
+        title="전구 위에 마우스를 올려주세요"
+      />
       <span id="treeBalls">
         <!-- 라우터 링크 달기 <RouterLink :to=""}>이미지</RouterLink>-->
         <!-- 전구(도시)17개:relative -->
         <img
           v-for="n in 17"
-          :id="`ball${n}`" 
-          :src="`src/assets/cityLight/treeBall${Math.floor(Math.random() * 5) + 1}.png`" 
+          :id="`ball${n}`"
+          :src="`src/assets/cityLight/treeBall${Math.floor(Math.random() * 5) + 1}.png`"
           :alt="n"
           :title="imgTitle[n]"
           :style="`position: absolute; width: 130px; left: ${left[n]}px; top: ${top[n]}px; z-index: 3`"
-          />
+        />
       </span>
       <span id="present">
         <!-- 선물상자(마이페이지) -->
         <img id="PresentCloseGreen" src="../assets/PresentCloseGreen.png" alt="선물상자" />
+        <img id="PresentOpenGreen" src="../assets/PresentOpen.png" />
       </span>
     </div>
-
-    
-    
   </div>
 </template>
 
@@ -37,7 +65,6 @@ const imgTitle = ['', '인천', '서울', '경기', '강원', '경북', '충북'
 #treeParent {
   position: relative;
 }
-
 
 #TreeStar:hover {
   transform: scale(1.5);
@@ -60,8 +87,23 @@ const imgTitle = ['', '인천', '서울', '경기', '강원', '경북', '충북'
 }
 
 #PresentCloseGreen {
+  margin-left: 10px;
+  margin-top: 25px;
   width: 320px;
   /* margin-left: 100px; */
+}
+
+#PresentOpenGreen {
+  width: 320px;
+  display: none;
+}
+
+#present:hover #PresentOpenGreen {
+  display: block;
+}
+
+#present:hover #PresentCloseGreen {
+  display: none;
 }
 
 #TreeStar {
