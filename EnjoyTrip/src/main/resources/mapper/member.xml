@@ -11,6 +11,7 @@
 		<result column="join_date" property="joinDate" />
 		<result column="member_email" property="memberEmail" />
 		<result column="age" property="age" />
+		<result column="member_board_count" property="memberBoardCount" />
 	</resultMap>
 
 	<insert id="registMember" parameterType="member">
@@ -31,7 +32,7 @@
 	</select>
 	
 	<select id="detailMember" parameterType="String" resultMap="memberMap">
-		select member_id, member_pw, member_name, join_date, member_email, age
+		select member_id, member_pw, member_name, join_date, member_email, age, member_board_count
 		  from members
 		 where member_id = #{memberId}
 	</select>

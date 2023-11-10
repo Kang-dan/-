@@ -49,7 +49,8 @@ public class MemberController {
 	@GetMapping("/idCheck/{memberId}")
 	public ResponseEntity<String> idCheck(@PathVariable String memberId) {
 		int cnt = memberService.idCheck(memberId);
-		return ResponseEntity.ok("OK");// 201번 보냄 
+		if (cnt > 0) return ResponseEntity.ok("중복");// 201번 보냄 
+		else return ResponseEntity.ok("통과");// 201번 보냄
 	}
 	
 	@PutMapping("{memberId}")

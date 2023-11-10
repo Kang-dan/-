@@ -35,8 +35,8 @@ public class AttractionController {
 	}
 	
 //	@GetMapping
-//	public ResponseEntity<?> listAttraction(@RequestParam AttractionParameter AttractionParameter) {
-//		AttractionList attractionList = attractionService.listAttraction(AttractionParameter);
+//	public ResponseEntity<?> listAttraction(@RequestParam AttractionParameter attractionParameter) {
+//		AttractionList attractionList = attractionService.listAttraction(attractionParameter);
 //		HttpHeaders header = new HttpHeaders();
 //		header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 //		return ResponseEntity.ok().headers(header).body(attractionList);
