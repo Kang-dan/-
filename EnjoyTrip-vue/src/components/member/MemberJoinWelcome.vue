@@ -1,4 +1,11 @@
-<script setup></script>
+<script setup>
+import { useRoute, useRouter } from "vue-router";
+const router = useRouter();
+
+const moveLogin = () => {
+  router.push({ name: "member-login" });
+};
+</script>
 
 <template>
   <div class="join_welcome_img">
@@ -12,6 +19,7 @@
           src="@/assets/join/WelcomeKoreaFlower.png"
           alt="무궁화"
           title="무궁화"
+          @click="moveLogin"
         />
       </div>
     </div>

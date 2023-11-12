@@ -18,7 +18,8 @@ create table members (
     member_name varchar(60) not null,
     join_date TIMESTAMP default CURRENT_TIMESTAMP,
     member_email varchar(100) not null,
-    age int not null
+    age int not null,
+    member_board_count int default 0
 )
 ENGINE = InnoDB
 AUTO_INCREMENT = 1

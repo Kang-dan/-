@@ -142,13 +142,13 @@ public class BoardController {
 //		
 //	}
 	
-	@PutMapping("{no}")
-	public ResponseEntity<String> modify(@PathVariable int no, @RequestBody Board board) {
-		board.setNo(no);
-		boardSerivce.modify(board);
-		return ResponseEntity.ok("OK");
-		
-	}
+//	@PutMapping("{no}")
+//	public ResponseEntity<String> modify(@PathVariable int no, @RequestBody Board board) {
+//		board.setNo(no);
+//		boardSerivce.modify(board);
+//		return ResponseEntity.ok("OK");
+//		
+//	}
 //	private void modify(HttpServletRequest request, HttpServletResponse response) {
 //		try {
 //			Board board = new Board();
