@@ -4,10 +4,12 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 
 const left = [
-  0, 280, 360, 430, 510, 570, 430, 300, 360, 210, 260, 170, 330, 450, 500, 620, 670, 410,
+  0, 280, 360, 430, 510, 570, 430, 300, 360, 210, 260, 170, 330, 450, 500, 620,
+  670, 410,
 ];
 const top = [
-  0, 320, 260, 350, 300, 550, 500, 530, 620, 570, 750, 810, 830, 800, 700, 750, 830, 920,
+  0, 320, 260, 350, 300, 550, 500, 530, 620, 570, 750, 810, 830, 800, 700, 750,
+  830, 920,
 ];
 const imgTitle = [
   "",
@@ -31,15 +33,20 @@ const imgTitle = [
 ];
 
 const moveLogin = () => {
-  if (!window.localStorage.getItem('id')) router.push({ name: 'member-login' });
-}
+  if (!window.localStorage.getItem("id")) router.push({ name: "member-login" });
+};
 </script>
 <template>
   <div id="treeMap">
     <div id="treeParent">
-        <div id="star" @click="moveLogin">
-          <img id="TreeStar" src="../assets/TreeStar.png" alt="별" title="로그인" />
-        </div>
+      <div id="star" @click="moveLogin">
+        <img
+          id="TreeStar"
+          src="../assets/TreeStar.png"
+          alt="별"
+          title="로그인"
+        />
+      </div>
       <img
         id="treeImg"
         src="../assets/treeMap.png"
@@ -52,7 +59,9 @@ const moveLogin = () => {
         <img
           v-for="n in 17"
           :id="`ball${n}`"
-          :src="`src/assets/cityLight/treeBall${Math.floor(Math.random() * 5) + 1}.png`"
+          :src="`src/assets/cityLight/treeBall${
+            Math.floor(Math.random() * 5) + 1
+          }.png`"
           :alt="n"
           :title="imgTitle[n]"
           :style="`position: absolute; width: 130px; left: ${left[n]}px; top: ${top[n]}px; z-index: 3`"
@@ -60,7 +69,11 @@ const moveLogin = () => {
       </span>
       <span id="present">
         <!-- 선물상자(마이페이지) -->
-        <img id="PresentCloseGreen" src="../assets/PresentCloseGreen.png" alt="선물상자" />
+        <img
+          id="PresentCloseGreen"
+          src="../assets/PresentCloseGreen.png"
+          alt="선물상자"
+        />
         <img id="PresentOpenGreen" src="../assets/PresentOpen.png" />
       </span>
     </div>
