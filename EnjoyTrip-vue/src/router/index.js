@@ -13,20 +13,39 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: "/member/login",
-      name: "member-login",
-      component: MemberLogin,
+      path: "/member",
+      name: "member",
+      component: () => import("@/views/MemberView.vue"),
+      children: [
+        {
+          path: "login",
+          name: "member-login",
+          component: MemberLogin,
+        },
+        {
+          path: "regist",
+          name: "member-join",
+          component: MemberJoin,
+        },
+        {
+          path: "regist/welcome",
+          name: "member-join-welcome",
+          component: MemberJoinWelcome,
+        },
+      ],
     },
-    {
-      path: "/member/regist",
-      name: "member-join",
-      component: MemberJoin,
-    },
-    {
-      path: "/member/regist/welcome",
-      name: "member-join-welcome",
-      component: MemberJoinWelcome,
-    },
+    // {
+    //   path: "/attraction",
+    //   name: "attraction",
+    //   component: () => import("@/views/AttractionView.vue"),
+    //   children: [
+    //     {
+    //       path: "list/:sidoCode", //sidoCode로 화면 넘김
+    //       name: "attraction-list",
+    //       component: AttractionList, //아직 안만듦
+    //     },
+    //   ],
+    // },
   ],
 });
 

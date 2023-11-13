@@ -1,19 +1,19 @@
-<script setup>
-</script>
+<script setup></script>
 
 <template>
- <div id="trip">
-        <div id="star">
-            <div class="snowBall_img" alt="스노우볼">
-                <img id="TripFoodButton" src="../assets/cityAttraction/TripFoodButton.png" alt="">
-                <img id="TripFestivalButton" src="../assets/cityAttraction/TripFestivalButton.png" alt="">
-                <img id="TripChildHatButton" src="../assets/cityAttraction/TripChildHatButton.png" alt="">
+  <div id="trip">
+    <div id="star">
+      <div class="snowBall_img" alt="스노우볼">
+        <img id="TripFoodButton" src="../assets/cityAttraction/TripFoodButton.png" alt="" />
+        <img id="TripFestivalButton" src="../assets/cityAttraction/TripFestivalButton.png" alt="" />
+        <img id="TripChildHatButton" src="../assets/cityAttraction/TripChildHatButton.png" alt="" />
 
-                <img id="TripSnowButton1" src="../assets/cityAttraction/TripSnowButton.png" alt="">
-                <img id="TripSnowButton2" src="../assets/cityAttraction/TripSnowButton.png" alt="">
-                <img id="TripSnowButton3" src="../assets/cityAttraction/TripSnowButton.png" alt="">
-            </div>
-        </div>
+        <img id="TripSnowButton1" src="../assets/cityAttraction/TripSnowButton.png" alt="" />
+        <img id="TripSnowButton2" src="../assets/cityAttraction/TripSnowButton.png" alt="" />
+        <img id="TripSnowButton3" src="../assets/cityAttraction/TripSnowButton.png" alt="" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
