@@ -1,16 +1,23 @@
-<script setup></script>
+<script setup>
+import { useRoute, useRouter } from "vue-router";
+const router = useRouter();
+
+const moveAttractionDetail = () => {
+  router.push({ name: "attraction-detail" }); //contentId로
+};
+</script>
 
 <template>
   <div id="trip">
     <div id="star">
       <div class="snowBall_img" alt="스노우볼">
-        <img id="TripFoodButton" src="../assets/cityAttraction/TripFoodButton.png" alt="" />
-        <img id="TripFestivalButton" src="../assets/cityAttraction/TripFestivalButton.png" alt="" />
-        <img id="TripChildHatButton" src="../assets/cityAttraction/TripChildHatButton.png" alt="" />
+        <img id="TripFoodButton" src="@/assets/cityAttraction/TripFoodButton.png" alt="" />
+        <img id="TripFestivalButton" src="@/assets/cityAttraction/TripFestivalButton.png" alt="" />
+        <img id="TripChildHatButton" src="@/assets/cityAttraction/TripChildHatButton.png" alt="" />
 
-        <img id="TripSnowButton1" src="../assets/cityAttraction/TripSnowButton.png" alt="" />
-        <img id="TripSnowButton2" src="../assets/cityAttraction/TripSnowButton.png" alt="" />
-        <img id="TripSnowButton3" src="../assets/cityAttraction/TripSnowButton.png" alt="" />
+        <img id="TripSnowButton1" src="@/assets/cityAttraction/TripSnowButton.png" alt="" />
+        <img id="TripSnowButton2" src="@/assets/cityAttraction/TripSnowButton.png" alt="" />
+        <img id="TripSnowButton3" src="@/assets/cityAttraction/TripSnowButton.png" alt="" />
       </div>
     </div>
   </div>
@@ -70,11 +77,12 @@
 }
 
 .snowBall_img {
-  background-image: url("./snowBall.png");
+  background-image: url("@/assets/cityAttraction/snowBall.png");
   width: 1000px;
   height: 1150px;
   background-size: cover;
   text-align: center;
+  margin: 0 auto;
   /* vertical-align: middle; */
 }
 

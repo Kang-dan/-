@@ -114,29 +114,34 @@ const left = [
 const top = [
   0, 350, 270, 380, 320, 630, 560, 570, 670, 670, 800, 900, 960, 900, 750, 900, 1000, 1050,
 ];
+const sidoCode = [0, 2, 1, 31, 32, 35, 33, 8, 3, 34, 37, 5, 38, 36, 4, 7, 6, 39];
 const imgTitle = [
   "",
-  "인천",
-  "서울",
-  "경기",
-  "강원",
-  "경북",
-  "충북",
-  "세종",
-  "대전",
-  "충남",
-  "전북",
-  "광주",
-  "전남",
-  "경남",
-  "대구",
-  "울산",
-  "부산",
-  "제주",
+  "인천", //2
+  "서울", //1
+  "경기", //31
+  "강원", //32
+  "경북", //35
+  "충북", //33
+  "세종", //8
+  "대전", //3
+  "충남", //34
+  "전북", //37
+  "광주", //5
+  "전남", //38
+  "경남", //36
+  "대구", //4
+  "울산", //7
+  "부산", //6
+  "제주", //39
 ];
 
 const moveLogin = () => {
   if (!window.localStorage.getItem("id")) router.push({ name: "member-login" });
+};
+
+const moveAttractionList = (sidoCode) => {
+  router.push({ name: "attraction-list", params: { sidoCode: sidoCode } });
 };
 </script>
 <template>
@@ -154,6 +159,7 @@ const moveLogin = () => {
       <span id="treeBalls">
         <!-- 라우터 링크 달기 <RouterLink :to=""}>이미지</RouterLink>-->
         <!-- 전구(도시)17개:relative -->
+
         <img
           v-for="n in 17"
           :id="`ball${n}`"
@@ -161,6 +167,7 @@ const moveLogin = () => {
           :alt="n"
           :title="imgTitle[n]"
           :style="`position: absolute; width: 130px; left: ${left[n]}px; top: ${top[n]}px; z-index: 3`"
+          @click="moveAttractionList(sidoCode[n])"
         />
       </span>
       <span id="present">

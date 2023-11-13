@@ -20,6 +20,7 @@ const memberIdErrMsg = ref("");
 const memberPwErrMsg = ref("");
 const memberNameErrMsg = ref("");
 const memberEmailErrMsg = ref("");
+
 watch(
   () => member.value.memberId,
   (value) => {
@@ -100,42 +101,19 @@ const moveLogin = () => {
       <div id="loginWrite">
         <form @submit.prevent="onSubmit">
           <h1>Welcome</h1>
-          <input
-            type="text"
-            v-model="member.memberId"
-            placeholder="아이디를 입력해주세요"
-          />
+          <input type="text" v-model="member.memberId" placeholder="아이디를 입력해주세요" />
           <input
             class="pw"
             type="password"
             v-model="member.memberPw"
             placeholder="비밀번호를 입력해주세요"
           />
-          <input
-            class="pw"
-            type="password"
-            v-model="memberPwCheck"
-            placeholder="비밀번호 확인"
-          />
-          <input
-            type="text"
-            v-model="member.memberName"
-            placeholder="이름을 입력해주세요"
-          />
-          <input
-            type="email"
-            v-model="member.memberEmail"
-            placeholder="이메일을 입력해주세요"
-          />
-          <input
-            type="number"
-            v-model="member.age"
-            placeholder="나이를 입력해주세요"
-          />
+          <input class="pw" type="password" v-model="memberPwCheck" placeholder="비밀번호 확인" />
+          <input type="text" v-model="member.memberName" placeholder="이름을 입력해주세요" />
+          <input type="email" v-model="member.memberEmail" placeholder="이메일을 입력해주세요" />
+          <input type="number" v-model="member.age" placeholder="나이를 입력해주세요" />
           <button type="submit" class="form_btn1">Sign UP</button>
-          <button type="button" class="form_btn2" @click="moveLogin">
-            Sign In
-          </button>
+          <button type="button" class="form_btn2" @click="moveLogin">Sign In</button>
         </form>
       </div>
     </div>
