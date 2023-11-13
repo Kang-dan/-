@@ -15,6 +15,17 @@ const moveAttractionDetail = () => {
         <img id="TripFestivalButton" src="@/assets/cityAttraction/TripFestivalButton.png" alt="" />
         <img id="TripChildHatButton" src="@/assets/cityAttraction/TripChildHatButton.png" alt="" />
 
+        <select class="header-searchSelect">
+          <option value="All">All</option>
+          <option value="arts-craft">음식점</option>
+          <option value="address">위치</option>
+          <option value="menu">메뉴</option>
+        </select>
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="검색어를 입력하세요" />
+          <button class="search-button">검색</button>
+        </div>
+
         <img id="TripSnowButton1" src="@/assets/cityAttraction/TripSnowButton.png" alt="" />
         <img id="TripSnowButton2" src="@/assets/cityAttraction/TripSnowButton.png" alt="" />
         <img id="TripSnowButton3" src="@/assets/cityAttraction/TripSnowButton.png" alt="" />
@@ -24,12 +35,64 @@ const moveAttractionDetail = () => {
 </template>
 
 <style scoped>
+/* body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f4f4f4;
+} */
+
+.search-container {
+  position: absolute;
+  transform: translate(400px, 250px);
+  width: 300px;
+  border-radius: 10px 20px 20px 10px;
+  overflow: hidden;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px;
+  /* border: none; */
+  border-radius: 10px 20px 20px 10px;
+  /* outline: none; */
+  font-size: 16px;
+  background-color: rgba(255, 255, 255, 0.1); /* 투명도 추가 */
+}
+
+.search-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(147, 174, 187);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 0 20px 20px 0;
+  cursor: pointer;
+}
+
+.header-searchSelect {
+  position: absolute;
+  transform: translate(-185px, 250px);
+  /* outline: none; */
+  height: 39px;
+  border-radius: 16px 10px 10px 16px;
+  background-color: rgba(255, 255, 255, 0.1); /*투명도 추가*/
+  font-size: 16px;
+  padding: 5px;
+  border: none;
+}
+
 #TripFoodButton {
   position: absolute;
   transform: translate(-260px, 65px);
   width: 120px;
   z-index: 2;
-  /* display: none; */
+  display: none;
   /* visibility: hidden; */
 }
 
@@ -38,7 +101,7 @@ const moveAttractionDetail = () => {
   transform: translate(-50px, 20px);
   width: 100px;
   z-index: 2;
-  /* display: none; */
+  display: none;
 }
 
 #TripChildHatButton {
@@ -46,7 +109,7 @@ const moveAttractionDetail = () => {
   transform: translate(135px, 85px);
   width: 130px;
   z-index: 2;
-  /* display: none; */
+  display: none;
 }
 
 #TripSnowButton1 {
