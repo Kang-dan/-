@@ -167,9 +167,21 @@ const onClick = (e) => {
   <div id="trip">
     <div id="star">
       <div class="snowBall_img" alt="스노우볼">
-        <img id="TripFoodButton" src="@/assets/cityAttraction/TripFoodButton.png" alt="" />
-        <img id="TripFestivalButton" src="@/assets/cityAttraction/TripFestivalButton.png" alt="" />
-        <img id="TripChildHatButton" src="@/assets/cityAttraction/TripChildHatButton.png" alt="" />
+        <img
+          id="TripFoodButton"
+          src="@/assets/cityAttraction/TripFoodButton.png"
+          alt=""
+        />
+        <img
+          id="TripFestivalButton"
+          src="@/assets/cityAttraction/TripFestivalButton.png"
+          alt=""
+        />
+        <img
+          id="TripChildHatButton"
+          src="@/assets/cityAttraction/TripChildHatButton.png"
+          alt=""
+        />
 
         <select class="header-searchSelect">
           <option value="All">All</option>
@@ -188,7 +200,11 @@ const onClick = (e) => {
         </div>
 
         <div class="img0">
-          <img id="TripSnowButton0" src="@/assets/cityAttraction/TripListAllButtonImg.png" alt="" />
+          <img
+            id="TripSnowButton0"
+            src="@/assets/cityAttraction/TripListAllButtonImg.png"
+            alt=""
+          />
           <div class="TripSnowButton0_text">
             <h3>All</h3>
           </div>
@@ -196,21 +212,33 @@ const onClick = (e) => {
 
         <div class="img1">
           <div class="spotLight1"></div>
-          <img id="TripSnowButton1" src="@/assets/cityAttraction/TripSnowButton.png" alt="" />
+          <img
+            id="TripSnowButton1"
+            src="@/assets/cityAttraction/TripSnowButton.png"
+            alt=""
+          />
           <div class="TripSnowButton1_text">
             <h3>Food</h3>
           </div>
         </div>
 
         <div class="img2">
-          <img id="TripSnowButton2" src="@/assets/cityAttraction/TripSnowButton.png" alt="" />
+          <img
+            id="TripSnowButton2"
+            src="@/assets/cityAttraction/TripSnowButton.png"
+            alt=""
+          />
           <div class="TripSnowButton2_text">
             <h3>Festival</h3>
           </div>
         </div>
 
         <div class="img3">
-          <img id="TripSnowButton3" src="@/assets/cityAttraction/TripSnowButton.png" alt="" />
+          <img
+            id="TripSnowButton3"
+            src="@/assets/cityAttraction/TripSnowButton.png"
+            alt=""
+          />
           <div class="TripSnowButton3_text">
             <h3>Family</h3>
           </div>
@@ -254,14 +282,23 @@ const onClick = (e) => {
 </template>
 
 <style scoped>
+/** AttractionList Image 설정  */
 a {
   text-decoration: none;
+  line-height: 160%;
+  padding-top: 5px;
+  font-size: 13px;
+  /* font-family: "ONE-Mobile-POP"; */
+}
+.item_title {
+  font-size: 23px;
 }
 .item_title,
 .item_addr {
   display: block;
   color: #fff;
-  font-weight: 700;
+  /* font-weight: 700; */
+  /* line-height: 160%; */
 }
 .listItem {
   width: 900px;
@@ -312,9 +349,10 @@ a {
   overflow: hidden;
 }
 
+/** Attraction 배경 설정  */
 .search-container {
   position: absolute;
-  transform: translate(400px, 250px);
+  transform: translate(405px, 230px);
   width: 300px;
   border-radius: 10px 20px 20px 10px;
   overflow: hidden;
@@ -327,6 +365,7 @@ a {
   border-radius: 10px 20px 20px 10px;
   /* outline: none; */
   font-size: 16px;
+  border-color: #fff;
   background-color: rgba(255, 255, 255, 0.1); /* 투명도 추가 */
 }
 
@@ -337,30 +376,34 @@ a {
   bottom: 0;
   background-color: rgb(147, 174, 187);
   color: #fff;
-  border: none;
+  /* border: none; */
+  border-color: #fff;
   padding: 10px 20px;
   border-radius: 0 20px 20px 0;
   cursor: pointer;
 }
 
 .header-searchSelect {
+  color: rgb(255, 255, 255);
   position: absolute;
-  transform: translate(-185px, 250px);
+  transform: translate(-175px, 230px);
   /* outline: none; */
   height: 39px;
   border-radius: 16px 10px 10px 16px;
   background-color: rgba(255, 255, 255, 0.1); /*투명도 추가*/
   font-size: 16px;
   padding: 5px;
-  border: none;
+  /* border: none; */
+  border-color: rgb(223, 222, 222);
 }
 
+/** Attraction Button(테마) 설정  */
 #TripFoodButton {
   position: absolute;
   transform: translate(-260px, 65px);
   width: 120px;
   z-index: 2;
-  display: none;
+  /* display: none; */
   visibility: hidden;
 }
 
@@ -382,7 +425,7 @@ a {
 
 .spotLight1 {
   position: absolute;
-  transform: translate(260px, 160px);
+  transform: translate(224px, 117px);
   border-radius: 100px;
   height: 85px;
   width: 85px;
@@ -391,9 +434,10 @@ a {
 
 .img0 {
   position: absolute;
-  transform: translate(150px, 110px);
+  transform: translate(190px, 85px);
 }
 
+/** Attraction Button(홈) */
 #TripSnowButton0 {
   position: absolute;
   /* transform: translate(-350px, 110px); */
@@ -401,6 +445,7 @@ a {
   outline: none;
   transition: all ease 1s;
   padding-top: 0;
+  z-index: 3;
 }
 
 #TripSnowButton0:hover {
@@ -412,42 +457,43 @@ a {
 
 .TripSnowButton0_text {
   position: absolute;
-  /* transform: translate(213px, 195px); */
+  transform: translate(62px, 50px);
   color: rgb(61, 71, 67);
+  z-index: 4;
 }
 
 #TripSnowButton1 {
   position: absolute;
-  transform: translate(-250px, 150px);
+  transform: translate(-150px, 60px);
   width: 100px;
   outline: none;
 }
 
 .TripSnowButton1_text {
   position: absolute;
-  transform: translate(280px, 175px);
+  transform: translate(377px, 85px);
   color: rgb(61, 71, 67);
 }
 
 #TripSnowButton2 {
   position: absolute;
-  transform: translate(-50px, 100px);
+  transform: translate(20px, 60px);
   width: 100px;
 }
 .TripSnowButton2_text {
   position: absolute;
-  transform: translate(470px, 125px);
+  transform: translate(532px, 85px);
   color: rgb(61, 71, 67);
 }
 
 #TripSnowButton3 {
   position: absolute;
-  transform: translate(150px, 150px);
+  transform: translate(175px, 100px);
   width: 100px;
 }
 .TripSnowButton3_text {
   position: absolute;
-  transform: translate(670px, 170px);
+  transform: translate(695px, 125px);
   color: rgb(61, 71, 67);
 }
 
@@ -477,6 +523,54 @@ body {
   padding: 0;
   /* overflow: hidden;  스크롤 여부 */
   display: flex;
-  font-family: sans-serif;
+  /* font-family: sans-serif; */
+}
+
+/** good  */
+@font-face {
+  font-family: "UhBeeSe_hyun";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_five@.2.0/UhBeeSe_hyun.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/** good */
+@font-face {
+  font-family: "SDSamliphopangche_Outline";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Bazzi";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/Bazzi.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "UhBeeJJIBBABBA";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_five@.2.0/UhBeeJJIBBABBA.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Katuri";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_13@1.0/Katuri.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  /* font-family: "UhBeeSe_hyun"; */
+  /* font-family: "SDSamliphopangche_Outline"; */
+  font-family: "Bazzi";
+  /* font-family: "Katuri"; */
 }
 </style>
