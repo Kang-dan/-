@@ -221,21 +221,29 @@ const onClick = (e) => {
             <li class="item">
               <a class="link" href="#">
                 <img class="image" :src="attractions[0].firstImage" alt="" />
+                <a class="item_title">{{ attractions[0].title }}</a>
+                <a class="item_addr">{{ attractions[0].addr1 }}</a>
               </a>
             </li>
             <li class="item">
               <a class="link" href="#">
                 <img class="image" :src="attractions[0].firstImage" alt="" />
+                <a class="item_title">{{ attractions[0].title }}</a>
+                <a class="item_addr">{{ attractions[0].addr1 }}</a>
               </a>
             </li>
             <li class="item">
               <a class="link" href="#">
                 <img class="image" :src="attractions[0].firstImage" alt="" />
+                <a class="item_title">{{ attractions[0].title }}</a>
+                <a class="item_addr">{{ attractions[0].addr1 }}</a>
               </a>
             </li>
             <li class="item">
               <a class="link" href="#">
                 <img class="image" :src="attractions[0].firstImage" alt="" />
+                <a class="item_title">{{ attractions[0].title }}</a>
+                <a class="item_addr">{{ attractions[0].addr1 }}</a>
               </a>
             </li>
           </ul>
@@ -246,9 +254,18 @@ const onClick = (e) => {
 </template>
 
 <style scoped>
+a {
+  text-decoration: none;
+}
+.item_title,
+.item_addr {
+  display: block;
+  color: #fff;
+  font-weight: 700;
+}
 .listItem {
   width: 900px;
-  margin-left: 52px;
+  margin-left: 50px;
   padding: 4rem 0;
   overflow: hidden;
 }
@@ -279,36 +296,13 @@ const onClick = (e) => {
 
 .image {
   display: block;
-  width: 290px;
-  height: 290px;
-  border-radius: 30px;
+  width: 270px;
+  height: 270px;
+  border-radius: 50px;
   -webkit-user-drag: none;
 }
 
-/* #list_item {
-  display: inline-block;
-  width: 300px;
-  height: 270px;
-  margin: 10px;
-  overflow: hidden;
-}
-
-#list_img {
-  display: inline-block;
-  width: 100%;
-  height: 270px;
-  overflow: hidden;
-  object-fit: cover;
-  border-radius: 10px;
-} */
-/* body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  background-color: #f4f4f4;
-} */
+/**  object-fit: cover; */
 
 .list_item {
   display: inline-block;
