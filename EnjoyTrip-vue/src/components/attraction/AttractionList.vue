@@ -1,10 +1,165 @@
 <script setup>
+// defineProps({ attraction: Object });
+
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { listAttraction } from "@/api/attraction";
 const router = useRouter();
 
 const moveAttractionDetail = () => {
   router.push({ name: "attraction-detail" }); //contentId로
+};
+
+//검색 드롭박스
+const selectThemeOption = ref([
+  { text: "전체", value: "" },
+  { text: "관광지명", value: "title" },
+  { text: "위치", value: "addr" },
+]);
+
+//검색 선택, 페이지 처리
+const attractions = ref([{}]);
+const currentPage = ref(1);
+const totalPage = ref(0);
+const { VITE_ATTRACTION_LIST_SIZE } = import.meta.env;
+// const param = ref({
+//   pgno: currentPage.value,
+//   spp: VITE_ATTRACTION_LIST_SIZE,
+//   key: "", //드롭박스 선택하면
+//   word: "", //검색창 입력값
+// });
+
+const param = ref({
+  contentTypeId: 39,
+  sidoCode: 3,
+});
+
+onMounted(() => {
+  getAttractionList();
+});
+
+const getAttractionList = () => {
+  //서버에서 사진, 관광지명, 주소 가져오기
+  listAttraction(
+    param.value,
+    ({ data }) => {
+      attractions.value = data;
+      console.log(attractions.value[0]);
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+};
+// const getAttractionList = () => {
+//   //서버에서 사진, 관광지명, 주소 가져오기
+//   listAttraction(
+//     param.value,
+//     ({ data }) => {
+//       attractions.value = data.attractions;
+//       currentPage.value = data.currentPage;
+//       totalPage.value = data.totalPageCount;
+//     },
+//     (error) => {
+//       console.log(error);
+//     }
+//   );
+// };
+
+const changeKey = (val) => {
+  param.value.key = val;
+};
+
+const onPageChange = (val) => {
+  currentPage.value = val;
+  param.value.pgno = val;
+  getAttractionList();
+};
+
+//이미지 가로 스크롤
+let list = null;
+let listScrollWidth = 0;
+let listClientWidth = 0;
+// 이벤트마다 갱신될 값
+let startX = 0;
+let nowX = 0;
+let endX = 0;
+let listX = 0;
+
+onMounted(() => {
+  list = document.querySelector(".list");
+  listScrollWidth = list.scrollWidth;
+  listClientWidth = list.clientWidth;
+  bindEvents();
+});
+
+const getClientX = (e) => {
+  const isTouches = e.touches ? true : false;
+  return isTouches ? e.touches[0].clientX : e.clientX;
+};
+
+const getTranslateX = () => {
+  return parseInt(getComputedStyle(list).transform.split(/[^\-0-9]+/g)[5]);
+};
+
+const setTranslateX = (x) => {
+  list.style.transform = `translateX(${x}px)`;
+};
+
+//이벤트 연결
+const bindEvents = () => {
+  list.addEventListener("mousedown", onScrollStart);
+  list.addEventListener("touchstart", onScrollStart);
+  list.addEventListener("click", onClick);
+};
+
+//스크롤 진행 이벤트 구현
+const onScrollStart = (e) => {
+  startX = getClientX(e);
+  window.addEventListener("mousemove", onScrollMove);
+  window.addEventListener("touchmove", onScrollMove);
+  window.addEventListener("mouseup", onScrollEnd);
+  window.addEventListener("touchend", onScrollEnd);
+};
+
+// 스크롤 종료 이벤트 구현
+const onScrollEnd = (e) => {
+  endX = getClientX(e);
+  listX = getTranslateX();
+  if (listX > 0) {
+    setTranslateX(0);
+    list.style.transition = `all 0.3s ease`;
+    listX = 0;
+  } else if (listX < listClientWidth - listScrollWidth) {
+    setTranslateX(listClientWidth - listScrollWidth);
+    list.style.transition = `all 0.3s ease`;
+    listX = listClientWidth - listScrollWidth;
+  }
+
+  window.removeEventListener("mousedown", onScrollStart);
+  window.removeEventListener("touchstart", onScrollStart);
+  window.removeEventListener("mousemove", onScrollMove);
+  window.removeEventListener("touchmove", onScrollMove);
+  window.removeEventListener("mouseup", onScrollEnd);
+  window.removeEventListener("touchend", onScrollEnd);
+  window.removeEventListener("click", onClick);
+
+  setTimeout(() => {
+    bindEvents();
+    list.style.transition = "";
+  }, 300);
+};
+
+const onScrollMove = (e) => {
+  nowX = getClientX(e);
+  setTranslateX(listX + nowX - startX);
+};
+
+//클릭 이벤트 구현
+const onClick = (e) => {
+  if (startX - endX !== 0) {
+    e.preventDefault();
+  }
 };
 </script>
 
@@ -12,32 +167,20 @@ const moveAttractionDetail = () => {
   <div id="trip">
     <div id="star">
       <div class="snowBall_img" alt="스노우볼">
-        <img
-          id="TripFoodButton"
-          src="@/assets/cityAttraction/TripFoodButton.png"
-          alt=""
-        />
-        <img
-          id="TripFestivalButton"
-          src="@/assets/cityAttraction/TripFestivalButton.png"
-          alt=""
-        />
-        <img
-          id="TripChildHatButton"
-          src="@/assets/cityAttraction/TripChildHatButton.png"
-          alt=""
-        />
+        <img id="TripFoodButton" src="@/assets/cityAttraction/TripFoodButton.png" alt="" />
+        <img id="TripFestivalButton" src="@/assets/cityAttraction/TripFestivalButton.png" alt="" />
+        <img id="TripChildHatButton" src="@/assets/cityAttraction/TripChildHatButton.png" alt="" />
 
         <select class="header-searchSelect">
           <option value="All">All</option>
-          <option value="arts-craft">가게명</option>
+          <option value="title">여행지</option>
           <option value="address">위치</option>
-          <option value="menu">메뉴</option>
         </select>
         <div class="search-container">
           <input
             type="text"
             class="search-input"
+            v-model="param.word"
             placeholder="검색어를 입력하세요"
           />
           <!-- 버튼에 @click="" 추가하기-->
@@ -45,11 +188,7 @@ const moveAttractionDetail = () => {
         </div>
 
         <div class="img0">
-          <img
-            id="TripSnowButton0"
-            src="@/assets/cityAttraction/TripListAllButtonImg.png"
-            alt=""
-          />
+          <img id="TripSnowButton0" src="@/assets/cityAttraction/TripListAllButtonImg.png" alt="" />
           <div class="TripSnowButton0_text">
             <h3>All</h3>
           </div>
@@ -57,36 +196,49 @@ const moveAttractionDetail = () => {
 
         <div class="img1">
           <div class="spotLight1"></div>
-          <img
-            id="TripSnowButton1"
-            src="@/assets/cityAttraction/TripSnowButton.png"
-            alt=""
-          />
+          <img id="TripSnowButton1" src="@/assets/cityAttraction/TripSnowButton.png" alt="" />
           <div class="TripSnowButton1_text">
             <h3>Food</h3>
           </div>
         </div>
 
         <div class="img2">
-          <img
-            id="TripSnowButton2"
-            src="@/assets/cityAttraction/TripSnowButton.png"
-            alt=""
-          />
+          <img id="TripSnowButton2" src="@/assets/cityAttraction/TripSnowButton.png" alt="" />
           <div class="TripSnowButton2_text">
             <h3>Festival</h3>
           </div>
         </div>
 
         <div class="img3">
-          <img
-            id="TripSnowButton3"
-            src="@/assets/cityAttraction/TripSnowButton.png"
-            alt=""
-          />
+          <img id="TripSnowButton3" src="@/assets/cityAttraction/TripSnowButton.png" alt="" />
           <div class="TripSnowButton3_text">
             <h3>Family</h3>
           </div>
+        </div>
+
+        <div class="listItem">
+          <ul class="list">
+            <li class="item">
+              <a class="link" href="#">
+                <img class="image" :src="attractions[0].firstImage" alt="" />
+              </a>
+            </li>
+            <li class="item">
+              <a class="link" href="#">
+                <img class="image" :src="attractions[0].firstImage" alt="" />
+              </a>
+            </li>
+            <li class="item">
+              <a class="link" href="#">
+                <img class="image" :src="attractions[0].firstImage" alt="" />
+              </a>
+            </li>
+            <li class="item">
+              <a class="link" href="#">
+                <img class="image" :src="attractions[0].firstImage" alt="" />
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -94,6 +246,61 @@ const moveAttractionDetail = () => {
 </template>
 
 <style scoped>
+.listItem {
+  width: 900px;
+  margin-left: 52px;
+  padding: 4rem 0;
+  overflow: hidden;
+}
+
+.list {
+  padding: 1rem 0;
+  /* margin-left: 30px; */
+  margin-top: 255px;
+  width: 100%;
+  display: flex;
+  transform: translate(0, 0);
+}
+
+.item {
+  padding-right: 1rem;
+  list-style: none;
+  user-select: none;
+}
+
+.item:first-child {
+  padding-left: 1rem;
+}
+
+.link {
+  display: block;
+  -webkit-user-drag: none;
+}
+
+.image {
+  display: block;
+  width: 290px;
+  height: 290px;
+  border-radius: 30px;
+  -webkit-user-drag: none;
+}
+
+/* #list_item {
+  display: inline-block;
+  width: 300px;
+  height: 270px;
+  margin: 10px;
+  overflow: hidden;
+}
+
+#list_img {
+  display: inline-block;
+  width: 100%;
+  height: 270px;
+  overflow: hidden;
+  object-fit: cover;
+  border-radius: 10px;
+} */
 /* body {
   display: flex;
   justify-content: center;
@@ -102,6 +309,14 @@ const moveAttractionDetail = () => {
   margin: 0;
   background-color: #f4f4f4;
 } */
+
+.list_item {
+  display: inline-block;
+  width: 150px;
+  height: 125px;
+  margin: 2px;
+  overflow: hidden;
+}
 
 .search-container {
   position: absolute;
