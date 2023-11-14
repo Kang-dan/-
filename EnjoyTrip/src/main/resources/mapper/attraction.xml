@@ -29,7 +29,7 @@
 	
 	<insert id="insertAttractionFestival" parameterType="AttractionFestival">
 		insert into attraction_festival (content_id, content_type_id, title, addr1, addr2, tel, first_image, sido_code, gugun_code, latitude, longitude, mlevel, event_start_date, event_end_date)
-		values (#{contentId}, #{contentTypeId}, #{title}, #{addr1}, #{addr2})
+		values (#{contentId}, #{contentTypeId}, #{title}, #{addr1}, #{addr2}, #{tel}, #{firstImage}, #{sidoCode}, #{gugunCode}, #{latitude}, #{latitude}, #{mlevel}, #{eventStartDate}, #{eventEndDate})
 	</insert>
 	
 </mapper>

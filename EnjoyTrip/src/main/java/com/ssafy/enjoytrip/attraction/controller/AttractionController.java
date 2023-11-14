@@ -80,12 +80,12 @@ public class AttractionController {
 		JSONArray jsonArr = (JSONArray) jsonMain.get("item");
 		
 		for (int i = 0; i < totalCount; i++) {
-			jsonMain = (JSONObject) jsonArr.get(i);
+			jsonMain = (JSONObject) jsonArr.get(i);			
 			AttractionFestival attractionFestival = new AttractionFestival();
 			attractionFestival.setAddr1((String) jsonMain.get("addr1"));
 			attractionFestival.setAddr2((String) jsonMain.get("addr2"));
-			attractionFestival.setContentId((int) jsonMain.get("contentid"));
-			attractionFestival.setContentTypeId((int) jsonMain.get("contenttypeid"));
+			attractionFestival.setContentId(Integer.parseInt(jsonMain.get("contentid").toString()));
+			attractionFestival.setContentTypeId(Integer.parseInt(jsonMain.get("contenttypeid").toString()));
 			attractionFestival.setEventEndDate((String) jsonMain.get("eventenddate"));
 			attractionFestival.setEventStartDate((String) jsonMain.get("eventstartdate"));
 			attractionFestival.setFirstImage((String) jsonMain.get("firstimage"));
@@ -97,7 +97,11 @@ public class AttractionController {
 			attractionFestival.setTel((String) jsonMain.get("tel"));
 			attractionFestival.setTitle((String) jsonMain.get("title"));
 			
-			attractionService.insertAttractionFestival(attractionFestival);
+			try {
+				attractionService.insertAttractionFestival(attractionFestival);
+			} catch (Exception e) {
+				System.out.println("SQL에러");
+			}
 		}
 		
 		System.out.println(jsonMain);
