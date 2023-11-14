@@ -25,3 +25,28 @@ ENGINE = InnoDB
 AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
+
+create table attraction_food (
+	content_id int primary key not null,
+    first_menu varchar(100) not null,
+    treat_menu varchar(2000) not null,
+    open_time_food varchar(200) not null,
+    FOREIGN KEY(content_id) REFERENCES attraction_info(content_id)
+);
+
+create table attraction_festival (
+	content_id int PRIMARY key,
+    content_type_id int not null,
+    title varchar(200) not null,
+    addr1 varchar(200),
+    addr2 varchar(200),
+    tel varchar(50),
+    first_image varchar(200),
+    sido_code int,
+    gugun_code int,
+    latitude decimal(20, 17),
+    longitude decimal(20, 17),
+    mlevel varchar(2),
+    event_start_date varchar(20),
+    event_end_date varchar(20)    
+);

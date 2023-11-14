@@ -20,8 +20,18 @@
 		select content_id, content_type_id, title, addr1, tel, first_image, sido_code, gugun_code, latitude, longitude 
 		from attraction_info
 		where content_type_id = #{contentTypeId} and sido_code = #{sidoCode}
-		limit 30
 	</select>
+	
+	<insert id="insertAttractionFood" parameterType="AttractionFood">
+		insert into attraction_food (content_id, first_menu, treat_menu, open_time_food)
+		values (#{contentId}, #{firstMenu}, #{treatMenu}, #{openTimeFood})
+	</insert>
+	
+	<insert id="insertAttractionFestival" parameterType="AttractionFestival">
+		insert into attraction_festival (content_id, content_type_id, title, addr1, addr2, tel, first_image, sido_code, gugun_code, latitude, longitude, mlevel, event_start_date, event_end_date)
+		values (#{contentId}, #{contentTypeId}, #{title}, #{addr1}, #{addr2})
+	</insert>
+	
 </mapper>
 <!-- 
 package com.ssafy.enjoytrip.food.model.mapper;
