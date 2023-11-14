@@ -206,7 +206,7 @@ const onClick = (e) => {
             alt=""
           />
           <div class="TripSnowButton0_text">
-            <h3>All</h3>
+            <h3 class="select_all">All</h3>
           </div>
         </div>
 
@@ -352,49 +352,66 @@ a {
 /** Attraction 배경 설정  */
 .search-container {
   position: absolute;
-  transform: translate(405px, 230px);
-  width: 300px;
-  border-radius: 10px 20px 20px 10px;
+  transform: translate(410px, 230px);
+  width: 240px;
+  border-radius: 0px 10px 0px 0px;
+  border: none;
+  outline: none;
   overflow: hidden;
 }
 
+input {
+  color: #fff;
+}
+
 .search-input {
-  width: 100%;
+  width: 70%;
+  margin-right: 70px;
   padding: 10px;
-  /* border: none; */
-  border-radius: 10px 20px 20px 10px;
-  /* outline: none; */
+  /* border-radius: 10px 20px 20px 10px; */
+  border: none;
+  border-bottom: 1px solid white;
+  outline: none;
   font-size: 16px;
-  border-color: #fff;
-  background-color: rgba(255, 255, 255, 0.1); /* 투명도 추가 */
+  /* border-color: #fff; */
+  background-color: rgba(255, 255, 255, 0); /*투명도 추가*/
 }
 
 .search-button {
   position: absolute;
+  transform: translate(187px, 0px);
+  width: 50px;
   top: 0;
   right: 0;
+  left: 0;
   bottom: 0;
-  background-color: rgb(147, 174, 187);
+  background-color: rgb(147, 174, 187, 0.4);
   color: #fff;
   /* border: none; */
-  border-color: #fff;
-  padding: 10px 20px;
-  border-radius: 0 20px 20px 0;
+  outline: none;
+  /* border-color: #fff; */
+  /* padding: 10px 20px; */
+  border-radius: 10px 10px 10px 0;
   cursor: pointer;
 }
 
 .header-searchSelect {
   color: rgb(255, 255, 255);
   position: absolute;
-  transform: translate(-175px, 230px);
-  /* outline: none; */
+  transform: translate(-167px, 230px);
+  outline: none;
   height: 39px;
-  border-radius: 16px 10px 10px 16px;
-  background-color: rgba(255, 255, 255, 0.1); /*투명도 추가*/
+  /* border-radius: 16px 10px 10px 16px; */
+  background-color: rgba(255, 255, 255, 0); /*투명도 추가*/
   font-size: 16px;
   padding: 5px;
-  /* border: none; */
-  border-color: rgb(223, 222, 222);
+  border: none;
+  outline: none;
+  /* border-color: rgb(223, 222, 222); */
+}
+
+.select_all {
+  color: #fff;
 }
 
 /** Attraction Button(테마) 설정  */
