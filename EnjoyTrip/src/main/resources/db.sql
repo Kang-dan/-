@@ -19,7 +19,8 @@ create table members (
     join_date TIMESTAMP default CURRENT_TIMESTAMP,
     member_email varchar(100) not null,
     age int not null,
-    member_board_count int default 0
+    member_board_count int default 0,
+    token varchar(1000) null DEFAULT null
 )
 ENGINE = InnoDB
 AUTO_INCREMENT = 1

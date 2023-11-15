@@ -1,7 +1,13 @@
 <script setup>
 import { ref, watch } from "vue";
+import { storeToRefs } from "pinia";
 import { useRoute, useRouter } from "vue-router";
-import { loginMember } from "@/api/member";
+import { useMemberStore } from "@/stores/member";
+
+const memberStore = useMemberStore();
+
+const { isLogin } = storeToRefs(memberStore);
+const { memberLogin, getMemberInfo } = memberStore;
 
 const router = useRouter();
 
@@ -47,20 +53,17 @@ function onSubmit() {
     }
 }
 
-function login() {  
-  loginMember(member.value, ({data}) => {
-    if (data === "로그인 성공!") {      
-      window.localStorage.setItem("id", member.value.memberId);
-      moveMain();
-    }
-    else {
-      console.log("로그인 실패함");
-    }
-  },),
-    (error) => {
-      console.log(error);
-  };
-
+const login = async () => {  
+  await memberLogin(member.value);
+  let token = sessionStorage.getItem("accessToken");
+  if (isLogin._value) {
+    console.log("로그인 성공");
+    getMemberInfo(token);
+    moveMain();
+  }
+  else {
+    alert("아이디 또는 비밀번호를 확인해 주셈");
+  }  
 }
 
 const moveMain = () => {

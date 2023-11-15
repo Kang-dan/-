@@ -4,15 +4,32 @@ const local = localAxios(); // axios instance
 
 const url = "/member"
 
-function loginMember(member, success, fail) {
-    local.post(`${url}/login`, JSON.stringify(member)).then(success).catch(fail);
+async function loginMember(member, success, fail) {
+    await local.post(`${url}/login`, JSON.stringify(member)).then(success).catch(fail);
 }
 
 function registMember(member, success, fail) {    
     local.post(`${url}/regist`, JSON.stringify(member)).then(success).catch(fail);
 }
 
+async function findById(memberid, success, fail) {
+  local.defaults.headers["Authorization"] = sessionStorage.getItem("accessToken");
+  await local.get(`${url}/info/${memberid}`).then(success).catch(fail);
+}
+
+async function tokenRegeneration(member, success, fail) {
+  local.defaults.headers["refreshToken"] = localStorage.getItem("refreshToken"); //axios header에 refresh-token 셋팅
+  await local.post(`${url}/refresh`, member).then(success).catch(fail);
+}
+
+async function logout(memberid, success, fail) {
+  await local.get(`${url}/logout/${memberid}`).then(success).catch(fail);
+}
+
 export {
     loginMember,
-    registMember
+    registMember,
+    findById,
+    tokenRegeneration,
+    logout
 };

@@ -25,8 +25,8 @@
 		 where member_id = #{memberId} and member_pw = #{memberPw}
 	</select>
 	
-	<select id="idCheck" parameterType="String" resultType="int">
-		select count(member_id)
+	<select id="memberInfo" parameterType="String" resultMap="memberMap">
+		select member_id, member_pw, member_name, join_date, member_email, age, member_board_count
 		  from members
 		 where member_id = #{memberId}
 	</select>
@@ -53,5 +53,24 @@
 		  from members
 		 where member_id = #{memberId}
 	</delete>
+	
+	<update id="saveRefreshToken" parameterType="map">
+		update members
+		set token = #{token}
+		where member_id = #{memberId}
+	</update>
+	
+	<select id="getRefreshToken" parameterType="string" resultType="string">
+		select token
+		from members
+		where member_id = #{memberId}
+	</select>
+	
+	<update id="deleteRefreshToken" parameterType="map">
+		update members
+		set token = #{token, jdbcType=VARCHAR}
+		where member_id = #{memberId}
+	</update>
+	
 
 </mapper>

@@ -1,112 +1,12 @@
 <script setup>
 import { useRouter } from "vue-router";
+import { useMemberStore } from "@/stores/member";
+import { storeToRefs } from "pinia";
+
+const memberStore = useMemberStore();
+const { isLogin } = storeToRefs(memberStore);
 
 const router = useRouter();
-
-// const city = [
-//   {
-//     left: 0,
-//     top: 0,
-//     imgTitle: "",
-//     sidoCode: 0,
-//   },
-//   {
-//     left: 0,
-//     top: 0,
-//     imgTitle: "",
-//     sidoCode: 0,
-//   },
-//   {
-//     left: 0,
-//     top: 0,
-//     imgTitle: "",
-//     sidoCode: 0,
-//   },
-//   {
-//     left: 0,
-//     top: 0,
-//     imgTitle: "",
-//     sidoCode: 0,
-//   },
-//   {
-//     left: 0,
-//     top: 0,
-//     imgTitle: "",
-//     sidoCode: 0,
-//   },
-//   {
-//     left: 0,
-//     top: 0,
-//     imgTitle: "",
-//     sidoCode: 0,
-//   },
-//   {
-//     left: 0,
-//     top: 0,
-//     imgTitle: "",
-//     sidoCode: 0,
-//   },
-//   {
-//     left: 0,
-//     top: 0,
-//     imgTitle: "",
-//     sidoCode: 0,
-//   },
-//   {
-//     left: 0,
-//     top: 0,
-//     imgTitle: "",
-//     sidoCode: 0,
-//   },
-//   {
-//     left: 0,
-//     top: 0,
-//     imgTitle: "",
-//     sidoCode: 0,
-//   },
-//   {
-//     left: 0,
-//     top: 0,
-//     imgTitle: "",
-//     sidoCode: 0,
-//   },
-//   {
-//     left: 0,
-//     top: 0,
-//     imgTitle: "",
-//     sidoCode: 0,
-//   },
-//   {
-//     left: 0,
-//     top: 0,
-//     imgTitle: "",
-//     sidoCode: 0,
-//   },
-//   {
-//     left: 0,
-//     top: 0,
-//     imgTitle: "",
-//     sidoCode: 0,
-//   },
-//   {
-//     left: 0,
-//     top: 0,
-//     imgTitle: "",
-//     sidoCode: 0,
-//   },
-//   {
-//     left: 0,
-//     top: 0,
-//     imgTitle: "",
-//     sidoCode: 0,
-//   },
-//   {
-//     left: 0,
-//     top: 0,
-//     imgTitle: "",
-//     sidoCode: 0,
-//   },
-// ];
 
 const left = [
   0, 270, 360, 430, 530, 620, 450, 280, 360, 180, 300, 160, 280, 480, 500, 620, 720, 410,
@@ -137,7 +37,7 @@ const imgTitle = [
 ];
 
 const moveLogin = () => {
-  if (!window.localStorage.getItem("id")) router.push({ name: "member-login" });
+  if (!isLogin.value) router.push({ name: "member-login" });
 };
 
 const moveAttractionList = (sidoCode) => {

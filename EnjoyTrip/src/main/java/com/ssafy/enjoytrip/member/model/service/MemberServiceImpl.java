@@ -1,5 +1,8 @@
 package com.ssafy.enjoytrip.member.model.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
 import com.ssafy.enjoytrip.member.model.Member;
@@ -14,8 +17,8 @@ public class MemberServiceImpl implements MemberService {
 	}
     
 	@Override
-    public int idCheck(String memberId) {
-        return memberMapper.idCheck(memberId);
+    public Member memberInfo(String memberId) {
+        return memberMapper.memberInfo(memberId);
     }
     @Override
     public void registMember(Member member) {        
@@ -40,6 +43,27 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void deleteMember(String memberId) {
 		memberMapper.deleteMember(memberId);		
+	}
+
+	@Override
+	public void saveRefreshToken(String memberId, String refreshToken) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("memberId", memberId);
+		map.put("token", refreshToken);
+		memberMapper.saveRefreshToken(map);		
+	}
+
+	@Override
+	public Object getRefreshToken(String memberId) {
+		return memberMapper.getRefreshToken(memberId);
+	}
+
+	@Override
+	public void deleRefreshToken(String memberId) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userId", memberId);
+		map.put("token", null);
+		memberMapper.deleteRefreshToken(map);
 	}
 
 }
