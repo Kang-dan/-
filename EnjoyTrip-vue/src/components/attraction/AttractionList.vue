@@ -296,7 +296,7 @@ const closeModal = () => {
 
         <div class="listItem">
           <ul class="list">
-            <li class="item" @click="showModal(attraction)" v-for="attraction in attractions" :key="attraction.index">
+            <li class="item" @dblclick="showModal(attraction)" v-for="attraction in attractions" :key="attraction.index">
               <a class="link" href="#">
                 <img class="image" :src="attraction.firstImage" alt="" />
                 <a class="item_title">{{ attraction.title }}</a>
