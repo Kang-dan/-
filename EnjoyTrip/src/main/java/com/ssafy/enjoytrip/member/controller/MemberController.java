@@ -108,7 +108,7 @@ public class MemberController {
 	@GetMapping("/logout/{memberId}")
 	public ResponseEntity<?> logout(@PathVariable String memberId) {
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.ACCEPTED;
+		HttpStatus status = HttpStatus.ACCEPTED;		
 		try {
 			memberService.deleRefreshToken(memberId);
 			status = HttpStatus.OK;

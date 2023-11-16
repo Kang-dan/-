@@ -2,6 +2,7 @@ package com.ssafy.enjoytrip.attraction.model.mapper;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -17,4 +18,6 @@ public interface AttractionMapper {
 	Collection<? extends AttractionFestival> listAttractionFood(int sidoCode);
 
 	Collection<? extends AttractionFestival> listAttractionFamily(int sidoCode);
+
+	AttractionFestival detailAttraction(Map<String, Object> map);
 }

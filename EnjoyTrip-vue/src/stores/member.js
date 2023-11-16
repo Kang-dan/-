@@ -122,6 +122,8 @@ export const useMemberStore = defineStore("memberStore", () => {
           isLogin.value = false;
           memberInfo.value = null;
           isValidToken.value = false;
+          sessionStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
         } else {
           console.error("멤버 정보 없음!!!!");
         }

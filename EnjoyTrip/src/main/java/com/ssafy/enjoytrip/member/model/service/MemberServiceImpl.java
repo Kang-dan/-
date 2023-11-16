@@ -61,7 +61,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void deleRefreshToken(String memberId) {
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("userId", memberId);
+		map.put("memberId", memberId);
 		map.put("token", null);
 		memberMapper.deleteRefreshToken(map);
 	}

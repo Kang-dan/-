@@ -35,6 +35,12 @@ public class AttractionController {
 		this.attractionService = attractionService;
 	}
 	
+	@PostMapping("/detail")
+	public ResponseEntity<AttractionFestival> detail(@RequestBody Map<String, Object> map) {		
+		AttractionFestival attractionFestival = attractionService.detailAttraction(map);
+		return ResponseEntity.ok(attractionFestival);
+	}
+	
 	@PostMapping
 	public ResponseEntity<List<AttractionFestival>> list(@RequestBody Map<String, Object> map) {
 		

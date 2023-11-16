@@ -2,6 +2,7 @@ package com.ssafy.enjoytrip.attraction.model.service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,11 @@ public class AttractionServiceImpl implements AttractionService {
 	@Override
 	public Collection<? extends AttractionFestival> listAttractionFamily(int sidoCode) {
 		return attractionMapper.listAttractionFamily(sidoCode);
+	}
+
+	@Override
+	public AttractionFestival detailAttraction(Map<String, Object> map) {
+		return attractionMapper.detailAttraction(map);
 	}
 
 	

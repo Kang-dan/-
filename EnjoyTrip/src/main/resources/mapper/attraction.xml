@@ -33,22 +33,37 @@
 		<result column="event_end_date" property="eventEndDate" />
 	</resultMap>
 	
+	<select id="detailAttraction" parameterType="map" resultMap="AttractionFestivalMap">
+		<if test="contentTypeId == 15">
+			select content_id, content_type_id, title, addr1, tel, first_image, sido_code, gugun_code, latitude, longitude, mlevel, event_start_date, event_end_date
+		  	  from attraction_festival
+		</if>
+		<if test="contentTypeId != 15">
+			select content_id, content_type_id, title, addr1, tel, first_image, sido_code, gugun_code, latitude, longitude
+		  	  from attraction_info
+		</if>
+		where content_id = #{contentId}; 
+	</select>
+	
 	<select id="listAttractionFestival" parameterType="int" resultMap="AttractionFestivalMap">
-		select content_id, content_type_id, title, addr1, tel, first_image, sido_code, gugun_code, event_start_date, event_end_date
+		select content_id, content_type_id, title, addr1, tel, first_image, sido_code, gugun_code, latitude, longitude, mlevel, event_start_date, event_end_date
 		  from attraction_festival
-		 where sido_code = #{sidoCode}		 
+		 where sido_code = #{sidoCode} and first_image != ""
+		 limit 30
 	</select>
 	
 	<select id="listAttractionFood" parameterType="int" resultMap="AttractionFestivalMap">
-		select content_id, content_type_id, title, addr1, tel, first_image, sido_code, gugun_code
+		select content_id, content_type_id, title, addr1, tel, first_image, sido_code, gugun_code, latitude, longitude
 		  from attraction_info
-		 where sido_code = #{sidoCode} and content_type_id = 39
+		 where sido_code = #{sidoCode} and content_type_id = 39 and first_image != ""
+		 limit 30
 	</select>
 	
 	<select id="listAttractionFamily" parameterType="int" resultMap="AttractionFestivalMap">
-		select content_id, content_type_id, title, addr1, tel, first_image, sido_code, gugun_code
+		select content_id, content_type_id, title, addr1, tel, first_image, sido_code, gugun_code, latitude, longitude
 		  from attraction_info
-		 where content_type_id != 39 and content_type_id != 15 and sido_code = #{sidoCode} and title regexp '박물관|미술관|동물원|식물원|역사|놀이|캠핑|문화|체험|바다|해변|어린이|가족|학습' 
+		 where content_type_id != 39 and content_type_id != 15 and sido_code = #{sidoCode} and first_image != "" and title regexp '박물관|미술관|동물원|식물원|역사|놀이|캠핑|문화|체험|바다|해변|어린이|가족|학습'
+		 limit 30 
 	</select>
 	
 	<insert id="insertAttractionFestival" parameterType="AttractionFestival">
