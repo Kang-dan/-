@@ -37,21 +37,22 @@ public class AttractionController {
 	
 	@PostMapping
 	public ResponseEntity<List<AttractionFestival>> list(@RequestBody Map<String, Object> map) {
+		
 		List<AttractionFestival> attractionFestival = new ArrayList<>();
 		System.out.println(map.get("sidoCode"));
 		if (map.get("key").equals("all")) {
-			attractionFestival.addAll(attractionService.listAttractionFood((int) map.get("sidoCode")));
-			attractionFestival.addAll(attractionService.listAttractionFestival((int) map.get("sidoCode")));
-			attractionFestival.addAll(attractionService.listAttractionFamily((int) map.get("sidoCode")));
+			attractionFestival.addAll(attractionService.listAttractionFood(Integer.parseInt((String) map.get("sidoCode"))));
+			attractionFestival.addAll(attractionService.listAttractionFestival(Integer.parseInt((String) map.get("sidoCode"))));
+			attractionFestival.addAll(attractionService.listAttractionFamily(Integer.parseInt((String) map.get("sidoCode"))));
 		}
 		else if (map.get("key").equals("food")) {
-			attractionFestival.addAll(attractionService.listAttractionFood((int) map.get("sidoCode")));
+			attractionFestival.addAll(attractionService.listAttractionFood(Integer.parseInt((String) map.get("sidoCode"))));
 		}
 		else if (map.get("key").equals("festival")) {
-			attractionFestival.addAll(attractionService.listAttractionFestival((int) map.get("sidoCode")));
+			attractionFestival.addAll(attractionService.listAttractionFestival(Integer.parseInt((String) map.get("sidoCode"))));
 		}
 		else if (map.get("key").equals("family")) {
-			attractionFestival.addAll(attractionService.listAttractionFamily((int) map.get("sidoCode")));
+			attractionFestival.addAll(attractionService.listAttractionFamily(Integer.parseInt((String) map.get("sidoCode"))));
 		}
 		
 //		attractionFestival.sort((o1, o2) -> o1.getTitle().compareTo(o2.getTitle()));

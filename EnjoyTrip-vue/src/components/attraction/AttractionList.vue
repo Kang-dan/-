@@ -37,9 +37,7 @@ const param = ref({
 });
 
 onMounted(() => {
-  param.value.sidoCode = route.params.sidoCode;
-  console.log(route.params.sidoCode);
-  console.log("asdf");
+  param.value.sidoCode = route.params.sidoCode;  
   getAttractionList();
 });
 
@@ -71,7 +69,6 @@ const getAttractionList = () => {
     param.value,
     ({ data }) => {
       attractions.value = data;
-      console.log(attractions.value[0]);
     },
     (error) => {
       console.log(error);
@@ -297,32 +294,11 @@ const closeModal = () => {
 
         <div class="listItem">
           <ul class="list">
-            <li class="item" @click="showModal">
+            <li class="item" @click="showModal" v-for="attraction in attractions" :key="attraction.index">
               <a class="link" href="#">
-                <img class="image" :src="attractions[0].firstImage" alt="" />
-                <a class="item_title">{{ attractions[0].title }}</a>
-                <a class="item_addr">{{ attractions[0].addr1 }}</a>
-              </a>
-            </li>
-            <li class="item">
-              <a class="link" href="#">
-                <img class="image" :src="attractions[0].firstImage" alt="" />
-                <a class="item_title">{{ attractions[0].title }}</a>
-                <a class="item_addr">{{ attractions[0].addr1 }}</a>
-              </a>
-            </li>
-            <li class="item">
-              <a class="link" href="#">
-                <img class="image" :src="attractions[0].firstImage" alt="" />
-                <a class="item_title">{{ attractions[0].title }}</a>
-                <a class="item_addr">{{ attractions[0].addr1 }}</a>
-              </a>
-            </li>
-            <li class="item">
-              <a class="link" href="#">
-                <img class="image" :src="attractions[0].firstImage" alt="" />
-                <a class="item_title">{{ attractions[0].title }}</a>
-                <a class="item_addr">{{ attractions[0].addr1 }}</a>
+                <img class="image" :src="attraction.firstImage" alt="" />
+                <a class="item_title">{{ attraction.title }}</a>
+                <a class="item_addr">{{ attraction.addr1 }}</a>
               </a>
             </li>
           </ul>
