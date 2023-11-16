@@ -194,7 +194,7 @@ const showModal = () => {
   // 모달이 나타날 때 show 클래스 추가
   const modal = document.querySelector("#modal.modal-overlay");
   modal.classList.add("show");
-};
+};  
 
 const closeModal = () => {
   isModalOpen.value = false;
