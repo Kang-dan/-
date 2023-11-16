@@ -39,7 +39,7 @@ public class AttractionController {
 	public ResponseEntity<List<AttractionFestival>> list(@RequestBody Map<String, Object> map) {
 		
 		List<AttractionFestival> attractionFestival = new ArrayList<>();
-		System.out.println(map.get("sidoCode"));
+		
 		if (map.get("key").equals("all")) {
 			attractionFestival.addAll(attractionService.listAttractionFood(Integer.parseInt((String) map.get("sidoCode"))));
 			attractionFestival.addAll(attractionService.listAttractionFestival(Integer.parseInt((String) map.get("sidoCode"))));
