@@ -6,6 +6,7 @@ import { useRoute, useRouter } from "vue-router";
 import { listAttraction } from "@/api/attraction";
 import AttractionDetailModal from "./AttractionDetailModal.vue";
 const router = useRouter();
+const route = useRoute();
 
 const moveAttractionDetail = () => {
   router.push({ name: "attraction-detail" }); //contentId로
@@ -31,33 +32,36 @@ const { VITE_ATTRACTION_LIST_SIZE } = import.meta.env;
 // });
 
 const param = ref({
-  contentTypeId: 39,
-  sidoCode: 3,
+  key: "all",
+  sidoCode: 0,
 });
 
 onMounted(() => {
+  param.value.sidoCode = route.params.sidoCode;
+  console.log(route.params.sidoCode);
+  console.log("asdf");
   getAttractionList();
 });
 
 const loadAttractionByTheme = (theme) => {
-  // 테마에 따라 contentTypeId 설정
-  let contentTypeId;
+  // 테마에 따라 key 설정
+  let key;
   switch (theme) {
-    case 'food':
-      contentTypeId = 11; // 예시로 11번을 사용하며, 실제 contentTypeId에 따라 수정 필요
+    case "food":
+      key = "food"; // 예시로 11번을 사용하며, 실제 key에 따라 수정 필요
       break;
-    case 'festival':
-      contentTypeId = 15; // 예시로 15번을 사용하며, 실제 contentTypeId에 따라 수정 필요
+    case "festival":
+      key = "festival"; // 예시로 15번을 사용하며, 실제 key에 따라 수정 필요
       break;
-    case 'family':
-      contentTypeId = 12; // 예시로 12번을 사용하며, 실제 contentTypeId에 따라 수정 필요
+    case "family":
+      key = "family"; // 예시로 12번을 사용하며, 실제 key에 따라 수정 필요
       break;
     default:
-      contentTypeId = 0; // 기본값 설정 혹은 오류 처리
+      key = "all"; // 기본값 설정 혹은 오류 처리
   }
 
   // 서버에서 정보 가져오기
-  param.value.contentTypeId = contentTypeId;
+  param.value.key = key;
   getAttractionList();
 };
 
