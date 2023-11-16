@@ -102,13 +102,13 @@ const onPageChange = (val) => {
 
 //이미지 가로 스크롤
 let list = null;
-let listScrollWidth = 0;
-let listClientWidth = 0;
+let listScrollWidth = ref(0);
+let listClientWidth = ref(0);
 // 이벤트마다 갱신될 값
-let startX = 0;
-let nowX = 0;
-let endX = 0;
-let listX = 0;
+let startX = ref(0);
+let nowX = ref(0);
+let endX = ref(0);
+let listX = ref(0);
 
 onMounted(() => {
   list = document.querySelector(".list");
