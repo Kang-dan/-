@@ -1,6 +1,8 @@
 <script setup>
 //왜 안돼.. 따로 관리하고싶단말야
 import { ref } from "vue";
+defineProps({ detailAttraction: Object });
+
 
 const isModalOpen = ref(false);
 
@@ -18,6 +20,8 @@ const closeModal = () => {
   modal.classList.remove("show");
 };
 
+
+
 /** 모달창(디테일) 테스트 끝 */
 </script>
 
@@ -25,13 +29,15 @@ const closeModal = () => {
   <div id="modal" class="modal-overlay">
     <div class="modal-window">
       <div class="title">
-        <h2>Title 또는 이미지</h2>
+        <h2></h2>
       </div>
       <div class="close-area" @click="closeModal">X</div>
       <div class="content">
-        <p>사진 또는 Title</p>
+        <p>{{detailAttraction.title}}</p>
         <p>설명</p>
-        <p>가나다라마바사 아자차카타파하</p>
+        <p>음식: 가게명 주소 사진 영업시간 전화번호 주차단체이용 디테일설명</p>
+        <p>축제: 축제명 주소 사진 축제기간 전화번호 디테일설명</p>
+        <p>가족: 관광지명 주소 사진 전화번호 디테일설명</p>
         <p>찜기능 있다면 찜 사진</p>
       </div>
     </div>

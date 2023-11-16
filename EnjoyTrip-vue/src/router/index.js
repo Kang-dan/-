@@ -40,11 +40,6 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: "/parsing",
-      name: "parsing",
-      component: () => import("@/views/DBParsingView.vue"),
-    },
-    {
       path: "/member",
       name: "member",
       component: () => import("@/views/MemberView.vue"),

@@ -188,9 +188,11 @@ const onClick = (e) => {
 
 /** 모달창(디테일) 테스트 중 */
 const isModalOpen = ref(false);
+const detailAttraction = ref({});
 
-const showModal = () => {
+const showModal = (detail) => {
   isModalOpen.value = true;
+  detailAttraction.value = detail;
   // 모달이 나타날 때 show 클래스 추가
   const modal = document.querySelector("#modal.modal-overlay");
   modal.classList.add("show");
@@ -294,7 +296,7 @@ const closeModal = () => {
 
         <div class="listItem">
           <ul class="list">
-            <li class="item" @click="showModal" v-for="attraction in attractions" :key="attraction.index">
+            <li class="item" @click="showModal(attraction)" v-for="attraction in attractions" :key="attraction.index">
               <a class="link" href="#">
                 <img class="image" :src="attraction.firstImage" alt="" />
                 <a class="item_title">{{ attraction.title }}</a>
@@ -307,7 +309,7 @@ const closeModal = () => {
         <div id="modal_div">
           <!-- <button @click="showModal">모달 열기</button> -->
           <teleport to="body" v-if="isModalOpen">
-            <AttractionDetailModal></AttractionDetailModal>
+            <AttractionDetailModal :detailAttraction="detailAttraction"></AttractionDetailModal>
           </teleport>
         </div>
         <!-- 모달창 테스트 끝 -->
