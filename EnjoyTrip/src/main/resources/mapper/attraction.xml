@@ -16,16 +16,40 @@
 		<result column="longitude" property="longitude"/>
 	</resultMap>
 	
-	<select id="listAttraction" parameterType="Attraction" resultMap="AttractionMap">
-		select content_id, content_type_id, title, addr1, tel, first_image, sido_code, gugun_code, latitude, longitude 
-		from attraction_info
-		where content_type_id = #{contentTypeId} and sido_code = #{sidoCode}
+	<resultMap type="AttractionFestival" id="AttractionFestivalMap">
+		<result column="content_id" property="contentId" />
+		<result column="content_type_id" property="contentTypeId"/>
+		<result column="title" property="title"/>
+		<result column="addr1" property="addr1"/>
+		<result column="addr2" property="addr2"/>
+		<result column="tel" property="tel"/>
+		<result column="first_image" property="firstImage"/>
+		<result column="sido_code" property="sidoCode"/>
+		<result column="gugun_code" property="gugunCode"/>
+		<result column="latitude" property="latitude"/>
+		<result column="longitude" property="longitude"/>
+		<result column="mlevel" property="mlevel" />
+		<result column="event_start_date" property="eventStartDate" />
+		<result column="event_end_date" property="eventEndDate" />
+	</resultMap>
+	
+	<select id="listAttractionFestival" parameterType="int" resultMap="AttractionFestivalMap">
+		select content_id, content_type_id, title, addr1, tel, first_image, sido_code, gugun_code, event_start_date, event_end_date
+		  from attraction_festival
+		 where sido_code = #{sidoCode}		 
 	</select>
 	
-	<insert id="insertAttractionFood" parameterType="AttractionFood">
-		insert into attraction_food (content_id, first_menu, treat_menu, open_time_food)
-		values (#{contentId}, #{firstMenu}, #{treatMenu}, #{openTimeFood})
-	</insert>
+	<select id="listAttractionFood" parameterType="int" resultMap="AttractionFestivalMap">
+		select content_id, content_type_id, title, addr1, tel, first_image, sido_code, gugun_code
+		  from attraction_info
+		 where sido_code = #{sidoCode} and content_type_id = 39
+	</select>
+	
+	<select id="listAttractionFamily" parameterType="int" resultMap="AttractionFestivalMap">
+		select content_id, content_type_id, title, addr1, tel, first_image, sido_code, gugun_code
+		  from attraction_info
+		 where content_type_id != 39 and content_type_id != 15 and sido_code = #{sidoCode} and title regexp '박물관|미술관|동물원|식물원|역사|놀이|캠핑|문화|체험|바다|해변|어린이|가족|학습' 
+	</select>
 	
 	<insert id="insertAttractionFestival" parameterType="AttractionFestival">
 		insert into attraction_festival (content_id, content_type_id, title, addr1, addr2, tel, first_image, sido_code, gugun_code, latitude, longitude, mlevel, event_start_date, event_end_date)

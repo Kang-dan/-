@@ -4,7 +4,7 @@ import { useMemberStore } from "@/stores/member";
 import { storeToRefs } from "pinia";
 
 const memberStore = useMemberStore();
-const { isLogin, memberInfo, memberLogout } = storeToRefs(memberStore);
+const { isLogin, memberInfo } = storeToRefs(memberStore);
 
 const router = useRouter();
 function moveMain() {
@@ -13,8 +13,8 @@ function moveMain() {
   router.push({ name: "main" }); // 새 히스토리 항목을 푸시
 }
 
-const logout = () => {  
-  memberLogout(memberInfo.value.memberId)
+const logout = () => {
+  memberStore.memberLogout(memberInfo.value.memberId)
 }
 </script>
 
