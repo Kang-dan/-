@@ -134,7 +134,7 @@ const setTranslateX = (x) => {
 const bindEvents = () => {
   list.addEventListener("mousedown", onScrollStart);
   list.addEventListener("touchstart", onScrollStart);
-  list.addEventListener("click", onClick);
+  // list.addEventListener("click", onClick);
 };
 
 //스크롤 진행 이벤트 구현
