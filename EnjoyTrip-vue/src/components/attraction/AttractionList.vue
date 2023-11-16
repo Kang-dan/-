@@ -168,11 +168,18 @@ const isModalOpen = ref(false);
 
 const showModal = () => {
   isModalOpen.value = true;
+  // 모달이 나타날 때 show 클래스 추가
+  const modal = document.querySelector("#modal.modal-overlay");
+  modal.classList.add("show");
 };
 
 const closeModal = () => {
   isModalOpen.value = false;
+  // 모달을 닫을 때 show 클래스 제거
+  const modal = document.querySelector("#modal.modal-overlay");
+  modal.classList.remove("show");
 };
+
 /** 모달창(디테일) 테스트 끝 */
 </script>
 
@@ -180,9 +187,21 @@ const closeModal = () => {
   <div id="trip">
     <div id="star">
       <div class="snowBall_img" alt="스노우볼">
-        <img id="TripFoodButton" src="@/assets/cityAttraction/TripFoodButton.png" alt="" />
-        <img id="TripFestivalButton" src="@/assets/cityAttraction/TripFestivalButton.png" alt="" />
-        <img id="TripChildHatButton" src="@/assets/cityAttraction/TripChildHatButton.png" alt="" />
+        <img
+          id="TripFoodButton"
+          src="@/assets/cityAttraction/TripFoodButton.png"
+          alt=""
+        />
+        <img
+          id="TripFestivalButton"
+          src="@/assets/cityAttraction/TripFestivalButton.png"
+          alt=""
+        />
+        <img
+          id="TripChildHatButton"
+          src="@/assets/cityAttraction/TripChildHatButton.png"
+          alt=""
+        />
 
         <select class="header-searchSelect">
           <option value="All">All</option>
@@ -201,7 +220,11 @@ const closeModal = () => {
         </div>
 
         <div class="img0">
-          <img id="TripSnowButton0" src="@/assets/cityAttraction/TripListAllButtonImg.png" alt="" />
+          <img
+            id="TripSnowButton0"
+            src="@/assets/cityAttraction/TripListAllButtonImg.png"
+            alt=""
+          />
           <div class="TripSnowButton0_text">
             <h3 class="select_all">All</h3>
           </div>
@@ -209,21 +232,33 @@ const closeModal = () => {
 
         <div class="img1">
           <div class="spotLight1"></div>
-          <img id="TripSnowButton1" src="@/assets/cityAttraction/TripSnowButton.png" alt="" />
+          <img
+            id="TripSnowButton1"
+            src="@/assets/cityAttraction/TripSnowButton.png"
+            alt=""
+          />
           <div class="TripSnowButton1_text">
             <h3>Food</h3>
           </div>
         </div>
 
         <div class="img2">
-          <img id="TripSnowButton2" src="@/assets/cityAttraction/TripSnowButton.png" alt="" />
+          <img
+            id="TripSnowButton2"
+            src="@/assets/cityAttraction/TripSnowButton.png"
+            alt=""
+          />
           <div class="TripSnowButton2_text">
             <h3>Festival</h3>
           </div>
         </div>
 
         <div class="img3">
-          <img id="TripSnowButton3" src="@/assets/cityAttraction/TripSnowButton.png" alt="" />
+          <img
+            id="TripSnowButton3"
+            src="@/assets/cityAttraction/TripSnowButton.png"
+            alt=""
+          />
           <div class="TripSnowButton3_text">
             <h3>Family</h3>
           </div>
@@ -231,7 +266,7 @@ const closeModal = () => {
 
         <div class="listItem">
           <ul class="list">
-            <li class="item">
+            <li class="item" @click="showModal">
               <a class="link" href="#">
                 <img class="image" :src="attractions[0].firstImage" alt="" />
                 <a class="item_title">{{ attractions[0].title }}</a>
@@ -262,8 +297,8 @@ const closeModal = () => {
           </ul>
         </div>
         <!-- 모달창(디테일) 테스트 -->
-        <div>
-          <button @click="showModal">모달 열기</button>
+        <div id="modal_div">
+          <!-- <button @click="showModal">모달 열기</button> -->
           <teleport to="body" v-if="isModalOpen">
             <div id="modal" class="modal-overlay">
               <div class="modal-window">
@@ -291,13 +326,13 @@ const closeModal = () => {
 <style scoped>
 /** 모달창(디테일)  테스트 중 */
 #modal.modal-overlay {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   background: rgba(255, 255, 255, 0.25);
@@ -306,18 +341,28 @@ const closeModal = () => {
   -webkit-backdrop-filter: blur(1.5px);
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
+  /** 모달창 부드럽게 보이기 */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease, transform 1s ease;
 }
+
+#modal.modal-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1); /* 이동 및 크기 변경 */
+}
+
 #modal .modal-window {
-  background: rgba(69, 139, 197, 0.7);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  background: rgba(69, 139, 197, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(171, 175, 235, 0.37);
   backdrop-filter: blur(13.5px);
   -webkit-backdrop-filter: blur(13.5px);
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
-  width: 400px;
+  width: 700px;
   height: 500px;
   position: relative;
-  top: -100px;
   padding: 10px;
 }
 #modal .title {
@@ -344,60 +389,6 @@ const closeModal = () => {
   text-shadow: 1px 1px 2px gray;
   color: white;
 }
-/* #modal.modal-overlay {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  backdrop-filter: blur(1.5px);
-  -webkit-backdrop-filter: blur(1.5px);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-}
-#modal .modal-window {
-  background: rgba(69, 139, 197, 0.7);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  backdrop-filter: blur(13.5px);
-  -webkit-backdrop-filter: blur(13.5px);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  width: 400px;
-  height: 500px;
-  position: relative;
-  top: -100px;
-  padding: 10px;
-}
-#modal .title {
-  padding-left: 10px;
-  display: inline;
-  text-shadow: 1px 1px 2px gray;
-  color: white;
-}
-#modal .title h2 {
-  display: inline;
-}
-#modal .close-area {
-  display: inline;
-  float: right;
-  padding-right: 10px;
-  cursor: pointer;
-  text-shadow: 1px 1px 2px gray;
-  color: white;
-}
-
-#modal .content {
-  margin-top: 20px;
-  padding: 0px 10px;
-  text-shadow: 1px 1px 2px gray;
-  color: white;
-} */
 /** 모달창(디테일) 테스트 끝 */
 
 /** AttractionList Image 설정  */
@@ -696,7 +687,8 @@ body {
 
 @font-face {
   font-family: "Katuri";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_13@1.0/Katuri.woff") format("woff");
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_13@1.0/Katuri.woff")
+    format("woff");
   font-weight: normal;
   font-style: normal;
 }
