@@ -4,7 +4,7 @@
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { listAttraction } from "@/api/attraction";
-// import AttractionDetailModal from "./AttractionDetailModal.vue";
+import AttractionDetailModal from "./AttractionDetailModal.vue";
 const router = useRouter();
 
 const moveAttractionDetail = () => {
@@ -38,6 +38,28 @@ const param = ref({
 onMounted(() => {
   getAttractionList();
 });
+
+const loadAttractionByTheme = (theme) => {
+  // 테마에 따라 contentTypeId 설정
+  let contentTypeId;
+  switch (theme) {
+    case 'food':
+      contentTypeId = 11; // 예시로 11번을 사용하며, 실제 contentTypeId에 따라 수정 필요
+      break;
+    case 'festival':
+      contentTypeId = 15; // 예시로 15번을 사용하며, 실제 contentTypeId에 따라 수정 필요
+      break;
+    case 'family':
+      contentTypeId = 12; // 예시로 12번을 사용하며, 실제 contentTypeId에 따라 수정 필요
+      break;
+    default:
+      contentTypeId = 0; // 기본값 설정 혹은 오류 처리
+  }
+
+  // 서버에서 정보 가져오기
+  param.value.contentTypeId = contentTypeId;
+  getAttractionList();
+};
 
 const getAttractionList = () => {
   //서버에서 사진, 관광지명, 주소 가져오기
@@ -158,8 +180,8 @@ const onScrollMove = (e) => {
 
 //클릭 이벤트 구현
 const onClick = (e) => {
+  e.preventDefault(); // 화면이 위로 올라가는 기본 동작 막음
   if (startX - endX !== 0) {
-    e.preventDefault();
   }
 };
 
@@ -179,7 +201,6 @@ const closeModal = () => {
   const modal = document.querySelector("#modal.modal-overlay");
   modal.classList.remove("show");
 };
-
 /** 모달창(디테일) 테스트 끝 */
 </script>
 
@@ -219,6 +240,7 @@ const closeModal = () => {
           <button class="search-button" type="button">검색</button>
         </div>
 
+        <!-- All -->
         <div class="img0">
           <img
             id="TripSnowButton0"
@@ -229,35 +251,40 @@ const closeModal = () => {
             <h3 class="select_all">All</h3>
           </div>
         </div>
-
+        <!-- Food -->
         <div class="img1">
           <div class="spotLight1"></div>
           <img
             id="TripSnowButton1"
             src="@/assets/cityAttraction/TripSnowButton.png"
             alt=""
+            @click="loadAttractionByTheme('food')"
           />
           <div class="TripSnowButton1_text">
             <h3>Food</h3>
           </div>
         </div>
 
+        <!-- Festival -->
         <div class="img2">
           <img
             id="TripSnowButton2"
             src="@/assets/cityAttraction/TripSnowButton.png"
             alt=""
+            @click="loadAttractionByTheme('festival')"
           />
-          <div class="TripSnowButton2_text">
-            <h3>Festival</h3>
+          <div>
+            <h3 class="TripSnowButton2_text">Festival</h3>
           </div>
         </div>
 
+        <!-- Family -->
         <div class="img3">
           <img
             id="TripSnowButton3"
             src="@/assets/cityAttraction/TripSnowButton.png"
             alt=""
+            @click="loadAttractionByTheme('family')"
           />
           <div class="TripSnowButton3_text">
             <h3>Family</h3>
@@ -300,21 +327,7 @@ const closeModal = () => {
         <div id="modal_div">
           <!-- <button @click="showModal">모달 열기</button> -->
           <teleport to="body" v-if="isModalOpen">
-            <div id="modal" class="modal-overlay">
-              <div class="modal-window">
-                <div class="title">
-                  <h2>Title 또는 이미지</h2>
-                </div>
-                <div class="close-area" @click="closeModal">X</div>
-                <div class="content">
-                  <p>사진 또는 Title</p>
-                  <p>설명</p>
-                  <p>가나다라마바사 아자차카타파하</p>
-                  <p>찜기능 있다면 찜 사진</p>
-                </div>
-              </div>
-              <!-- <button @click="closeModal">닫기</button> -->
-            </div>
+            <AttractionDetailModal></AttractionDetailModal>
           </teleport>
         </div>
         <!-- 모달창 테스트 끝 -->
@@ -324,72 +337,7 @@ const closeModal = () => {
 </template>
 
 <style scoped>
-/** 모달창(디테일)  테스트 중 */
-#modal.modal-overlay {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  backdrop-filter: blur(1.5px);
-  -webkit-backdrop-filter: blur(1.5px);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  /** 모달창 부드럽게 보이기 */
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 1s ease, transform 1s ease;
-}
-
-#modal.modal-overlay.show {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translate(-50%, -50%) scale(1); /* 이동 및 크기 변경 */
-}
-
-#modal .modal-window {
-  background: rgba(69, 139, 197, 0.3);
-  box-shadow: 0 8px 32px 0 rgba(171, 175, 235, 0.37);
-  backdrop-filter: blur(13.5px);
-  -webkit-backdrop-filter: blur(13.5px);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  width: 700px;
-  height: 500px;
-  position: relative;
-  padding: 10px;
-}
-#modal .title {
-  padding-left: 10px;
-  display: inline;
-  text-shadow: 1px 1px 2px gray;
-  color: white;
-}
-#modal .title h2 {
-  display: inline;
-}
-#modal .close-area {
-  display: inline;
-  float: right;
-  padding-right: 10px;
-  cursor: pointer;
-  text-shadow: 1px 1px 2px gray;
-  color: white;
-}
-
-#modal .content {
-  margin-top: 20px;
-  padding: 0px 10px;
-  text-shadow: 1px 1px 2px gray;
-  color: white;
-}
-/** 모달창(디테일) 테스트 끝 */
+/** 테마버튼 효과 */
 
 /** AttractionList Image 설정  */
 a {
@@ -586,6 +534,11 @@ input {
   transform: translate(62px, 50px);
   color: rgb(61, 71, 67);
   z-index: 4;
+  transition: transform 0.5s ease; /* 트랜지션 효과 추가 */
+}
+
+.TripSnowButton0_text:hover {
+  transform: translate(62px, 50px) scale(1.5);
 }
 
 #TripSnowButton1 {
@@ -593,34 +546,65 @@ input {
   transform: translate(-150px, 60px);
   width: 100px;
   outline: none;
+  transition: transform 0.5s ease; /* 트랜지션 효과 추가 */
+}
+
+#TripSnowButton1:hover {
+  transform: translate(-150px, 60px) scale(1.5);
 }
 
 .TripSnowButton1_text {
   position: absolute;
   transform: translate(377px, 85px);
   color: rgb(61, 71, 67);
+  transition: transform 0.5s ease; /* 트랜지션 효과 추가 */
+}
+.TripSnowButton1_text:hover {
+  transform: translate(377px, 85px) scale(1.5);
 }
 
 #TripSnowButton2 {
   position: absolute;
   transform: translate(20px, 60px);
   width: 100px;
+  transition: transform 0.5s ease; /* 트랜지션 효과 추가 */
 }
+
+#TripSnowButton2:hover {
+  transform: translate(20px, 60px) scale(1.5);
+}
+
 .TripSnowButton2_text {
   position: absolute;
   transform: translate(532px, 85px);
   color: rgb(61, 71, 67);
+  transition: transform 0.5s ease; /* 트랜지션 효과 추가 */
+}
+
+.TripSnowButton2_text:hover {
+  transform: translate(532px, 85px) scale(1.5);
 }
 
 #TripSnowButton3 {
   position: absolute;
   transform: translate(175px, 100px);
   width: 100px;
+  transition: transform 0.5s ease; /* 트랜지션 효과 추가 */
 }
+
+#TripSnowButton3:hover {
+  transform: translate(175px, 100px) scale(1.5);
+}
+
 .TripSnowButton3_text {
   position: absolute;
   transform: translate(695px, 125px);
   color: rgb(61, 71, 67);
+}
+
+.TripSnowButton3_text:hover {
+  transform: translate(695px, 125px) scale(1.5);
+  transition: transform 0.5s ease; /* 트랜지션 효과 추가 */
 }
 
 #trip {

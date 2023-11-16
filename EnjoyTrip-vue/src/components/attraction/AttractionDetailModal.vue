@@ -22,23 +22,21 @@ const closeModal = () => {
 </script>
 
 <template>
-  <teleport to="body" v-if="isModalOpen">
-    <div id="modal" class="modal-overlay">
-      <div class="modal-window">
-        <div class="title">
-          <h2>Title 또는 이미지</h2>
-        </div>
-        <div class="close-area" @click="closeModal">X</div>
-        <div class="content">
-          <p>사진 또는 Title</p>
-          <p>설명</p>
-          <p>가나다라마바사 아자차카타파하</p>
-          <p>찜기능 있다면 찜 사진</p>
-        </div>
+  <div id="modal" class="modal-overlay">
+    <div class="modal-window">
+      <div class="title">
+        <h2>Title 또는 이미지</h2>
       </div>
-      <!-- <button @click="closeModal">닫기</button> -->
+      <div class="close-area" @click="closeModal">X</div>
+      <div class="content">
+        <p>사진 또는 Title</p>
+        <p>설명</p>
+        <p>가나다라마바사 아자차카타파하</p>
+        <p>찜기능 있다면 찜 사진</p>
+      </div>
     </div>
-  </teleport>
+    <!-- <button @click="closeModal">닫기</button> -->
+  </div>
 </template>
 
 <style scoped>

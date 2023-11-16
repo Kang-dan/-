@@ -9,12 +9,16 @@ const { isLogin } = storeToRefs(memberStore);
 const router = useRouter();
 
 const left = [
-  0, 270, 360, 430, 530, 620, 450, 280, 360, 180, 300, 160, 280, 480, 500, 620, 720, 410,
+  0, 270, 360, 430, 530, 620, 450, 280, 360, 180, 300, 160, 280, 480, 500, 620,
+  720, 410,
 ];
 const top = [
-  0, 350, 270, 380, 320, 630, 560, 570, 670, 670, 800, 900, 960, 900, 750, 900, 1000, 1050,
+  0, 350, 270, 380, 320, 630, 560, 570, 670, 670, 800, 900, 960, 900, 750, 900,
+  1000, 1050,
 ];
-const sidoCode = [0, 2, 1, 31, 32, 35, 33, 8, 3, 34, 37, 5, 38, 36, 4, 7, 6, 39];
+const sidoCode = [
+  0, 2, 1, 31, 32, 35, 33, 8, 3, 34, 37, 5, 38, 36, 4, 7, 6, 39,
+];
 const imgTitle = [
   "",
   "인천", //2
@@ -48,7 +52,12 @@ const moveAttractionList = (sidoCode) => {
   <div id="treeMap">
     <div id="treeParent">
       <div id="star" @click="moveLogin">
-        <img id="TreeStar" src="../assets/TreeStar.png" alt="별" title="로그인" />
+        <img
+          id="TreeStar"
+          src="../assets/TreeStar.png"
+          alt="별"
+          title="로그인"
+        />
       </div>
       <img
         id="treeImg"
@@ -63,7 +72,9 @@ const moveAttractionList = (sidoCode) => {
         <img
           v-for="n in 17"
           :id="`ball${n}`"
-          :src="`src/assets/cityLight/treeBall${Math.floor(Math.random() * 5) + 1}.png`"
+          :src="`src/assets/cityLight/treeBall${
+            Math.floor(Math.random() * 5) + 1
+          }.png`"
           :alt="n"
           :title="imgTitle[n]"
           :style="`position: absolute; width: 130px; left: ${left[n]}px; top: ${top[n]}px; z-index: 3`"
@@ -72,7 +83,11 @@ const moveAttractionList = (sidoCode) => {
       </span>
       <span id="present">
         <!-- 선물상자(마이페이지) -->
-        <img id="PresentCloseGreen" src="../assets/PresentCloseGreen.png" alt="선물상자" />
+        <img
+          id="PresentCloseGreen"
+          src="../assets/PresentCloseGreen.png"
+          alt="선물상자"
+        />
         <img id="PresentOpenGreen" src="../assets/PresentOpen.png" />
       </span>
     </div>
@@ -127,6 +142,7 @@ const moveAttractionList = (sidoCode) => {
 #TreeStar {
   margin-top: 50px;
   width: 200px;
+  transition: transform 0.5s ease; /* 트랜지션 효과 추가 */
 }
 
 #star {
