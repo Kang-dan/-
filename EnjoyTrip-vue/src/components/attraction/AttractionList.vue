@@ -37,7 +37,7 @@ const param = ref({
 });
 
 onMounted(() => {
-  param.value.sidoCode = route.params.sidoCode;
+  param.value.sidoCode = route.params.sidoCode;  
   getAttractionList();
 });
 
@@ -112,8 +112,8 @@ let listX = ref(0);
 
 onMounted(() => {
   list = document.querySelector(".list");
-  listScrollWidth = list.scrollWidth;
-  listClientWidth = list.clientWidth;
+  // listScrollWidth = list.scrollWidth;
+  // listClientWidth = list.clientWidth;
   bindEvents();
 });
 
@@ -134,12 +134,12 @@ const setTranslateX = (x) => {
 const bindEvents = () => {
   list.addEventListener("mousedown", onScrollStart);
   list.addEventListener("touchstart", onScrollStart);
-  // list.addEventListener("click", onClick);  // 클릭 이벤트 처리를 제거합니다.
+  list.addEventListener("click", onClick);  // 여기서는 클릭 이벤트 처리를 제거합니다.
 };
 
 //스크롤 진행 이벤트 구현
 const onScrollStart = (e) => {
-  startX.value = getClientX(e);
+  startX = getClientX(e);
   window.addEventListener("mousemove", onScrollMove);
   window.addEventListener("touchmove", onScrollMove);
   window.addEventListener("mouseup", onScrollEnd);
@@ -150,14 +150,14 @@ const onScrollStart = (e) => {
 const onScrollEnd = (e) => {
   endX = getClientX(e);
   listX = getTranslateX();
-  if (listX.value > 0) {
+  if (listX > 0) {
     setTranslateX(0);
-    list.style.transition = "all 0.3s ease";
-    listX.value = 0;
-  } else if (listX.value < listClientWidth.value - listScrollWidth.value) {
-    setTranslateX(listClientWidth.value - listScrollWidth.value);
-    list.style.transition = "all 0.3s ease";
-    listX.value = listClientWidth.value - listScrollWidth.value;
+    list.style.transition = `all 0.3s ease`;
+    listX = 0;
+  } else if (listX < listClientWidth - listScrollWidth) {
+    setTranslateX(listClientWidth - listScrollWidth);
+    list.style.transition = `all 0.3s ease`;
+    listX = listClientWidth - listScrollWidth;
   }
 
   window.removeEventListener("mousedown", onScrollStart);
@@ -175,8 +175,8 @@ const onScrollEnd = (e) => {
 };
 
 const onScrollMove = (e) => {
-  nowX.value = getClientX(e);
-  setTranslateX(listX.value + nowX.value - startX.value);
+  const nowX = getClientX(e);
+  setTranslateX(listX + nowX - startX);
 };
 
 //클릭 이벤트 구현
@@ -294,12 +294,7 @@ const closeModal = () => {
 
         <div class="listItem">
           <ul class="list">
-            <li
-              class="item"
-              @click="showModal"
-              v-for="attraction in attractions"
-              :key="attraction.index"
-            >
+            <li class="item" @click="showModal" v-for="attraction in attractions" :key="attraction.index">
               <a class="link" href="#">
                 <img class="image" :src="attraction.firstImage" alt="" />
                 <a class="item_title">{{ attraction.title }}</a>
