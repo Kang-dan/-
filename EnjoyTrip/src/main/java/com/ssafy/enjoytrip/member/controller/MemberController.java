@@ -1,6 +1,7 @@
 package com.ssafy.enjoytrip.member.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.enjoytrip.member.model.Member;
+import com.ssafy.enjoytrip.member.model.MemberLikes;
 import com.ssafy.enjoytrip.member.model.service.MemberService;
 import com.ssafy.enjoytrip.util.JWTUtil;
 
@@ -32,6 +34,23 @@ public class MemberController {
 	public MemberController(MemberService memberService, JWTUtil jwtUtil) {
 		this.memberService = memberService;
 		this.jwtUtil = jwtUtil;
+	}
+	
+	@PostMapping("/like")
+	public ResponseEntity<List<MemberLikes>> likeList(@PathVariable String memberId) {
+		return ResponseEntity.ok(memberService.memberLikeList(memberId));
+	}
+	
+	@PostMapping("/like/insert")
+	public ResponseEntity<String> likeInsert(@PathVariable MemberLikes memberLikes) {
+		memberService.memberLikeInsert(memberLikes);
+		return ResponseEntity.ok("성공");
+	}
+	
+	@DeleteMapping("/like/delete")
+	public ResponseEntity<String> likeDelete(@PathVariable MemberLikes memberLikes) {
+		memberService.memberLikeDelete(memberLikes);
+		return ResponseEntity.ok("성공");
 	}
 	
 	@GetMapping("/detail/{memberId}")

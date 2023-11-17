@@ -97,7 +97,10 @@ const closeModal = () => {
           <p v-show="attractionDetailIntro.restdatefood">휴무일 : {{ attractionDetailIntro.restdatefood }}</p>
           <p v-show="attractionDetailIntro.parkingfood">주차여부 : {{ attractionDetailIntro.parkingfood }}</p>
         </template>
-        <p>찜기능 있다면 찜 사진</p>
+        <div id="likeBtn">
+          <button>찜추가</button>
+          <button>찜삭제</button>
+        </div>
       </div>
     </div>
     <!-- <button @click="closeModal">닫기</button> -->

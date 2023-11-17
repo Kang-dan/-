@@ -26,10 +26,25 @@ async function logout(memberid, success, fail) {
   await local.get(`${url}/logout/${memberid}`).then(success).catch(fail);
 }
 
+async function likeInsert(like, success, fail) {
+  await local.post(`${url}/like/insert`, JSON.stringify(like)).then(success).catch(fail);
+}
+
+async function likeList(memberInfo, success, fail) {
+  await local.post(`${url}/like`, JSON.stringify(memberInfo)).then(success).catch(fail);
+}
+
+async function likeDelete(like, success, fail) {
+  await local.delete(`${url}/like/delete`, JSON.stringify(like)).then(success).catch(fail);
+}
+
 export {
-    loginMember,
-    registMember,
-    findById,
-    tokenRegeneration,
-    logout
+  loginMember,
+  registMember,
+  findById,
+  tokenRegeneration,
+  logout,
+  likeInsert,
+  likeList,
+  likeDelete
 };

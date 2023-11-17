@@ -13,6 +13,38 @@
 		<result column="age" property="age" />
 		<result column="member_board_count" property="memberBoardCount" />
 	</resultMap>
+	
+	<resultMap type="memberLikes" id="memberLikesMap">
+		<result column="no" property="no" />
+		<result column="member_id" property="memberId" />
+		<result column="content_id" property="contentId" />
+		<result column="content_festival_id" property="contentFestivalId" />
+		<result column="content_title" property="contentTitle" />
+	</resultMap>
+	
+	<select id="memberLikeList" parameterType="String" resultMap="memberLikesMap">
+		select no, member_id, content_id, content_festival_id, content_title
+		  from members_likes
+		 where member_id = #{memberId}
+	</select>
+	
+	<insert id="memberLikeInsert" parameterType="memberLikes">
+		insert into members_likes(member_id, content_id, content_festival_id, content_title)
+		values (#{memberId}, #{contentId}, #{contentFestivalId}, #{contentTitle})
+	</insert>
+	
+	<delete id="memberLikeDelete" parameterType="memberLikes">
+		delete from members_likes
+		 where member_id = #{memberId}
+		<choose>
+			<when test="content_id">
+				and content_id = #{contentId}
+			</when>
+			<when test="content_festival_id">
+				and content_festival_id = #{contentFestivalId}
+			</when>
+		</choose>
+	</delete>
 
 	<insert id="registMember" parameterType="member">
 		insert into members (member_id, member_pw, member_name, member_email, age)

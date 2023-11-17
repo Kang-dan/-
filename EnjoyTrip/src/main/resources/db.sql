@@ -1,3 +1,5 @@
+use enjoytrip;
+
 create table board (
     no int AUTO_INCREMENT primary key,
     title varchar(200) not null,
@@ -27,14 +29,6 @@ AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
-create table attraction_food (
-	content_id int primary key not null,
-    first_menu varchar(100) not null,
-    treat_menu varchar(2000) not null,
-    open_time_food varchar(200) not null,
-    FOREIGN KEY(content_id) REFERENCES attraction_info(content_id)
-);
-
 create table attraction_festival (
 	content_id int PRIMARY key,
     content_type_id int not null,
@@ -50,4 +44,14 @@ create table attraction_festival (
     mlevel varchar(2),
     event_start_date varchar(20),
     event_end_date varchar(20)    
+);
+
+create table members_likes (
+	no int primary key auto_increment,
+    member_id varchar(30) not null,
+    content_id int default null,
+    content_festival_id int default null,
+    content_title varchar(100) not null,
+    FOREIGN KEY(member_id) REFERENCES members(member_id),
+    FOREIGN KEY(content_id) REFERENCES attraction_info(content_id)
 );

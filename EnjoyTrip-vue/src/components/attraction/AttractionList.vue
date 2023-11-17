@@ -63,6 +63,8 @@ const loadAttractionByTheme = (theme) => {
 
   // 서버에서 정보 가져오기
   param.value.key = key;
+  // 테마 바꾸면 검색창 초기화
+  param.value.searchWord = "";
   getAttractionList();
 };
 

@@ -1,11 +1,13 @@
 package com.ssafy.enjoytrip.member.model.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
 import com.ssafy.enjoytrip.member.model.Member;
+import com.ssafy.enjoytrip.member.model.MemberLikes;
 import com.ssafy.enjoytrip.member.model.mapper.MemberMapper;
 
 @Service
@@ -64,6 +66,21 @@ public class MemberServiceImpl implements MemberService {
 		map.put("memberId", memberId);
 		map.put("token", null);
 		memberMapper.deleteRefreshToken(map);
+	}
+
+	@Override
+	public List<MemberLikes> memberLikeList(String memberId) {
+		return memberMapper.memberLikeList(memberId);
+	}
+
+	@Override
+	public void memberLikeInsert(MemberLikes memberLikes) {
+		memberMapper.memberLikeInsert(memberLikes);		
+	}
+
+	@Override
+	public void memberLikeDelete(MemberLikes memberLikes) {
+		memberMapper.memberLikeDelete(memberLikes);
 	}
 
 }
