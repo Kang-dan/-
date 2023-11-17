@@ -1,7 +1,7 @@
 import axios from "axios";
 import { httpStatusCode } from "./http-status";
 
-const { VITE_VUE_API_URL } = import.meta.env;
+const { VITE_VUE_API_URL, VITE_ATTRACTION_INTRO_URL } = import.meta.env;
 
 // local vue api axios instance
 function localAxios() {
@@ -76,5 +76,15 @@ function localAxios() {
   return instance;
 }
 
-export { localAxios };
+function attractionIntroAxios() {
+  const instance = axios.create({
+    baseURL: VITE_ATTRACTION_INTRO_URL,
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+  });
+  return instance;
+}
+
+export { localAxios, attractionIntroAxios };
 

@@ -3,8 +3,9 @@
 
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { listAttraction } from "@/api/attraction";
+import { listAttraction, detailAttraction, detailIntroAttraction } from "@/api/attraction";
 import AttractionDetailModal from "./AttractionDetailModal.vue";
+const { VITE_OPEN_API_SERVICE_KEY } = import.meta.env;
 const router = useRouter();
 const route = useRoute();
 
@@ -34,6 +35,8 @@ const { VITE_ATTRACTION_LIST_SIZE } = import.meta.env;
 const param = ref({
   key: "all",
   sidoCode: 0,
+  selected: "All",
+  searchWord: ""
 });
 
 onMounted(() => {
@@ -188,11 +191,54 @@ const onClick = (e) => {
 
 /** 모달창(디테일) 테스트 중 */
 const isModalOpen = ref(false);
-const detailAttraction = ref({});
+const attractionDetail = ref({});
+const attractionOverview = ref({});
+const attractionDetailIntro = ref({});
+
+const introParam = ref({
+  serviceKey: VITE_OPEN_API_SERVICE_KEY,
+  MobileOS: "ETC",
+  MobileApp: "AppTest",
+  _type: "json",
+  contentId: "",
+  contentTypeId: ""
+});
+
+// 디테일 화면의 상세 설명 가져오기
+const getOverview = (detail) => {
+  detailAttraction(
+    detail.value,
+    ({data}) => {
+      attractionOverview.value = data;      
+    },
+    (err) => {
+      console.log(err);
+    }
+  );
+};
+
+const getAttractionIntro = () => {
+  introParam.value.contentId = attractionDetail.value.contentId;
+  introParam.value.contentTypeId = attractionDetail.value.contentTypeId;
+  detailIntroAttraction(
+    introParam.value,
+    ({ data }) => {
+      attractionDetailIntro.value = data.response.body.items.item[0];
+    },
+    (err) => {
+      console.log(err);
+    }
+  )
+}
 
 const showModal = (detail) => {
+  attractionDetail.value = detail;
+  getOverview(attractionDetail);
+  // 상세화면이 음식점일 경우 음식점 정보 가져오기
+  if (attractionDetail.value.contentTypeId != 15) {
+    getAttractionIntro();
+  }
   isModalOpen.value = true;
-  detailAttraction.value = detail;
   // 모달이 나타날 때 show 클래스 추가
   const modal = document.querySelector("#modal.modal-overlay");
   modal.classList.add("show");
@@ -227,20 +273,20 @@ const closeModal = () => {
           alt=""
         />
 
-        <select class="header-searchSelect">
+        <select v-model="param.selected" class="header-searchSelect">
           <option value="All">All</option>
           <option value="title">여행지</option>
-          <option value="address">위치</option>
+          <option value="addr1">위치</option>
         </select>
         <div class="search-container">
           <input
             type="text"
             class="search-input"
-            v-model="param.word"
+            v-model="param.searchWord"
             placeholder="검색어를 입력하세요"
           />
           <!-- 버튼에 @click="" 추가하기-->
-          <button class="search-button" type="button">검색</button>
+          <button class="search-button" type="button" @click="getAttractionList">검색</button>
         </div>
 
         <!-- All -->
@@ -329,7 +375,9 @@ const closeModal = () => {
           <!-- <button @click="showModal">모달 열기</button> -->
           <teleport to="body" v-if="isModalOpen">
             <AttractionDetailModal
-              :detailAttraction="detailAttraction"
+              :attractionDetail="attractionDetail"
+              :attractionOverview="attractionOverview"
+              :attractionDetailIntro="attractionDetailIntro"
             ></AttractionDetailModal>
           </teleport>
         </div>

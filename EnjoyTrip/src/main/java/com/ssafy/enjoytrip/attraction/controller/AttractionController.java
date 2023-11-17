@@ -5,7 +5,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.enjoytrip.attraction.model.AttractionFestival;
+import com.ssafy.enjoytrip.attraction.model.AttractionOverview;
 import com.ssafy.enjoytrip.attraction.model.service.AttractionService;
 
 @CrossOrigin("*")
@@ -36,29 +36,31 @@ public class AttractionController {
 	}
 	
 	@PostMapping("/detail")
-	public ResponseEntity<AttractionFestival> detail(@RequestBody Map<String, Object> map) {		
-		AttractionFestival attractionFestival = attractionService.detailAttraction(map);
-		return ResponseEntity.ok(attractionFestival);
+	public ResponseEntity<AttractionOverview> detail(@RequestBody Map<String, Object> map) {		
+		AttractionOverview attractionOverview = attractionService.detailAttraction(map);
+		return ResponseEntity.ok(attractionOverview);
 	}
 	
 	@PostMapping
 	public ResponseEntity<List<AttractionFestival>> list(@RequestBody Map<String, Object> map) {
 		
+		System.out.println(map);
+		
 		List<AttractionFestival> attractionFestival = new ArrayList<>();
 		
 		if (map.get("key").equals("all")) {
-			attractionFestival.addAll(attractionService.listAttractionFood(Integer.parseInt((String) map.get("sidoCode"))));
-			attractionFestival.addAll(attractionService.listAttractionFestival(Integer.parseInt((String) map.get("sidoCode"))));
-			attractionFestival.addAll(attractionService.listAttractionFamily(Integer.parseInt((String) map.get("sidoCode"))));
+			attractionFestival.addAll(attractionService.listAttractionFood(map));
+			attractionFestival.addAll(attractionService.listAttractionFestival(map));
+			attractionFestival.addAll(attractionService.listAttractionFamily(map));
 		}
 		else if (map.get("key").equals("food")) {
-			attractionFestival.addAll(attractionService.listAttractionFood(Integer.parseInt((String) map.get("sidoCode"))));
+			attractionFestival.addAll(attractionService.listAttractionFood(map));
 		}
 		else if (map.get("key").equals("festival")) {
-			attractionFestival.addAll(attractionService.listAttractionFestival(Integer.parseInt((String) map.get("sidoCode"))));
+			attractionFestival.addAll(attractionService.listAttractionFestival(map));
 		}
 		else if (map.get("key").equals("family")) {
-			attractionFestival.addAll(attractionService.listAttractionFamily(Integer.parseInt((String) map.get("sidoCode"))));
+			attractionFestival.addAll(attractionService.listAttractionFamily(map));
 		}
 		
 //		attractionFestival.sort((o1, o2) -> o1.getTitle().compareTo(o2.getTitle()));

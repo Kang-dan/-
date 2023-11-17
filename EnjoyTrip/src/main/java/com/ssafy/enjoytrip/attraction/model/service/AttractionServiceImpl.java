@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.enjoytrip.attraction.model.AttractionFestival;
+import com.ssafy.enjoytrip.attraction.model.AttractionOverview;
 import com.ssafy.enjoytrip.attraction.model.mapper.AttractionMapper;
 
 @Service
@@ -19,8 +20,8 @@ public class AttractionServiceImpl implements AttractionService {
 	}
 
 	@Override
-	public List<AttractionFestival> listAttractionFestival(int sidoCode) {
-		return attractionMapper.listAttractionFestival(sidoCode);
+	public List<AttractionFestival> listAttractionFestival(Map<String, Object> map) {
+		return attractionMapper.listAttractionFestival(map);
 	}
 
 	@Override
@@ -30,18 +31,18 @@ public class AttractionServiceImpl implements AttractionService {
 
 
 	@Override
-	public Collection<? extends AttractionFestival> listAttractionFood(int sidoCode) {
-		return attractionMapper.listAttractionFood(sidoCode);
+	public Collection<? extends AttractionFestival> listAttractionFood(Map<String, Object> map) {
+		return attractionMapper.listAttractionFood(map);
 	}
 
 
 	@Override
-	public Collection<? extends AttractionFestival> listAttractionFamily(int sidoCode) {
-		return attractionMapper.listAttractionFamily(sidoCode);
+	public Collection<? extends AttractionFestival> listAttractionFamily(Map<String, Object> map) {
+		return attractionMapper.listAttractionFamily(map);
 	}
 
 	@Override
-	public AttractionFestival detailAttraction(Map<String, Object> map) {
+	public AttractionOverview detailAttraction(Map<String, Object> map) {
 		return attractionMapper.detailAttraction(map);
 	}
 
