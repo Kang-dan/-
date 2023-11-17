@@ -65,6 +65,11 @@ const login = async () => {
 
 const moveMain = () => {
   router.replace({ name: "main" });
+  window.scrollTo({
+    bottom: document.body.scrollHeight - window.innerHeight,
+    top: 0,
+    behavior: "smooth",
+  }); //로그인 성공하면 홈화면 맨 위로 보이도록 함
 };
 
 const moveJoin = () => {
