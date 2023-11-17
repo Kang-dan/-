@@ -37,7 +37,7 @@ const param = ref({
 });
 
 onMounted(() => {
-  param.value.sidoCode = route.params.sidoCode;  
+  param.value.sidoCode = route.params.sidoCode;
   getAttractionList();
 });
 
@@ -134,7 +134,7 @@ const setTranslateX = (x) => {
 const bindEvents = () => {
   list.addEventListener("mousedown", onScrollStart);
   list.addEventListener("touchstart", onScrollStart);
-  list.addEventListener("click", onClick);  // 여기서는 클릭 이벤트 처리를 제거합니다.
+  list.addEventListener("click", onClick); // 여기서는 클릭 이벤트 처리를 제거합니다.
 };
 
 //스크롤 진행 이벤트 구현
@@ -196,7 +196,7 @@ const showModal = (detail) => {
   // 모달이 나타날 때 show 클래스 추가
   const modal = document.querySelector("#modal.modal-overlay");
   modal.classList.add("show");
-};  
+};
 
 const closeModal = () => {
   isModalOpen.value = false;
@@ -249,8 +249,12 @@ const closeModal = () => {
             id="TripSnowButton0"
             src="@/assets/cityAttraction/TripListAllButtonImg.png"
             alt=""
+            @click="loadAttractionByTheme('all')"
           />
-          <div class="TripSnowButton0_text">
+          <div
+            class="TripSnowButton0_text"
+            @click="loadAttractionByTheme('all')"
+          >
             <h3 class="select_all">All</h3>
           </div>
         </div>
@@ -263,7 +267,10 @@ const closeModal = () => {
             alt=""
             @click="loadAttractionByTheme('food')"
           />
-          <div class="TripSnowButton1_text">
+          <div
+            class="TripSnowButton1_text"
+            @click="loadAttractionByTheme('food')"
+          >
             <h3>Food</h3>
           </div>
         </div>
@@ -277,7 +284,12 @@ const closeModal = () => {
             @click="loadAttractionByTheme('festival')"
           />
           <div>
-            <h3 class="TripSnowButton2_text">Festival</h3>
+            <h3
+              class="TripSnowButton2_text"
+              @click="loadAttractionByTheme('festival')"
+            >
+              Festival
+            </h3>
           </div>
         </div>
 
@@ -289,14 +301,21 @@ const closeModal = () => {
             alt=""
             @click="loadAttractionByTheme('family')"
           />
-          <div class="TripSnowButton3_text">
+          <div
+            class="TripSnowButton3_text"
+            @click="loadAttractionByTheme('family')"
+          >
             <h3>Family</h3>
           </div>
         </div>
-
         <div class="listItem">
           <ul class="list">
-            <li class="item" @dblclick="showModal(attraction)" v-for="attraction in attractions" :key="attraction.index">
+            <li
+              class="item"
+              @dblclick="showModal(attraction)"
+              v-for="attraction in attractions"
+              :key="attraction.index"
+            >
               <a class="link" href="#">
                 <img class="image" :src="attraction.firstImage" alt="" />
                 <a class="item_title">{{ attraction.title }}</a>
@@ -309,7 +328,9 @@ const closeModal = () => {
         <div id="modal_div">
           <!-- <button @click="showModal">모달 열기</button> -->
           <teleport to="body" v-if="isModalOpen">
-            <AttractionDetailModal :detailAttraction="detailAttraction"></AttractionDetailModal>
+            <AttractionDetailModal
+              :detailAttraction="detailAttraction"
+            ></AttractionDetailModal>
           </teleport>
         </div>
         <!-- 모달창 테스트 끝 -->
@@ -319,6 +340,9 @@ const closeModal = () => {
 </template>
 
 <style scoped>
+.item:hover {
+  transform: translate(10px, 10px); /* 3D처럼 사진 위에 마우스 효과 */
+}
 /** 테마버튼 효과 */
 
 /** AttractionList Image 설정  */
@@ -349,16 +373,22 @@ a {
 .list {
   padding: 1rem 0;
   /* margin-left: 30px; */
-  margin-top: 255px;
+  margin-top: 245px;
   width: 100%;
   display: flex;
   transform: translate(0, 0);
+
+  position: relative;
+  perspective: 1000px;
+  transform-style: preserve-3d;
 }
 
 .item {
   padding-right: 1rem;
   list-style: none;
   user-select: none;
+
+  transition: transform 0.5s ease;
 }
 
 .item:first-child {
@@ -449,10 +479,6 @@ input {
   /* border-color: rgb(223, 222, 222); */
 }
 
-.select_all {
-  color: #fff;
-}
-
 /** Attraction Button(테마) 설정  */
 #TripFoodButton {
   position: absolute;
@@ -520,6 +546,16 @@ input {
 }
 
 .TripSnowButton0_text:hover {
+  transform: translate(62px, 50px) scale(1.5);
+}
+
+.select_all {
+  color: #fff;
+  transition: transform 0.5s ease; /* 트랜지션 효과 추가 */
+}
+
+.select_all:hover {
+  color: #fff;
   transform: translate(62px, 50px) scale(1.5);
 }
 
