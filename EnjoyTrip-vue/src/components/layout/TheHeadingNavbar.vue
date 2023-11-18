@@ -1,4 +1,6 @@
 <script setup>
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import audioFile from "@/assets/music/Christmas.mp3";
 import { RouterLink, useRouter } from "vue-router";
 import { useMemberStore } from "@/stores/member";
 import { storeToRefs } from "pinia";
@@ -16,8 +18,8 @@ function moveMain() {
 
 // const logout = () => {
 //   memberStore.memberLogout(memberInfo.value.memberId);
-
 // };
+
 //로그아웃 완료된 후 홈화면으로 이동하기 (비동기로 처리)
 const logout = async () => {
   await memberStore.memberLogout(memberInfo.value.memberId);
@@ -29,32 +31,98 @@ const headerMain = () => {
   window.scrollTo({ top: 0 });
 };
 
-/** music */
-const play = (sound) => {
-  if (sound) {
-    const audio = new Audio(sound);
-    audio.play();
+/** 음악 */
+const audio = ref(new Audio());
+let audioAbortController = null;
+let lastPlayedTime = 0;
+
+const loadAudio = () => {
+  audio.value.src = audioFile;
+  audio.value.loop = true;
+  audio.value.currentTime = lastPlayedTime;
+
+  // Promise를 반환하여 오디오 로딩이 완료될 때까지 대기
+  return audio.value.play();
+};
+
+const playAudio = async () => {
+  try {
+    if (audioAbortController) {
+      audioAbortController.abort();
+      audioAbortController = null;
+    }
+
+    if (audio.value.paused) {
+      // loadAudio 함수를 호출하고 로딩이 완료되면 재생
+      await loadAudio();
+      await audio.value.play();
+    } else {
+      lastPlayedTime = audio.value.currentTime;
+      audio.value.pause();
+    }
+  } catch (error) {
+    if (error.name === "AbortError") {
+      console.warn("Audio playback aborted.");
+    } else {
+      console.error("Audio playback error:", error);
+    }
   }
 };
 
-import { ref } from "vue";
+/** 타이머 */
+const targetTime = new Date(); // 현재 날짜와 시간으로 초기화
 
-const isPlaying = ref(false);
+// D-day를 설정 (예: 12월 25일 00:00:00)
+targetTime.setDate(25);
+targetTime.setMonth(11); // 0부터 시작하므로 11은 12월을 의미합니다.
+targetTime.setHours(0, 0, 0, 0);
 
-const togglePlay = () => {
-  isPlaying.value = !isPlaying.value;
+const timer = ref({
+  days: 0,
+  hours: 0,
+  minutes: 0,
+  seconds: 0,
+});
 
-  const sound =
-    "http://soundbible.com/mp3/Air Plane Ding-SoundBible.com-496729130.mp3";
+let intervalId;
 
-  if (isPlaying.value) {
-    const audio = new Audio(sound);
-    audio.play();
+onMounted(() => {
+  startTimer();
+});
+
+onBeforeUnmount(() => {
+  stopTimer();
+});
+
+const startTimer = () => {
+  intervalId = setInterval(updateTimer, 1000);
+};
+
+const stopTimer = () => {
+  clearInterval(intervalId);
+};
+
+const updateTimer = () => {
+  const currentTime = new Date();
+  const timeDifference = targetTime - currentTime;
+
+  if (timeDifference > 0) {
+    timer.value.days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    timer.value.hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    timer.value.minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+    timer.value.seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
   } else {
-    // 멈춤 기능은 여기에 추가 (현재는 토글만 구현되어 있습니다)
+    // 타이머 종료 후 원하는 동작을 수행할 수 있습니다.
+    stopTimer();
+    console.log('타이머 종료');
   }
+};
+
+const formatTime = (value) => {
+  return value < 10 ? `0${value}` : value;
 };
 </script>
+
 
 <template>
   <button class="home-button" @click="headerMain()">홈</button>
@@ -63,19 +131,101 @@ const togglePlay = () => {
     로그아웃
   </button>
 
-  <div>
+  <!-- <audio autoplay loop controls>
+    <source src="@/assets/music/Christmas.mp3" type="audio/mpeg">
+    <source src="@/assets/music/Christmas.mp3" type="audio/mp3" />
+    <source src="@/assets/music/Christmas.mp3" type="audio/ogg" />
+  </audio> -->
+
+  <!-- <audio src="@/assets/music/Christmas.mp3" type="audio/mpeg" controls></audio> -->
+   <div class="timer-container">
+      <div class="timer-section">
+        <div class="timer-value">{{ timer.days }}</div>
+        <div class="timer-label">일</div>
+      </div>
+      <div class="timer-section">
+        <div class="timer-value">{{ formatTime(timer.hours) }}</div>
+        <div class="timer-label">시간</div>
+      </div>
+      <div class="timer-section">
+        <div class="timer-value">{{ formatTime(timer.minutes) }}</div>
+        <div class="timer-label">분</div>
+      </div>
+      <div class="timer-section">
+        <div class="timer-value">{{ formatTime(timer.seconds) }}</div>
+        <div class="timer-label">초</div>
+      </div>
+    </div>
+
+
+  <img
+    class="music_santa"
+    src="@/assets/music/music-play-santa.gif"
+    alt=""
+    @click="playAudio"
+  />
+
+  <!-- <div>
     <button @click="togglePlay">
       {{ isPlaying ? "Stop" : "Play" }}
     </button>
   </div>
 
-  <img src="@/assets/music/music_santa.gif" alt="" />
+  <img src="@/assets/music/music-play-santa.gif" alt="" /> -->
 </template>
 
+
 <style scoped>
-img {
-  width: 100px;
-  height: 100px;
+/** 타이머 */
+.timer-container {
+  position: fixed;
+  top: 35px;
+  right: 20px;
+  color: #ffffff;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px;
+  padding: 6px 5px;
+  border-radius: 15px;
+  overflow: hidden;
+  background-color: rgba(192, 2, 2, 0.541) ;
+  width: 200px; /* 변경된 너비 설정 */
+}
+
+.timer-section {
+  text-align: center;
+  margin: auto 2px;
+  flex: 1; /* 각 섹션 동일한 비율로 설정 */
+}
+
+.timer-value {
+  font-size: 24px;
+  font-weight: bold;
+  padding: 6px;
+  background-color: #ffffff;
+  color: #000000;
+  border-radius: 10px;
+  width: 30px; /* 변경된 숫자 너비 설정 */
+  margin: 0 auto; /* 가운데 정렬 */
+}
+
+.timer-label {
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+
+/** 음악  */
+.music_santa {
+  position: fixed;
+  top: 50px;
+  left: 110px;
+  width: 120px;
+  height: 90px;
+  cursor: pointer;
+  z-index: 999;
+  /* display: none; 나중에 풀기 */
 }
 
 @font-face {
@@ -126,18 +276,19 @@ img {
   box-shadow: 0 3px 12px rgba(170, 170, 170, 0.9);
 }
 
+/** 로그아웃 */
 .logout-button {
   display: inline-block;
   position: fixed;
   top: 20px;
   right: 30px;
-  padding: 10px 10px;
+  padding: 6px 10px;
   font-size: 16px;
   font-weight: bold;
   text-align: center;
   text-decoration: none;
   border-radius: 12px;
-  background-color: rgba(231, 76, 60, 0.2);
+  background-color: rgba(0, 0, 0, 0.089);
   color: #ffffff;
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
