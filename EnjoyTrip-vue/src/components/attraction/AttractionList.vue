@@ -3,11 +3,16 @@
 
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { listAttraction, detailAttraction, detailIntroAttraction } from "@/api/attraction";
+import {
+  listAttraction,
+  detailAttraction,
+  detailIntroAttraction,
+} from "@/api/attraction";
 import AttractionDetailModal from "./AttractionDetailModal.vue";
 const { VITE_OPEN_API_SERVICE_KEY } = import.meta.env;
 const router = useRouter();
 const route = useRoute();
+const scrollPosition = 230; // 원하는 스크롤 위치 (픽셀 단위)
 
 const moveAttractionDetail = () => {
   router.push({ name: "attraction-detail" }); //contentId로
@@ -36,11 +41,18 @@ const param = ref({
   key: "all",
   sidoCode: 0,
   selected: "All",
-  searchWord: ""
+  searchWord: "",
 });
 
 onMounted(() => {
   param.value.sidoCode = route.params.sidoCode;
+  // 페이지가 마운트되면 스크롤을 원하는 위치로 이동
+  window.scrollTo({
+    bottom: 0,
+    top: 220,
+    behavior: "smooth",
+  });
+  // window.scrollTo(0, scrollPosition);
   getAttractionList();
 });
 
@@ -203,15 +215,15 @@ const introParam = ref({
   MobileApp: "AppTest",
   _type: "json",
   contentId: "",
-  contentTypeId: ""
+  contentTypeId: "",
 });
 
 // 디테일 화면의 상세 설명 가져오기
 const getOverview = (detail) => {
   detailAttraction(
     detail.value,
-    ({data}) => {
-      attractionOverview.value = data;      
+    ({ data }) => {
+      attractionOverview.value = data;
     },
     (err) => {
       console.log(err);
@@ -230,8 +242,8 @@ const getAttractionIntro = () => {
     (err) => {
       console.log(err);
     }
-  )
-}
+  );
+};
 
 const showModal = (detail) => {
   attractionDetail.value = detail;
@@ -288,7 +300,13 @@ const closeModal = () => {
             placeholder="검색어를 입력하세요"
           />
           <!-- 버튼에 @click="" 추가하기-->
-          <button class="search-button" type="button" @click="getAttractionList">검색</button>
+          <button
+            class="search-button"
+            type="button"
+            @click="getAttractionList"
+          >
+            검색
+          </button>
         </div>
 
         <!-- All -->
@@ -565,12 +583,14 @@ input {
 }
 
 .img0 {
+  cursor: pointer;
   position: absolute;
   transform: translate(190px, 85px);
 }
 
 /** Attraction Button(홈) */
 #TripSnowButton0 {
+  cursor: pointer;
   position: absolute;
   /* transform: translate(-350px, 110px); */
   width: 150px;
@@ -581,6 +601,7 @@ input {
 }
 
 #TripSnowButton0:hover {
+  cursor: pointer;
   position: absolute;
   -ms-transform: rotate(360deg);
   -webkit-transform: rotate(360deg);
@@ -588,6 +609,7 @@ input {
 }
 
 .TripSnowButton0_text {
+  cursor: pointer;
   position: absolute;
   transform: translate(62px, 50px);
   color: rgb(61, 71, 67);
@@ -596,20 +618,26 @@ input {
 }
 
 .TripSnowButton0_text:hover {
+  cursor: pointer;
   transform: translate(62px, 50px) scale(1.5);
 }
 
 .select_all {
+  cursor: pointer;
   color: #fff;
   transition: transform 0.5s ease; /* 트랜지션 효과 추가 */
+  z-index: 5;
 }
 
 .select_all:hover {
+  cursor: pointer;
   color: #fff;
   transform: translate(62px, 50px) scale(1.5);
+  z-index: 5;
 }
 
 #TripSnowButton1 {
+  cursor: pointer;
   position: absolute;
   transform: translate(-150px, 60px);
   width: 100px;
@@ -618,20 +646,24 @@ input {
 }
 
 #TripSnowButton1:hover {
+  cursor: pointer;
   transform: translate(-150px, 60px) scale(1.5);
 }
 
 .TripSnowButton1_text {
+  cursor: pointer;
   position: absolute;
   transform: translate(377px, 85px);
   color: rgb(61, 71, 67);
   transition: transform 0.5s ease; /* 트랜지션 효과 추가 */
 }
 .TripSnowButton1_text:hover {
+  cursor: pointer;
   transform: translate(377px, 85px) scale(1.5);
 }
 
 #TripSnowButton2 {
+  cursor: pointer;
   position: absolute;
   transform: translate(20px, 60px);
   width: 100px;
@@ -639,10 +671,12 @@ input {
 }
 
 #TripSnowButton2:hover {
+  cursor: pointer;
   transform: translate(20px, 60px) scale(1.5);
 }
 
 .TripSnowButton2_text {
+  cursor: pointer;
   position: absolute;
   transform: translate(532px, 85px);
   color: rgb(61, 71, 67);
@@ -650,10 +684,12 @@ input {
 }
 
 .TripSnowButton2_text:hover {
+  cursor: pointer;
   transform: translate(532px, 85px) scale(1.5);
 }
 
 #TripSnowButton3 {
+  cursor: pointer;
   position: absolute;
   transform: translate(175px, 100px);
   width: 100px;
@@ -661,16 +697,19 @@ input {
 }
 
 #TripSnowButton3:hover {
+  cursor: pointer;
   transform: translate(175px, 100px) scale(1.5);
 }
 
 .TripSnowButton3_text {
+  cursor: pointer;
   position: absolute;
   transform: translate(695px, 125px);
   color: rgb(61, 71, 67);
 }
 
 .TripSnowButton3_text:hover {
+  cursor: pointer;
   transform: translate(695px, 125px) scale(1.5);
   transition: transform 0.5s ease; /* 트랜지션 효과 추가 */
 }

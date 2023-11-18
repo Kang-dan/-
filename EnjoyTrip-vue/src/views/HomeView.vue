@@ -1,4 +1,5 @@
 <script setup>
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
 import { useMemberStore } from "@/stores/member";
 import { storeToRefs } from "pinia";
@@ -7,6 +8,14 @@ const memberStore = useMemberStore();
 const { isLogin } = storeToRefs(memberStore);
 
 const router = useRouter();
+
+const randomBallImages = ref(
+  Array.from(
+    { length: 17 },
+    (_, index) =>
+      `src/assets/cityLight/treeBall${Math.floor(Math.random() * 5) + 1}.png`
+  )
+);
 
 const left = [
   0, 270, 360, 430, 530, 620, 450, 280, 360, 180, 300, 160, 280, 480, 500, 620,
@@ -47,8 +56,84 @@ const moveLogin = () => {
 const moveAttractionList = (sidoCode) => {
   router.push({ name: "attraction-list", params: { sidoCode: sidoCode } });
 };
+
+/** 타이머 */
+const targetTime = new Date(); // 현재 날짜와 시간으로 초기화
+
+// D-day를 설정 (예: 12월 25일 00:00:00)
+targetTime.setDate(26);
+targetTime.setMonth(11); // 0부터 시작하므로 11은 12월을 의미합니다.
+targetTime.setHours(0, 0, 0, 0);
+
+const timer = ref({
+  days: 0,
+  hours: 0,
+  minutes: 0,
+  seconds: 0,
+});
+
+let intervalId;
+
+onMounted(() => {
+  startTimer();
+});
+
+onBeforeUnmount(() => {
+  stopTimer();
+});
+
+const startTimer = () => {
+  intervalId = setInterval(updateTimer, 1000);
+};
+
+const stopTimer = () => {
+  clearInterval(intervalId);
+};
+
+const updateTimer = () => {
+  const currentTime = new Date();
+  const timeDifference = targetTime - currentTime;
+
+  if (timeDifference > 0) {
+    timer.value.days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    timer.value.hours = Math.floor(
+      (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    );
+    timer.value.minutes = Math.floor(
+      (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+    );
+    timer.value.seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+  } else {
+    // 타이머 종료 후 원하는 동작을 수행할 수 있습니다.
+    stopTimer();
+    console.log("타이머 종료");
+  }
+};
+
+const formatTime = (value) => {
+  return value < 10 ? `0${value}` : value;
+};
 </script>
 <template>
+  <div class="timer-container">
+    <div class="timer-section">
+      <div class="timer-value">{{ timer.days }}</div>
+      <div class="timer-label">일</div>
+    </div>
+    <div class="timer-section">
+      <div class="timer-value">{{ formatTime(timer.hours) }}</div>
+      <div class="timer-label">시간</div>
+    </div>
+    <div class="timer-section">
+      <div class="timer-value">{{ formatTime(timer.minutes) }}</div>
+      <div class="timer-label">분</div>
+    </div>
+    <div class="timer-section">
+      <div class="timer-value">{{ formatTime(timer.seconds) }}</div>
+      <div class="timer-label">초</div>
+    </div>
+  </div>
+
   <div id="treeMap">
     <div id="treeParent">
       <div id="star" @click="moveLogin">
@@ -70,15 +155,17 @@ const moveAttractionList = (sidoCode) => {
         <!-- 전구(도시)17개:relative -->
 
         <img
-          v-for="n in 17"
-          :id="`ball${n}`"
-          :src="`src/assets/cityLight/treeBall${
-            Math.floor(Math.random() * 5) + 1
-          }.png`"
-          :alt="n"
-          :title="imgTitle[n]"
-          :style="`position: absolute; width: 130px; left: ${left[n]}px; top: ${top[n]}px; z-index: 3`"
-          @click="moveAttractionList(sidoCode[n])"
+          class="city_ball"
+          v-for="(image, n) in randomBallImages"
+          :key="n"
+          :id="`ball${n + 1}`"
+          :src="image"
+          :alt="n + 1"
+          :title="imgTitle[n + 1]"
+          :style="`position: absolute; width: 130px; left: ${
+            left[n + 1]
+          }px; top: ${top[n + 1]}px; z-index: 3`"
+          @click="moveAttractionList(sidoCode[n + 1])"
         />
       </span>
       <span id="present">
@@ -95,6 +182,57 @@ const moveAttractionList = (sidoCode) => {
 </template>
 
 <style scoped>
+@font-face {
+  font-family: "Bazzi";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/Bazzi.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+* {
+  font-family: "Bazzi";
+}
+
+/** 타이머 */
+.timer-container {
+  position: fixed;
+  top: 35px;
+  right: 20px;
+  color: #ffffff;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px;
+  padding: 6px 5px;
+  border-radius: 15px;
+  overflow: hidden;
+  background-color: rgba(192, 2, 2, 0.541);
+  width: 200px; /* 변경된 너비 설정 */
+}
+
+.timer-section {
+  text-align: center;
+  margin: auto 2px;
+  flex: 1; /* 각 섹션 동일한 비율로 설정 */
+}
+
+.timer-value {
+  font-size: 24px;
+  font-weight: bold;
+  padding: 6px;
+  background-color: #ffffff;
+  color: #000000;
+  border-radius: 10px;
+  width: 30px; /* 변경된 숫자 너비 설정 */
+  margin: 0 auto; /* 가운데 정렬 */
+}
+
+.timer-label {
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+/** 트리 */
 #treeParent {
   position: relative;
 }
@@ -109,34 +247,6 @@ const moveAttractionList = (sidoCode) => {
   transform: scale(1.3);
   -webkit-transform: scale(1.3);
   align-items: center;
-}
-
-#present {
-  position: absolute;
-  left: 850px;
-  width: 100px;
-  margin-top: 1010px;
-  z-index: 4;
-}
-
-#PresentCloseGreen {
-  margin-left: 10px;
-  margin-top: 25px;
-  width: 320px;
-  /* margin-left: 100px; */
-}
-
-#PresentOpenGreen {
-  width: 320px;
-  display: none;
-}
-
-#present:hover #PresentOpenGreen {
-  display: block;
-}
-
-#present:hover #PresentCloseGreen {
-  display: none;
 }
 
 #TreeStar {
@@ -183,6 +293,41 @@ const moveAttractionList = (sidoCode) => {
   width: 1150px;
   left: -100px;
 }
+
+.city_ball {
+  cursor: pointer;
+}
+
+/** 선물(마이페이지) */
+#present {
+  position: absolute;
+  left: 850px;
+  width: 100px;
+  margin-top: 1010px;
+  z-index: 4;
+}
+
+#PresentCloseGreen {
+  margin-left: 10px;
+  margin-top: 25px;
+  width: 320px;
+  /* margin-left: 100px; */
+}
+
+#PresentOpenGreen {
+  width: 320px;
+  display: none;
+  cursor: pointer;
+}
+
+#present:hover #PresentOpenGreen {
+  display: block;
+}
+
+#present:hover #PresentCloseGreen {
+  display: none;
+}
+
 body {
   background: linear-gradient(to bottom, #000118, #002c5a);
   min-height: 100vh;

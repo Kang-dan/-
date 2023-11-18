@@ -108,13 +108,17 @@ const updateTimer = () => {
 
   if (timeDifference > 0) {
     timer.value.days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-    timer.value.hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    timer.value.minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+    timer.value.hours = Math.floor(
+      (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    );
+    timer.value.minutes = Math.floor(
+      (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+    );
     timer.value.seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
   } else {
     // 타이머 종료 후 원하는 동작을 수행할 수 있습니다.
     stopTimer();
-    console.log('타이머 종료');
+    console.log("타이머 종료");
   }
 };
 
@@ -125,7 +129,9 @@ const formatTime = (value) => {
 
 
 <template>
-  <button class="home-button" @click="headerMain()">홈</button>
+  <button class="home-button" @click="headerMain()">
+    <img class="home_btn_rudol" src="@/assets/home_btn_rudol.png" alt="" />
+  </button>
 
   <button v-if="isLogin" @click.prevent="logout()" class="logout-button">
     로그아웃
@@ -138,25 +144,6 @@ const formatTime = (value) => {
   </audio> -->
 
   <!-- <audio src="@/assets/music/Christmas.mp3" type="audio/mpeg" controls></audio> -->
-   <div class="timer-container">
-      <div class="timer-section">
-        <div class="timer-value">{{ timer.days }}</div>
-        <div class="timer-label">일</div>
-      </div>
-      <div class="timer-section">
-        <div class="timer-value">{{ formatTime(timer.hours) }}</div>
-        <div class="timer-label">시간</div>
-      </div>
-      <div class="timer-section">
-        <div class="timer-value">{{ formatTime(timer.minutes) }}</div>
-        <div class="timer-label">분</div>
-      </div>
-      <div class="timer-section">
-        <div class="timer-value">{{ formatTime(timer.seconds) }}</div>
-        <div class="timer-label">초</div>
-      </div>
-    </div>
-
 
   <img
     class="music_santa"
@@ -176,46 +163,6 @@ const formatTime = (value) => {
 
 
 <style scoped>
-/** 타이머 */
-.timer-container {
-  position: fixed;
-  top: 35px;
-  right: 20px;
-  color: #ffffff;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin-top: 20px;
-  padding: 6px 5px;
-  border-radius: 15px;
-  overflow: hidden;
-  background-color: rgba(192, 2, 2, 0.541) ;
-  width: 200px; /* 변경된 너비 설정 */
-}
-
-.timer-section {
-  text-align: center;
-  margin: auto 2px;
-  flex: 1; /* 각 섹션 동일한 비율로 설정 */
-}
-
-.timer-value {
-  font-size: 24px;
-  font-weight: bold;
-  padding: 6px;
-  background-color: #ffffff;
-  color: #000000;
-  border-radius: 10px;
-  width: 30px; /* 변경된 숫자 너비 설정 */
-  margin: 0 auto; /* 가운데 정렬 */
-}
-
-.timer-label {
-  font-size: 16px;
-  margin-top: 5px;
-}
-
-
 /** 음악  */
 .music_santa {
   position: fixed;
@@ -239,6 +186,12 @@ const formatTime = (value) => {
   font-family: "Bazzi";
 }
 
+.home_btn_rudol {
+  width: 38px;
+  height: 38px;
+  z-index: 999;
+}
+
 .home-button {
   /* position: absolute; */
   position: fixed;
@@ -246,13 +199,13 @@ const formatTime = (value) => {
   height: 55px;
   transform: translate(50px, -35px); /** 홈버튼 위치 */
   /* display: inline-block; */
-  padding: 15px 15px;
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-  text-decoration: none;
+  /* padding: 15px 15px; */
+  /* font-size: 16px; */
+  /* font-weight: bold; */
+  /* text-align: center; */
+  /* text-decoration: none; */
   border-radius: 100%;
-  background-color: rgba(255, 25, 0, 0.9);
+  background-color: rgba(255, 157, 0, 0.835);
   color: #ffffff;
   cursor: pointer;
   /* position: relative; */

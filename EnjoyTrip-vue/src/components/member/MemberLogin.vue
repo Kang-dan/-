@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useRoute, useRouter } from "vue-router";
 import { useMemberStore } from "@/stores/member";
@@ -18,6 +18,16 @@ const member = ref({
 
 const memberIdErrMsg = ref("");
 const memberPwErrMsg = ref("");
+
+onMounted(() => {
+  // 페이지가 마운트되면 스크롤을 원하는 위치로 이동
+  window.scrollTo({
+    bottom: 0,
+    top: 390,
+    behavior: "smooth",
+  });
+  // window.scrollTo(0, scrollPosition);
+});
 
 watch(
   () => member.value.memberId,
