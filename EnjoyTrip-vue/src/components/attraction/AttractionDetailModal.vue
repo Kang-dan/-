@@ -7,32 +7,40 @@ import { storeToRefs } from "pinia";
 
 const memberStore = useMemberStore();
 const { isLogin, memberInfo } = storeToRefs(memberStore);
-const { attractionDetail, attractionOverview, attractionDetailIntro, likeLength } = defineProps({
+const props = defineProps({
   attractionDetail: Object,
   attractionOverview: Object,
   attractionDetailIntro: Object,
   likeLength: Number,
+  likeNo: Number,
 });
-
-const likeDelParam = ref({});
-const test = 0;
+const emit = defineEmits(["likeChange"]);
 const likeAdd = (attractionDetail) => {
-  console.log(likeLength);
-  console.log("test : " + test)  
-  // likeInsert(
-  //   {
-  //     "memberId": memberInfo.value.memberId,
-  //     "contentId": (attractionDetail.contentTypeId === 15) ? 0 : attractionDetail.contentId,
-  //     "contentFestivalId": (attractionDetail.contentTypeId === 15) ? attractionDetail.contentId : 0,
-  //     "contentTitle": attractionDetail.title
-  //   },
-  //   (response) => {
-      
-  //     console.log(response);
-  //   },
-  //   (err) => { 
-  //     console.log(err);
-  //   });
+  likeInsert(
+    {
+      "memberId": memberInfo.value.memberId,
+      "contentId": (attractionDetail.contentTypeId === 15) ? 0 : attractionDetail.contentId,
+      "contentFestivalId": (attractionDetail.contentTypeId === 15) ? attractionDetail.contentId : 0,
+      "contentTitle": attractionDetail.title
+    },
+    (response) => {
+      emit("likeChange");      
+    },
+    (err) => { 
+      console.log(err);
+    });
+}
+const likeRemove = () => {
+  likeDelete(
+    {
+      "no": props.likeNo,
+    },
+    (response) => {
+      emit("likeChange");      
+    },
+    (err) => { 
+      console.log(err);
+    });
 }
 
 const isModalOpen = ref(false);
@@ -230,7 +238,7 @@ const closeModal = () => {
             <button class="like-button" v-show="likeLength === 0" @click="likeAdd(attractionDetail)" >
               <i class="fas fa-heart">❤️</i>찜추가
             </button>
-            <button class="like-button" v-show="likeLength !== 0" @click="likeAdd(attractionDetail)">
+            <button class="like-button" v-show="likeLength !== 0" @click="likeRemove()">
               <i class="fas fa-heart-broken">💔</i>찜삭제
             </button>
           </div>

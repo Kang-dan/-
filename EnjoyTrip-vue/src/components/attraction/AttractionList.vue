@@ -124,6 +124,10 @@ const onPageChange = (val) => {
   getAttractionList();
 };
 
+const likeChange = () => {
+  getLike();
+}
+
 //이미지 가로 스크롤
 let list = null;
 let listScrollWidth = ref(0);
@@ -216,7 +220,8 @@ const attractionDetail = ref({});
 const attractionOverview = ref({});
 const attractionDetailIntro = ref({});
 const memberLikeInfo = ref({});
-const likeLength = ref(0);
+const likeLength = ref({});
+const likeNo = ref();
 
 const introParam = ref({
   serviceKey: VITE_OPEN_API_SERVICE_KEY,
@@ -262,24 +267,29 @@ const showModal = (detail) => {
     getAttractionIntro();
   }
   if (isLogin) {
-    likeList(
-    {
-      "memberId": memberInfo.value.memberId,
-      "contentId": (attractionDetail.value.contentTypeId === 15) ? 0 : attractionDetail.value.contentId,
-      "contentFestivalId": (attractionDetail.value.contentTypeId === 15) ? attractionDetail.value.contentId : 0,
-    },
-    ({data}) => { 
-      likeLength.value = data.length
-    },
-    (err) => { 
-      console.log(err)
-    });
+    getLike();
   }
   isModalOpen.value = true;
   // 모달이 나타날 때 show 클래스 추가
   const modal = document.querySelector("#modal.modal-overlay");
   modal.classList.add("show");
 };
+
+const getLike = () => {
+  likeList(
+    {
+      "memberId": memberInfo.value.memberId,
+      "contentId": (attractionDetail.value.contentTypeId === 15) ? 0 : attractionDetail.value.contentId,
+      "contentFestivalId": (attractionDetail.value.contentTypeId === 15) ? attractionDetail.value.contentId : 0,
+    },
+      ({ data }) => { 
+        likeLength.value = data.length
+        if (likeLength.value > 0) likeNo.value = data[0].no;
+    },
+    (err) => { 
+      console.log(err)
+    });
+}
 
 /** 모달창(디테일) 테스트 끝 */
 </script>
@@ -416,6 +426,9 @@ const showModal = (detail) => {
               :attractionOverview="attractionOverview"
               :attractionDetailIntro="attractionDetailIntro"
               :likeLength="likeLength"
+              :likeNo="likeNo"
+              @likeChange="likeChange"
+              
             ></AttractionDetailModal>
           </teleport>
         </div>
