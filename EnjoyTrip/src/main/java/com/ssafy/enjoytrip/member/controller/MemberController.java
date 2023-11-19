@@ -37,18 +37,21 @@ public class MemberController {
 	}
 	
 	@PostMapping("/like")
-	public ResponseEntity<List<MemberLikes>> likeList(@PathVariable String memberId) {
-		return ResponseEntity.ok(memberService.memberLikeList(memberId));
+	public ResponseEntity<List<MemberLikes>> likeList(@RequestBody Map<String, Object> map) {
+		System.out.println("like list : " + map);
+		return ResponseEntity.ok(memberService.memberLikeList(map));
 	}
 	
 	@PostMapping("/like/insert")
-	public ResponseEntity<String> likeInsert(@PathVariable MemberLikes memberLikes) {
+	public ResponseEntity<String> likeInsert(@RequestBody MemberLikes memberLikes) {
+		System.out.println(memberLikes);
 		memberService.memberLikeInsert(memberLikes);
 		return ResponseEntity.ok("성공");
 	}
 	
-	@DeleteMapping("/like/delete")
-	public ResponseEntity<String> likeDelete(@PathVariable MemberLikes memberLikes) {
+	@PostMapping("/like/delete")
+	public ResponseEntity<String> likeDelete(@RequestBody MemberLikes memberLikes) {
+		System.out.println(memberLikes);
 		memberService.memberLikeDelete(memberLikes);
 		return ResponseEntity.ok("성공");
 	}

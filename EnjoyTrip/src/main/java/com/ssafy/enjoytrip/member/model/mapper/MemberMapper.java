@@ -22,7 +22,7 @@ public interface MemberMapper {
 	void saveRefreshToken(Map<String, String> map);
 	Object getRefreshToken(String userid);
 	void deleteRefreshToken(Map<String, String> map);
-	List<MemberLikes> memberLikeList(String memberId);
+	List<MemberLikes> memberLikeList(Map<String, Object> map);
 	void memberLikeInsert(MemberLikes memberLikes);
 	void memberLikeDelete(MemberLikes memberLikes);
 }

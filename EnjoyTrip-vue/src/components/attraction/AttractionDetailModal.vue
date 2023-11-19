@@ -1,22 +1,43 @@
 <script setup>
 //왜 안돼.. 따로 관리하고싶단말야
 import { ref } from "vue";
-defineProps({
+import { likeInsert, likeList, likeDelete } from '@/api/member';
+import { useMemberStore } from "@/stores/member";
+import { storeToRefs } from "pinia";
+
+const memberStore = useMemberStore();
+const { isLogin, memberInfo } = storeToRefs(memberStore);
+const { attractionDetail, attractionOverview, attractionDetailIntro, likeLength } = defineProps({
   attractionDetail: Object,
   attractionOverview: Object,
   attractionDetailIntro: Object,
+  likeLength: Number,
 });
+
+const likeDelParam = ref({});
+const test = 0;
+const likeAdd = (attractionDetail) => {
+  console.log(likeLength);
+  console.log("test : " + test)  
+  // likeInsert(
+  //   {
+  //     "memberId": memberInfo.value.memberId,
+  //     "contentId": (attractionDetail.contentTypeId === 15) ? 0 : attractionDetail.contentId,
+  //     "contentFestivalId": (attractionDetail.contentTypeId === 15) ? attractionDetail.contentId : 0,
+  //     "contentTitle": attractionDetail.title
+  //   },
+  //   (response) => {
+      
+  //     console.log(response);
+  //   },
+  //   (err) => { 
+  //     console.log(err);
+  //   });
+}
 
 const isModalOpen = ref(false);
 
-const showModal = () => {
-  isModalOpen.value = true;
-  // 모달이 나타날 때 show 클래스 추가
-  const modal = document.querySelector("#modal.modal-overlay");
-  modal.classList.add("show");
-};
-
-const closeModal = () => {
+const closeModal = () => {  
   isModalOpen.value = false;
   // 모달을 닫을 때 show 클래스 제거
   const modal = document.querySelector("#modal.modal-overlay");
@@ -205,11 +226,11 @@ const closeModal = () => {
             {{ attractionOverview.overview }}
           </p>
 
-          <div id="likeBtn" class="button-container">
-            <button class="like-button" >
+          <div id="likeBtn" class="button-container" v-show="isLogin">
+            <button class="like-button" v-show="likeLength === 0" @click="likeAdd(attractionDetail)" >
               <i class="fas fa-heart">❤️</i>찜추가
             </button>
-            <button class="like-button">
+            <button class="like-button" v-show="likeLength !== 0" @click="likeAdd(attractionDetail)">
               <i class="fas fa-heart-broken">💔</i>찜삭제
             </button>
           </div>

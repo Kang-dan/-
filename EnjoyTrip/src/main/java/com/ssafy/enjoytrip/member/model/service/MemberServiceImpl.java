@@ -69,8 +69,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<MemberLikes> memberLikeList(String memberId) {
-		return memberMapper.memberLikeList(memberId);
+	public List<MemberLikes> memberLikeList(Map<String, Object> map) {
+		return memberMapper.memberLikeList(map);
 	}
 
 	@Override

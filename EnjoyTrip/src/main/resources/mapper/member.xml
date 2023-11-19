@@ -22,28 +22,31 @@
 		<result column="content_title" property="contentTitle" />
 	</resultMap>
 	
-	<select id="memberLikeList" parameterType="String" resultMap="memberLikesMap">
+	<select id="memberLikeList" parameterType="map" resultMap="memberLikesMap">
 		select no, member_id, content_id, content_festival_id, content_title
 		  from members_likes
 		 where member_id = #{memberId}
+		 <if test="contentId">and content_id = #{contentId}</if>
+		 <if test="contentFestivalId">and content_festival_id = #{contentFestivalId}</if>
 	</select>
 	
 	<insert id="memberLikeInsert" parameterType="memberLikes">
 		insert into members_likes(member_id, content_id, content_festival_id, content_title)
-		values (#{memberId}, #{contentId}, #{contentFestivalId}, #{contentTitle})
+		values (#{memberId},
+		<choose>
+			<when test="contentId">#{contentId},</when>
+			<otherwise>null,</otherwise>
+		</choose>
+		<choose>
+			<when test="contentFestivalId">#{contentFestivalId},</when>
+			<otherwise>null,</otherwise>
+		</choose>		
+		#{contentTitle})
 	</insert>
 	
 	<delete id="memberLikeDelete" parameterType="memberLikes">
 		delete from members_likes
-		 where member_id = #{memberId}
-		<choose>
-			<when test="content_id">
-				and content_id = #{contentId}
-			</when>
-			<when test="content_festival_id">
-				and content_festival_id = #{contentFestivalId}
-			</when>
-		</choose>
+		 where no = #{no}
 	</delete>
 
 	<insert id="registMember" parameterType="member">

@@ -35,7 +35,7 @@ async function likeList(memberInfo, success, fail) {
 }
 
 async function likeDelete(like, success, fail) {
-  await local.delete(`${url}/like/delete`, JSON.stringify(like)).then(success).catch(fail);
+  await local.post(`${url}/like/delete`, JSON.stringify(like)).then(success).catch(fail);
 }
 
 export {

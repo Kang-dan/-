@@ -9,6 +9,13 @@ import {
   detailIntroAttraction,
 } from "@/api/attraction";
 import AttractionDetailModal from "./AttractionDetailModal.vue";
+import { useMemberStore } from "@/stores/member";
+import { likeList } from '@/api/member';
+import { storeToRefs } from "pinia";
+
+const memberStore = useMemberStore();
+const { isLogin, memberInfo } = storeToRefs(memberStore);
+
 const { VITE_OPEN_API_SERVICE_KEY } = import.meta.env;
 const router = useRouter();
 const route = useRoute();
@@ -208,6 +215,8 @@ const isModalOpen = ref(false);
 const attractionDetail = ref({});
 const attractionOverview = ref({});
 const attractionDetailIntro = ref({});
+const memberLikeInfo = ref({});
+const likeLength = ref(0);
 
 const introParam = ref({
   serviceKey: VITE_OPEN_API_SERVICE_KEY,
@@ -252,18 +261,26 @@ const showModal = (detail) => {
   if (attractionDetail.value.contentTypeId != 15) {
     getAttractionIntro();
   }
+  if (isLogin) {
+    likeList(
+    {
+      "memberId": memberInfo.value.memberId,
+      "contentId": (attractionDetail.value.contentTypeId === 15) ? 0 : attractionDetail.value.contentId,
+      "contentFestivalId": (attractionDetail.value.contentTypeId === 15) ? attractionDetail.value.contentId : 0,
+    },
+    ({data}) => { 
+      likeLength.value = data.length
+    },
+    (err) => { 
+      console.log(err)
+    });
+  }
   isModalOpen.value = true;
   // 모달이 나타날 때 show 클래스 추가
   const modal = document.querySelector("#modal.modal-overlay");
   modal.classList.add("show");
 };
 
-const closeModal = () => {
-  isModalOpen.value = false;
-  // 모달을 닫을 때 show 클래스 제거
-  const modal = document.querySelector("#modal.modal-overlay");
-  modal.classList.remove("show");
-};
 /** 모달창(디테일) 테스트 끝 */
 </script>
 
@@ -398,6 +415,7 @@ const closeModal = () => {
               :attractionDetail="attractionDetail"
               :attractionOverview="attractionOverview"
               :attractionDetailIntro="attractionDetailIntro"
+              :likeLength="likeLength"
             ></AttractionDetailModal>
           </teleport>
         </div>
