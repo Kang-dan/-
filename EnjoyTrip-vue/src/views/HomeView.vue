@@ -154,7 +154,7 @@ const formatTime = (value) => {
         <!-- 라우터 링크 달기 <RouterLink :to=""}>이미지</RouterLink>-->
         <!-- 전구(도시)17개:relative -->
 
-        <img
+        <!-- <img
           class="city_ball"
           v-for="(image, n) in randomBallImages"
           :key="n"
@@ -166,7 +166,28 @@ const formatTime = (value) => {
             left[n + 1]
           }px; top: ${top[n + 1]}px; z-index: 3`"
           @click="moveAttractionList(sidoCode[n + 1])"
-        />
+        /> -->
+
+        <div v-for="(city, n) in imgTitle.slice(1)" :key="n">
+          <img
+            class="city_ball"
+            :src="randomBallImages[n]"
+            :alt="n + 1"
+            :title="city"
+            :style="`position: absolute; width: 130px; left: ${
+              left[n + 1]
+            }px; top: ${top[n + 1]}px; z-index: 3`"
+            @click="moveAttractionList(sidoCode[n + 1])"
+          />
+          <span
+            class="city-label"
+            :style="`position: absolute; left: ${left[n + 1] + 50}px; top: ${
+              top[n + 1] + 70
+            }px; `"
+          >
+            {{ city }}
+          </span>
+        </div>
       </span>
       <span id="present">
         <!-- 선물상자(마이페이지) -->
@@ -182,6 +203,19 @@ const formatTime = (value) => {
 </template>
 
 <style scoped>
+/** 전구 위 지역 글씨 */
+.city-label {
+  color: #ffffff;
+  text-align: center;
+  z-index: 4;
+  font-size: 17px;
+  background-color: rgba(0, 0, 0, 0.35);
+  border-radius: 10%;
+  cursor: pointer;
+}
+
+/** 폰트  */
+
 @font-face {
   font-family: "Bazzi";
   src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/Bazzi.woff")
@@ -264,6 +298,7 @@ const formatTime = (value) => {
   z-index: 2;
   /* margin: auto; */
   font-size: 180px;
+  cursor: pointer;
 }
 
 #treeMap {
@@ -301,21 +336,25 @@ const formatTime = (value) => {
 /** 선물(마이페이지) */
 #present {
   position: absolute;
-  left: 850px;
+  right: 200px;
+  bottom: -60px;
+  /* left: 850px; */
   width: 100px;
-  margin-top: 1010px;
+  /* margin-top: 1010px; */
   z-index: 4;
 }
 
 #PresentCloseGreen {
-  margin-left: 10px;
-  margin-top: 25px;
+  /* margin-left: 10px; */
+  /* margin-top: 25px; */
   width: 320px;
   /* margin-left: 100px; */
 }
 
 #PresentOpenGreen {
   width: 320px;
+  margin-bottom: 35px;
+  margin-left: -15px;
   display: none;
   cursor: pointer;
 }
