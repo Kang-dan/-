@@ -3,9 +3,12 @@ import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
 import { useMemberStore } from "@/stores/member";
 import { storeToRefs } from "pinia";
+import MemberMypageModal from "@/components/member/MemberMypageModal.vue";
 
 const memberStore = useMemberStore();
 const { isLogin } = storeToRefs(memberStore);
+
+const isModalOpen = ref(false); //마이페이지 모달창
 
 const router = useRouter();
 
@@ -117,6 +120,34 @@ const updateTimer = () => {
 const formatTime = (value) => {
   return value < 10 ? `0${value}` : value;
 };
+
+/** 마이페이지 - 모달창 */
+const showModal = (detail) => {
+  // 로그인이 되어있을 때에만 열리게 하기
+  if (isLogin.value) {
+    // getMypage();
+    isModalOpen.value = true;
+    // 모달이 나타날 때 show 클래스 추가
+    const modal = document.querySelector("#modal.modal-overlay");
+    modal.classList.add("show");
+  }
+};
+
+const moveMypage = () => {
+  // mypage-bag 이미지를 클릭했을 때 모달창 열도록 설정
+  showModal();
+};
+
+// const getMypage = () => {
+//   memberId(
+//     {
+//       memberId: memberInfo.value.memberId,
+//     },
+//     (err) => {
+//       console.log(err);
+//     }
+//   );
+// };
 </script>
 <template>
   <div class="timer-container">
@@ -193,6 +224,15 @@ const formatTime = (value) => {
           </span>
         </div>
       </span>
+
+      <span id="mypage">
+        <img
+          class="mypage-bag"
+          src="../assets/mypage/mypage-bag.png"
+          alt=""
+          @click="moveMypage"
+        />
+      </span>
       <span id="present">
         <!-- 선물상자(마이페이지) -->
         <img
@@ -207,6 +247,13 @@ const formatTime = (value) => {
         />
       </span>
     </div>
+  </div>
+
+  <div id="modal_div">
+    <!-- <button @click="showModal">모달 열기</button> -->
+    <teleport to="body" v-if="isModalOpen">
+      <MemberMypageModal></MemberMypageModal>
+    </teleport>
   </div>
 </template>
 
@@ -341,7 +388,26 @@ const formatTime = (value) => {
   cursor: pointer;
 }
 
-/** 선물(마이페이지) */
+/** (마이페이지) */
+#mypage {
+  position: absolute;
+  right: 350px;
+  bottom: 100px;
+  /* left: 850px; */
+  width: 100px;
+  /* margin-top: 1010px; */
+  z-index: 5;
+}
+
+.mypage-bag {
+  position: absolute;
+  transform: translate(10px, -30px);
+  width: 215px;
+  cursor: pointer;
+  z-index: 999;
+}
+
+/** 선물(찜 목록) */
 #present {
   position: absolute;
   right: 200px;
