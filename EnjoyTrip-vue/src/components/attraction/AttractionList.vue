@@ -124,8 +124,8 @@ const onPageChange = (val) => {
   getAttractionList();
 };
 
-const likeChange = () => {
-  getLike();
+const likeChange = (check) => {
+  getLikeOne();
 }
 
 //이미지 가로 스크롤
@@ -265,9 +265,9 @@ const showModal = (detail) => {
   // 상세화면이 음식점일 경우 음식점 정보 가져오기
   if (attractionDetail.value.contentTypeId != 15) {
     getAttractionIntro();
-  }
-  if (isLogin) {
-    getLike();
+  }  
+  if (isLogin.value) {
+    getLikeOne();
   }
   isModalOpen.value = true;
   // 모달이 나타날 때 show 클래스 추가
@@ -275,7 +275,7 @@ const showModal = (detail) => {
   modal.classList.add("show");
 };
 
-const getLike = () => {
+const getLikeOne = () => {
   likeList(
     {
       "memberId": memberInfo.value.memberId,

@@ -22,7 +22,8 @@ public interface MemberMapper {
 	void saveRefreshToken(Map<String, String> map);
 	Object getRefreshToken(String userid);
 	void deleteRefreshToken(Map<String, String> map);
-	List<MemberLikes> memberLikeList(Map<String, Object> map);
+	List<MemberLikes> memberLikeListOne(Map<String, Object> map);
 	void memberLikeInsert(MemberLikes memberLikes);
 	void memberLikeDelete(MemberLikes memberLikes);
+	List<Map<String, Object>> memberLikeList(Map<String, Object> map);
 }

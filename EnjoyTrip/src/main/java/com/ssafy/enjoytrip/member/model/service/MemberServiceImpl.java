@@ -69,8 +69,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<MemberLikes> memberLikeList(Map<String, Object> map) {
-		return memberMapper.memberLikeList(map);
+	public List<MemberLikes> memberLikeListOne(Map<String, Object> map) {
+		return memberMapper.memberLikeListOne(map);
 	}
 
 	@Override
@@ -81,6 +81,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void memberLikeDelete(MemberLikes memberLikes) {
 		memberMapper.memberLikeDelete(memberLikes);
+	}
+
+	@Override
+	public List<Map<String, Object>> memberLikeList(Map<String, Object> map) {
+		return memberMapper.memberLikeList(map);
 	}
 
 }

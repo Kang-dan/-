@@ -37,9 +37,12 @@ public class MemberController {
 	}
 	
 	@PostMapping("/like")
-	public ResponseEntity<List<MemberLikes>> likeList(@RequestBody Map<String, Object> map) {
+	public ResponseEntity<List<?>> likeList(@RequestBody Map<String, Object> map) {
 		System.out.println("like list : " + map);
-		return ResponseEntity.ok(memberService.memberLikeList(map));
+		if (map.get("contentId") == null && map.get("contentFestivalId") == null) {			
+			return ResponseEntity.ok(memberService.memberLikeList(map));			
+		}
+		else return ResponseEntity.ok(memberService.memberLikeListOne(map));
 	}
 	
 	@PostMapping("/like/insert")

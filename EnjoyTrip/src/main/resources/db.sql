@@ -1,12 +1,16 @@
 use enjoytrip;
 
 create table board (
-    no int AUTO_INCREMENT primary key,
-    title varchar(200) not null,
+    board_no int AUTO_INCREMENT primary key,
+    board_title varchar(200) not null,
     member_id varchar(30) not null,
-    content varchar(2000) not null,
-    hit int default 0,
-    register_time TIMESTAMP default CURRENT_TIMESTAMP,
+    sido_code int not null,
+    board_content varchar(2000) not null,
+    board_hit int default 0,
+    board_love int default 0,
+    board_x int not null,
+    board_y int not null,
+    board_register_time TIMESTAMP default CURRENT_TIMESTAMP,
     FOREIGN KEY(member_id) REFERENCES members(member_id)
 )
 ENGINE = InnoDB

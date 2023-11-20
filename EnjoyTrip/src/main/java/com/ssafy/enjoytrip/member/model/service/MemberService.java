@@ -18,8 +18,9 @@ public interface MemberService{
 	void saveRefreshToken(String memberId, String refreshToken);
 	Object getRefreshToken(String memberId);
 	void deleRefreshToken(String memberId);
-	List<MemberLikes> memberLikeList(Map<String, Object> map);
+	List<MemberLikes> memberLikeListOne(Map<String, Object> map);
 	void memberLikeInsert(MemberLikes memberLikes);
 	void memberLikeDelete(MemberLikes memberLikes);
+	List<Map<String, Object>> memberLikeList(Map<String, Object> map);
 
 }

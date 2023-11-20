@@ -79,6 +79,18 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: "/board",
+      name: "board",
+      component: () => import("@/views/BoardView.vue"),      
+      children: [
+        {
+          path: "list/:sidoCode", //sidoCode로 화면 넘김
+          name: "board-list",
+          component: () => import("@/components/board/BoardList.vue"),
+        },
+      ],
+    },
   ],
 });
 

@@ -22,7 +22,17 @@
 		<result column="content_title" property="contentTitle" />
 	</resultMap>
 	
-	<select id="memberLikeList" parameterType="map" resultMap="memberLikesMap">
+	<select id="memberLikeList" parameterType="map" resultType="map">
+		select no, member_id memberId, b.content_id contentId, content_type_id contentTypeId, b.title, addr1, first_image firstImage, latitude, longitude, event_start_date eventStartDate, event_end_date eventEndDate 
+		from (select * from members_likes where member_id = #{memberId}) a 
+		join 
+		(select content_id, content_type_id, title, addr1, first_image, latitude, longitude, null as event_start_date, null as event_end_date from attraction_info where content_id in (select content_id from members_likes where member_id = #{memberId}) 
+		union
+		select content_id, content_type_id, title, addr1, first_image, latitude, longitude, event_start_date, event_end_date from attraction_festival where content_id in (select content_festival_id as content_id from members_likes where member_id = #{memberId})) b 
+		on a.content_title = b.title;
+	</select>
+	
+	<select id="memberLikeListOne" parameterType="map" resultMap="memberLikesMap">
 		select no, member_id, content_id, content_festival_id, content_title
 		  from members_likes
 		 where member_id = #{memberId}

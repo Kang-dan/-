@@ -4,10 +4,14 @@ import lombok.Data;
 
 @Data
 public class Board {
-	private int no;
-	private String title;
+	private int boardNo;
+	private String boardTitle;
 	private String memberId;
-	private String content;
-	private int hit;
-	private String registerTime;
+	private int sidoCode;
+	private String boardContent;
+	private int boardHit;
+	private int boardLove;
+	private int boardX;
+	private int boardY;
+	private String boardRegisterTime;
 }

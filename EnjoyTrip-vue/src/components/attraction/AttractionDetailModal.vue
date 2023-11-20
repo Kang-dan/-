@@ -24,7 +24,7 @@ const likeAdd = (attractionDetail) => {
       "contentTitle": attractionDetail.title
     },
     (response) => {
-      emit("likeChange");      
+      emit("likeChange");
     },
     (err) => { 
       console.log(err);
@@ -36,7 +36,7 @@ const likeRemove = () => {
       "no": props.likeNo,
     },
     (response) => {
-      emit("likeChange");      
+      emit("likeChange");
     },
     (err) => { 
       console.log(err);
@@ -45,7 +45,8 @@ const likeRemove = () => {
 
 const isModalOpen = ref(false);
 
-const closeModal = () => {  
+const closeModal = () => {
+  if (props.likeLength === 0) emit("likeChange", true);
   isModalOpen.value = false;
   // 모달을 닫을 때 show 클래스 제거
   const modal = document.querySelector("#modal.modal-overlay");

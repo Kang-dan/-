@@ -1,38 +1,27 @@
 package com.ssafy.enjoytrip.board.model.mapper;
 
-import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ssafy.enjoytrip.board.model.Board;
-import com.ssafy.enjoytrip.board.model.Page;
 
 @Mapper
 public interface BoardMapper {
 
-//	void write(Board board);
-//
-//	Board view(int articleNo);
-//
-//	void modify(Board board);
-//
-//	void delete(int articleNo);
-//
-	List<Board> list(HashMap<String, Object> params);
-//	
-	public List<Board> selectBoard(Page search);
+	void boardInsert(Board board);
+
+	Board boardView(int boardNo);
+
+	void boardUpdate(Board board);
+
+	void boardDelete(int boardNo);
 	
-	public int selectBoardCount();
+	List<Board> boardList(int sidoCode);
 
-	void insertBoard(Board board);
+	void boardUpdateHit(int boardNo);
 
-	Board selectBoardOne(int no);
+	void boardUpdateLove(Map<String, Object> map);
 
-	void updateBoard(Board board);
-
-	void deleteBoard(int no);
-	
-	List<Board> selectBoard();
 }
