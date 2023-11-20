@@ -4,6 +4,7 @@ import MemberLogin from "../components/member/MemberLogin.vue";
 import MemberJoin from "../components/member/MemberJoin.vue";
 import MemberJoinWelcome from "../components/member/MemberJoinWelcome.vue";
 import AttractionList from "../components/attraction/AttractionList.vue";
+import MemberLike from "../components/member/MemberLike.vue";
 
 import { storeToRefs } from "pinia";
 import { useMemberStore } from "@/stores/member";
@@ -58,6 +59,11 @@ const router = createRouter({
           path: "regist/welcome",
           name: "member-join-welcome",
           component: MemberJoinWelcome,
+        },
+        {
+          path: "like",
+          name: "member-like",
+          component: MemberLike,
         },
       ],
     },

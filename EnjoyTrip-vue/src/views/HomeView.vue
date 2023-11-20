@@ -57,6 +57,10 @@ const moveAttractionList = (sidoCode) => {
   router.push({ name: "attraction-list", params: { sidoCode: sidoCode } });
 };
 
+const moveLike = () => {
+  if (isLogin.value) router.push({ name: "member-like" });
+};
+
 /** 타이머 */
 const targetTime = new Date(); // 현재 날짜와 시간으로 초기화
 
@@ -196,7 +200,11 @@ const formatTime = (value) => {
           src="../assets/PresentCloseGreen.png"
           alt="선물상자"
         />
-        <img id="PresentOpenGreen" src="../assets/PresentOpen.png" />
+        <img
+          id="PresentOpenGreen"
+          src="../assets/PresentOpen.png"
+          @click="moveLike"
+        />
       </span>
     </div>
   </div>
@@ -345,9 +353,9 @@ const formatTime = (value) => {
 }
 
 #PresentCloseGreen {
-  /* margin-left: 10px; */
-  /* margin-top: 25px; */
-  width: 320px;
+  margin-left: 25px;
+  margin-bottom: 27px;
+  width: 270px;
   /* margin-left: 100px; */
 }
 
