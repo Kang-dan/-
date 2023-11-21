@@ -241,8 +241,18 @@ const showModal = (detail) => {
           </div>
         </div>
         <div class="controls">
-          <button class="left-btn" @click="moveLeft">←</button>
-          <button class="right-btn" @click="moveRight">→</button>
+          <img
+            class="left-btn"
+            src="@/assets/like/like_left_button.png"
+            alt=""
+            @click="moveLeft"
+          />
+          <img
+            class="right-btn"
+            src="@/assets/like/like_right_button.png"
+            alt=""
+            @click="moveRight"
+          />
         </div>
         <!-- 모달창(디테일) 테스트  -->
         <div id="modal_div">
@@ -327,8 +337,8 @@ const showModal = (detail) => {
   background-size: cover;
   text-align: center;
   margin: 0 auto;
-
-  visibility: hidden; /** 나중에 풀자! */
+/* overflow: hidden;  */
+  /* visibility: hidden; * 나중에 풀자! */
 }
 
 #gifs {
@@ -446,8 +456,23 @@ const showModal = (detail) => {
 
 .left-btn,
 .right-btn {
-  padding: 5px 10px;
+  padding: 20px 20px;
+  margin-top: 30px;
+  width: 30px;
   cursor: pointer;
+  background-color: rgba(255, 255, 255, 0);
+  border-radius: 50%;
+  border-style: outset;
+}
+
+.left-btn:active {
+  margin-top: 33px;
+  margin-left: 3px;
+}
+
+.right-btn:active {
+  margin-top: 33px;
+  margin-right: -3px;
 }
 
 .left-btn {
@@ -459,6 +484,7 @@ const showModal = (detail) => {
   position: absolute;
   right: 0;
 }
+
 
 button {
   margin: 0;
