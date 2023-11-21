@@ -5,9 +5,11 @@ import MemberJoin from "../components/member/MemberJoin.vue";
 import MemberJoinWelcome from "../components/member/MemberJoinWelcome.vue";
 import AttractionList from "../components/attraction/AttractionList.vue";
 import MemberLike from "../components/member/MemberLike.vue";
+import boardList from "../components/board/BoardList.vue";
 
 import { storeToRefs } from "pinia";
 import { useMemberStore } from "@/stores/member";
+// import { boardList } from "@/api/board";
 
 const onlyAuthMember = async (to, from, next) => {
   const memberStore = useMemberStore();
@@ -85,11 +87,16 @@ const router = createRouter({
       component: () => import("@/views/BoardView.vue"),
       children: [
         {
-          path: "list/:sidoCode", //sidoCode로 화면 넘김
+          path: "/list",
           name: "board-list",
-          component: () => import("@/components/board/BoardList.vue"),
-          beforeEnter: onlyAuthMember,
+          component: boardList,
         },
+        // {
+        //   path: "list/:sidoCode", //sidoCode로 화면 넘김
+        //   name: "board-list",
+        //   component: () => import("@/components/board/BoardList.vue"),
+        //   beforeEnter: onlyAuthMember,
+        // },
       ],
     },
   ],

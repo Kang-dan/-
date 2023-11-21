@@ -64,6 +64,10 @@ const moveLike = () => {
   if (isLogin.value) router.push({ name: "member-like" });
 };
 
+const moveBoard = () => {
+  router.push({ name: "board-list" }); //로그인 안해도 게시판은 들어갈 수 있음. (지역선택 후 글을 볼 때에는 로그인 필요)
+};
+
 /** 타이머 */
 const targetTime = new Date(); // 현재 날짜와 시간으로 초기화
 
@@ -246,6 +250,15 @@ const moveMypage = () => {
           @click="moveLike"
         />
       </span>
+      <span id="board">
+        <!-- 게시판 -->
+        <img
+          class="board_button"
+          src="@/assets/board/board_button.png"
+          alt=""
+          @click="moveBoard"
+        />
+      </span>
     </div>
   </div>
 
@@ -258,6 +271,15 @@ const moveMypage = () => {
 </template>
 
 <style scoped>
+/** 게시판 */
+.board_button {
+  position: absolute;
+  transform: translate(40px, -190px);
+  width: 250px;
+  cursor: pointer;
+  z-index: 999;
+}
+
 /** 전구 위 지역 글씨 */
 .city-label {
   color: #ffffff;
