@@ -24,4 +24,6 @@ public interface BoardMapper {
 
 	void boardUpdateLove(Map<String, Object> map);
 
+	void deleteMemberBoards(String memberId);
+
 }

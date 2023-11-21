@@ -1,21 +1,24 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useMemberStore } from "@/stores/member";
+import { idCheck, updateMember, deleteMember } from "@/api/member";
+import { boardDeleteMember } from "@/api/board";
 import { storeToRefs } from "pinia";
 
 const memberStore = useMemberStore();
-const { getMemberInfo, memberInfo } = memberStore;
+const { memberInfo, getMemberInfo, memberLogout } = memberStore;
 const { isLogin } = storeToRefs(memberStore);
 
 const isModalOpen = ref(false);
 
-const openModal = async () => {
-  // 페이지가 마운트될 때 회원 정보를 가져오기
-  if (isLogin.value) {
-    await getMemberInfo();
-  }
-  isModalOpen.value = true;
-};
+const member = ref({
+  memberId: memberInfo.memberId,
+  memberPw: "",
+  memberName: memberInfo.memberName,
+  memberEmail: memberInfo.memberEmail,
+  age: memberInfo.age,
+});
+const updateBtn = ref(true);
 
 const closeModal = () => {
   isModalOpen.value = false;
@@ -27,12 +30,96 @@ const closeModal = () => {
 };
 /** 모달창(디테일) 테스트 끝 */
 
-onMounted(async () => {
-  // 페이지가 마운트될 때 회원 정보를 가져오기
-  if (isLogin.value) {
-    await getMemberInfo();
+const infoChange = (command) => {
+  const name = document.querySelector("#name");
+  const email = document.querySelector("#email");
+  const age = document.querySelector("#age");
+  if (command) { // true인 경우
+    name.classList.add("inputState");
+    name.disabled = false;
+    email.classList.add("inputState");
+    email.disabled = false;
+    age.classList.add("inputState");
+    age.disabled = false;
+    updateBtn.value = false;
   }
-});
+  else {
+    name.classList.remove("inputState");
+    name.disabled = true;
+    email.classList.remove("inputState");
+    email.disabled = true;
+    age.classList.remove("inputState");
+    age.disabled = true;
+    updateBtn.value = true;
+  }
+  
+}
+
+const passwordCheck = (action) => {
+  idCheck(
+    member.value,
+    ({data}) => {
+      if (data === "성공") {
+        console.log("비밀번호 체크 성공함");
+        if (action === 'update') infoChange(true);
+        else if (action === 'delete') infoDelete();
+      }
+      else console.log("비밀번호 체크 실패함");
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+};
+
+const infoDelete = () => {
+  if (confirm("진짜 삭제함?")) {
+    console.log("yes")
+    memberLogout(member.value.memberId);
+    boardDeleteMember(
+      member.value.memberId,
+      ({ data }) => {
+        console.log(data)
+        console.log("게시글 삭제 완료")
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+    deleteMember(
+      member.value.memberId,
+      ({ data }) => {
+        console.log(data)
+        console.log("아이디 삭제 완료")
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+
+    closeModal();
+  }
+  else console.log("no")
+
+}
+
+const infoUpdate = () => {
+  console.log("업데이트 시도");
+  updateMember(
+    member.value,
+    ({ data }) => { 
+      let token = sessionStorage.getItem("accessToken");
+      getMemberInfo(token);
+      console.log("업데이트 성공");
+      infoChange(false);
+      member.value.memberPw = "";
+    },
+    (err) => { 
+      console.log(err);
+    }
+  );
+}
+
 </script>
 
 <template>
@@ -55,17 +142,30 @@ onMounted(async () => {
           alt=""
         />
         <div class="mypage_member_info">
-          <h3>아이디</h3>
-          <p>{{ memberInfo?.value?.memberId }}</p>
-          <h3>비밀번호</h3>
-          <h3>이름</h3>
-          <p>{{ memberInfo?.value?.memberName }}</p>
-          <h3>이메일</h3>
-          <p>{{ memberInfo?.value?.memberEmail }}</p>
-          <h3>나이</h3>
-          <p>{{ memberInfo?.value?.age }}</p>
-          <h3>우리 회원이 된 날</h3>
-          <!-- <p>{{ memberInfo.value.joinDate }}</p> -->
+          <form @submit.prevent="infoUpdate">
+            <h3>
+              아이디
+              <input id="id" class="inputInfo" type="text" disabled :value="memberInfo.memberId">
+            </h3>
+            <h3>비밀번호
+              <input id="pw" class="inputInfo inputState" type="password" v-model="member.memberPw" placeholder="수정 또는 탈퇴시 비밀번호 입력" >
+            </h3>
+            <h3>이름
+              <input id="name" class="inputInfo" type="text" disabled v-model="member.memberName">
+            </h3>
+            <h3>이메일
+              <input id="email" class="inputInfo" type="text" disabled v-model="member.memberEmail">
+            </h3>
+            <h3>나이
+              <input id="age" class="inputInfo" type="number" disabled v-model="member.age">
+            </h3>
+            <h3>우리 회원이 된 날
+              <input class="inputInfo" type="text" disabled :value="memberInfo.joinDate">
+            </h3>
+            <button @click.prevent="passwordCheck('update')" v-show="updateBtn">비밀번호확인</button>
+            <button v-show="!updateBtn">수정하기</button>
+            <button @click.prevent="passwordCheck('delete')">탈퇴하기....</button>
+          </form>
         </div>
       </div>
     </div>
@@ -73,6 +173,19 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+
+.inputInfo {
+  border-radius: 10%;
+  color: white;
+  height: 20px;
+  position: absolute;
+  transform: translateX(650px);
+  left: 5px;  
+}
+.inputState {
+  background-color: black;
+}
+
 /** 마이페이지 (사진) */
 .mypage_member_info {
   margin: auto 20px;

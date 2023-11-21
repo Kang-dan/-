@@ -99,20 +99,6 @@ const getAttractionList = () => {
     }
   );
 };
-// const getAttractionList = () => {
-//   //서버에서 사진, 관광지명, 주소 가져오기
-//   listAttraction(
-//     param.value,
-//     ({ data }) => {
-//       attractions.value = data.attractions;
-//       currentPage.value = data.currentPage;
-//       totalPage.value = data.totalPageCount;
-//     },
-//     (error) => {
-//       console.log(error);
-//     }
-//   );
-// };
 
 const changeKey = (val) => {
   param.value.key = val;

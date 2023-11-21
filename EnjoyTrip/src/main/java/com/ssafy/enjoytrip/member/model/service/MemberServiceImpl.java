@@ -88,4 +88,9 @@ public class MemberServiceImpl implements MemberService {
 		return memberMapper.memberLikeList(map);
 	}
 
+	@Override
+	public void deleteMemberLikes(String memberId) {
+		memberMapper.deleteMemberLikes(memberId);
+	}
+
 }

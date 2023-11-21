@@ -25,6 +25,9 @@ async function boardUpdateHit(no, success, fail) {
 async function boardUpdateLove(map, success, fail) {
     await local.post(`${url}/update/love`, JSON.stringify(map)).then(success).catch(fail);
 }
+async function boardDeleteMember(memberId, success, fail) {
+    await local.delete(`${url}/${memberId}`).then(success).catch(fail);
+}
 
 export {
     boardList,
@@ -34,5 +37,6 @@ export {
     boardUpdate,
     boardUpdateHit,
     boardUpdateLove,
+    boardDeleteMember,
 
 };

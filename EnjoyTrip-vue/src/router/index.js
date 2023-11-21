@@ -9,11 +9,10 @@ import MemberLike from "../components/member/MemberLike.vue";
 import { storeToRefs } from "pinia";
 import { useMemberStore } from "@/stores/member";
 
-const { getMemberInfo } = useMemberStore;
-
 const onlyAuthMember = async (to, from, next) => {
   const memberStore = useMemberStore();
   const { memberInfo, isValidToken } = storeToRefs(memberStore);
+  const { getMemberInfo } = memberStore;
 
   let token = sessionStorage.getItem("accessToken");
   console.log("로그인 처리 전", memberInfo, token);
@@ -22,10 +21,10 @@ const onlyAuthMember = async (to, from, next) => {
     console.log("토큰 유효성 체크하러 가자!!!!");
     await getMemberInfo(token);
   }
-  if (!isValidToken || memberInfo === null) {
+  if (!isValidToken || memberInfo.value === null) {
     alert("로그인이 필요한 페이지입니다..");
     // next({ name: "login" });
-    router.push({ name: "member-login" });
+    next({ name: "member-login" });
   } else {
     console.log("로그인 했다!!!!!!!!!!!!!.");
     next();
@@ -64,6 +63,7 @@ const router = createRouter({
           path: "like",
           name: "member-like",
           component: MemberLike,
+          beforeEnter: onlyAuthMember,
         },
       ],
     },
@@ -82,12 +82,13 @@ const router = createRouter({
     {
       path: "/board",
       name: "board",
-      component: () => import("@/views/BoardView.vue"),      
+      component: () => import("@/views/BoardView.vue"),
       children: [
         {
           path: "list/:sidoCode", //sidoCode로 화면 넘김
           name: "board-list",
           component: () => import("@/components/board/BoardList.vue"),
+          beforeEnter: onlyAuthMember,
         },
       ],
     },

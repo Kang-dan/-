@@ -47,6 +47,12 @@ public class BoardController {
 		return ResponseEntity.ok("글삭제 성공");
 	}
 	
+	@DeleteMapping("/{memberId}")
+	public ResponseEntity<String> deleteMemberBoards(@PathVariable String memberId) {
+		boardSerivce.deleteMemberBoards(memberId);
+		return ResponseEntity.ok("글삭제 성공");
+	} 
+	
 	@PostMapping("/update")
 	public ResponseEntity<String> update(@RequestBody Board board) {
 		boardSerivce.update(board);

@@ -20,4 +20,6 @@ public interface BoardSerivce {
 	void updateHit(int no);
 
 	void updateLove(Map<String, Object> map);
+
+	void deleteMemberBoards(String memberId);
 }

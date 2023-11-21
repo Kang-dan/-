@@ -53,6 +53,12 @@ public class BoardServiceImpl implements BoardSerivce {
 		boardMapper.boardUpdateLove(map);
 	}
 
+	@Override
+	public void deleteMemberBoards(String memberId) {
+		boardMapper.deleteMemberBoards(memberId);
+		
+	}
+
 
 	
 }

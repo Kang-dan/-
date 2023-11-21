@@ -70,6 +70,17 @@ public class MemberController {
 		return ResponseEntity.status(HttpStatus.CREATED).build(); // 201번 보냄
 	}
 	
+	@PostMapping("/idCheck")
+	public ResponseEntity<String> idCheck(@RequestBody Member member) {
+		member = memberService.loginMember(member);
+		if (member != null) {
+			return ResponseEntity.ok("성공");
+		}
+		else {
+			return ResponseEntity.ok("실패");
+		}
+	}
+	
 	@PostMapping("/login")
 	public ResponseEntity<Map<String, Object>> login(@RequestBody Member member) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -145,14 +156,16 @@ public class MemberController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	@PutMapping("{memberId}")
-	public ResponseEntity<String> update(@PathVariable String memberId, @RequestBody Member member) {
+	@PutMapping("/update")
+	public ResponseEntity<String> update(@RequestBody Member member) {
 		memberService.updateMember(member);
 		return ResponseEntity.ok("OK");// 201번 보냄
 	}
 	
 	@DeleteMapping("{memberId}")
 	public ResponseEntity<String> delete(@PathVariable String memberId) {
+		System.out.println("삭제요청");
+		memberService.deleteMemberLikes(memberId);
 		memberService.deleteMember(memberId);
 		return ResponseEntity.ok("OK");// 201번 보냄
 	}

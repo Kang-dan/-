@@ -12,6 +12,14 @@ function registMember(member, success, fail) {
     local.post(`${url}/regist`, JSON.stringify(member)).then(success).catch(fail);
 }
 
+async function updateMember(member, success, fail) {
+  await local.put(`${url}/update`, JSON.stringify(member)).then(success).catch(fail);
+}
+
+async function deleteMember(memberId, success, fail) {
+  await local.delete(`${url}/${memberId}`).then(success).catch(fail);
+}
+
 async function findById(memberid, success, fail) {
   local.defaults.headers["Authorization"] = sessionStorage.getItem("accessToken");
   await local.get(`${url}/info/${memberid}`).then(success).catch(fail);
@@ -24,6 +32,10 @@ async function tokenRegeneration(member, success, fail) {
 
 async function logout(memberid, success, fail) {
   await local.get(`${url}/logout/${memberid}`).then(success).catch(fail);
+}
+
+async function idCheck(member, success, fail) {
+  await local.post(`${url}/idCheck`, JSON.stringify(member)).then(success).catch(fail);
 }
 
 async function likeInsert(like, success, fail) {
@@ -46,5 +58,8 @@ export {
   logout,
   likeInsert,
   likeList,
-  likeDelete
+  likeDelete,
+  idCheck,
+  updateMember,
+  deleteMember
 };
