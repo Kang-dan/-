@@ -162,24 +162,24 @@ const onScrollStart = (e) => {
   window.addEventListener("touchend", onScrollEnd);
 };
 
-const btnScrolle = () => {  
-  setTranslateX(getTranslateX() - 1500);
+const btnScrolle = (num) => {
+  setTranslateX(getTranslateX() + (850 * num));
   list.style.transition = `all 0.3s ease`;
-  listX = getTranslateX();
-  
+  listX = getTranslateX() + (850 * num);
+
   if (listX > 0) {
     setTranslateX(0);
-    list.style.transition = `all 0.3s ease`;
     listX = 0;
   } else if (listX < listClientWidth - listScrollWidth) {
     setTranslateX(listClientWidth - listScrollWidth);
-    list.style.transition = `all 0.3s ease`;
     listX = listClientWidth - listScrollWidth;
   }
+  
   setTimeout(() => {    
     bindEvents();
     list.style.transition = "";
-  }, 300);
+  }, 300);  
+
 }
 
 // 스크롤 종료 이벤트 구현
@@ -305,7 +305,6 @@ const getLikeOne = () => {
 <template>
   <div id="trip">
     <div id="star">
-      <button @click="btnScrolle">오른쪽 버튼 테스트</button>
       <div class="snowBall_img" alt="스노우볼">
         <img
           id="TripFoodButton"
@@ -405,6 +404,20 @@ const getLikeOne = () => {
             </li>
           </ul>
         </div>
+        <div class="listControl">
+          <img
+            class="listBtn"
+            src="@/assets/like/like_left_button.png"
+            alt=""
+            @click="btnScrolle(1)"
+          />
+          <img
+            class="listBtn"
+            src="@/assets/like/like_right_button.png"
+            alt=""
+            @click="btnScrolle(-1)"
+          />          
+        </div>
         <!-- 모달창(디테일) 테스트 -->
         <div id="modal_div">
           <!-- <button @click="showModal">모달 열기</button> -->
@@ -427,6 +440,21 @@ const getLikeOne = () => {
 </template>
 
 <style scoped>
+
+.listControl {
+  justify-content: space-between;
+  width: 1100px;
+  transform: translate(-45px, -315px);
+  position: absolute;
+  display: flex;
+}
+
+.listBtn {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+
 .item:hover {
   transform: translate(10px, 10px); /* 3D처럼 사진 위에 마우스 효과 */
 }
