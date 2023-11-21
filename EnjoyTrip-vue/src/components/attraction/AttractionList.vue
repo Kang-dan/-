@@ -61,6 +61,9 @@ onMounted(() => {
   });
   // window.scrollTo(0, scrollPosition);
   getAttractionList();
+  list = document.querySelector(".list");  
+  listClientWidth = list.clientWidth;
+  bindEvents();
 });
 
 const loadAttractionByTheme = (theme) => {
@@ -87,9 +90,17 @@ const loadAttractionByTheme = (theme) => {
   getAttractionList();
 };
 
-const getAttractionList = () => {
+const getTranslateX = () => {
+  return parseInt(getComputedStyle(list).transform.split(/[^\-0-9]+/g)[5]);
+};
+
+const setTranslateX = (x) => {
+  list.style.transform = `translateX(${x}px)`;
+};
+
+const getAttractionList = async () => {  
   //서버에서 사진, 관광지명, 주소 가져오기
-  listAttraction(
+  await listAttraction(
     param.value,
     ({ data }) => {
       attractions.value = data;
@@ -98,6 +109,10 @@ const getAttractionList = () => {
       console.log(error);
     }
   );
+  listX = getTranslateX();
+  setTranslateX(0);
+  listX = 0;
+  listScrollWidth = list.scrollWidth;  
 };
 
 const changeKey = (val) => {
@@ -124,25 +139,12 @@ let nowX = ref(0);
 let endX = ref(0);
 let listX = ref(0);
 
-onMounted(() => {
-  list = document.querySelector(".list");
-  // listScrollWidth = list.scrollWidth;
-  // listClientWidth = list.clientWidth;
-  bindEvents();
-});
-
 const getClientX = (e) => {
   const isTouches = e.touches ? true : false;
   return isTouches ? e.touches[0].clientX : e.clientX;
 };
 
-const getTranslateX = () => {
-  return parseInt(getComputedStyle(list).transform.split(/[^\-0-9]+/g)[5]);
-};
 
-const setTranslateX = (x) => {
-  list.style.transform = `translateX(${x}px)`;
-};
 
 //이벤트 연결
 const bindEvents = () => {
@@ -152,7 +154,7 @@ const bindEvents = () => {
 };
 
 //스크롤 진행 이벤트 구현
-const onScrollStart = (e) => {
+const onScrollStart = (e) => {  
   startX = getClientX(e);
   window.addEventListener("mousemove", onScrollMove);
   window.addEventListener("touchmove", onScrollMove);
@@ -160,8 +162,28 @@ const onScrollStart = (e) => {
   window.addEventListener("touchend", onScrollEnd);
 };
 
+const btnScrolle = () => {  
+  setTranslateX(getTranslateX() - 1500);
+  list.style.transition = `all 0.3s ease`;
+  listX = getTranslateX();
+  
+  if (listX > 0) {
+    setTranslateX(0);
+    list.style.transition = `all 0.3s ease`;
+    listX = 0;
+  } else if (listX < listClientWidth - listScrollWidth) {
+    setTranslateX(listClientWidth - listScrollWidth);
+    list.style.transition = `all 0.3s ease`;
+    listX = listClientWidth - listScrollWidth;
+  }
+  setTimeout(() => {    
+    bindEvents();
+    list.style.transition = "";
+  }, 300);
+}
+
 // 스크롤 종료 이벤트 구현
-const onScrollEnd = (e) => {
+const onScrollEnd = (e) => {  
   endX = getClientX(e);
   listX = getTranslateX();
   if (listX > 0) {
@@ -182,7 +204,7 @@ const onScrollEnd = (e) => {
   window.removeEventListener("touchend", onScrollEnd);
   window.removeEventListener("click", onClick);
 
-  setTimeout(() => {
+  setTimeout(() => {    
     bindEvents();
     list.style.transition = "";
   }, 300);
@@ -283,6 +305,7 @@ const getLikeOne = () => {
 <template>
   <div id="trip">
     <div id="star">
+      <button @click="btnScrolle">오른쪽 버튼 테스트</button>
       <div class="snowBall_img" alt="스노우볼">
         <img
           id="TripFoodButton"
@@ -319,71 +342,50 @@ const getLikeOne = () => {
             @click="getAttractionList"
           >
             검색
-          </button>
+          </button>          
         </div>
 
         <!-- All -->
-        <div class="img0">
+        <div class="img0" @click="loadAttractionByTheme('all')">
+          
           <img
             id="TripSnowButton0"
             src="@/assets/cityAttraction/TripListAllButtonImg.png"
-            alt=""
-            @click="loadAttractionByTheme('all')"
           />
-          <div
-            class="TripSnowButton0_text"
-            @click="loadAttractionByTheme('all')"
-          >
+          <div class="TripSnowButton0_text">
             <h3 class="select_all">All</h3>
           </div>
         </div>
         <!-- Food -->
-        <div class="img1">
+        <div class="img1" @click="loadAttractionByTheme('food')">
           <div class="spotLight1"></div>
           <img
             id="TripSnowButton1"
             src="@/assets/cityAttraction/TripSnowButton.png"
-            alt=""
-            @click="loadAttractionByTheme('food')"
           />
-          <div
-            class="TripSnowButton1_text"
-            @click="loadAttractionByTheme('food')"
-          >
+          <div class="TripSnowButton1_text">
             <h3>Food</h3>
           </div>
         </div>
 
         <!-- Festival -->
-        <div class="img2">
+        <div class="img2" @click="loadAttractionByTheme('festival')">
           <img
             id="TripSnowButton2"
             src="@/assets/cityAttraction/TripSnowButton.png"
-            alt=""
-            @click="loadAttractionByTheme('festival')"
           />
-          <div>
-            <h3
-              class="TripSnowButton2_text"
-              @click="loadAttractionByTheme('festival')"
-            >
-              Festival
-            </h3>
+          <div class="TripSnowButton2_text">
+            <h3>Festival</h3>
           </div>
         </div>
 
         <!-- Family -->
-        <div class="img3">
+        <div class="img3" @click="loadAttractionByTheme('family')">
           <img
             id="TripSnowButton3"
-            src="@/assets/cityAttraction/TripSnowButton.png"
-            alt=""
-            @click="loadAttractionByTheme('family')"
+            src="@/assets/cityAttraction/TripSnowButton.png"            
           />
-          <div
-            class="TripSnowButton3_text"
-            @click="loadAttractionByTheme('family')"
-          >
+          <div class="TripSnowButton3_text">
             <h3>Family</h3>
           </div>
         </div>
@@ -597,12 +599,14 @@ input {
   height: 85px;
   width: 85px;
   box-shadow: 0 0px 60px rgb(52, 255, 228);
+  z-index: 1;
 }
 
 .img0 {
   cursor: pointer;
   position: absolute;
   transform: translate(190px, 85px);
+  z-index: 5;
 }
 
 /** Attraction Button(홈) */
@@ -629,7 +633,7 @@ input {
   cursor: pointer;
   position: absolute;
   transform: translate(62px, 50px);
-  color: rgb(61, 71, 67);
+  color: #fff;
   z-index: 4;
   transition: transform 0.5s ease; /* 트랜지션 효과 추가 */
 }
@@ -637,20 +641,6 @@ input {
 .TripSnowButton0_text:hover {
   cursor: pointer;
   transform: translate(62px, 50px) scale(1.5);
-}
-
-.select_all {
-  cursor: pointer;
-  color: #fff;
-  transition: transform 0.5s ease; /* 트랜지션 효과 추가 */
-  z-index: 5;
-}
-
-.select_all:hover {
-  cursor: pointer;
-  color: #fff;
-  transform: translate(62px, 50px) scale(1.5);
-  z-index: 5;
 }
 
 #TripSnowButton1 {
