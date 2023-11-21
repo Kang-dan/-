@@ -5,12 +5,9 @@ import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useMemberStore } from "@/stores/member";
-import { likeList } from '@/api/member';
+import { likeList } from "@/api/member";
 import AttractionDetailModal from "@/components/attraction/AttractionDetailModal.vue";
-import {  
-  detailAttraction,
-  detailIntroAttraction,
-} from "@/api/attraction";
+import { detailAttraction, detailIntroAttraction } from "@/api/attraction";
 
 const memberStore = useMemberStore();
 const { isLogin, memberInfo } = storeToRefs(memberStore);
@@ -29,7 +26,7 @@ const { VITE_ATTRACTION_LIST_SIZE } = import.meta.env;
 const isModalOpen = ref(false);
 const likeLength = ref({});
 const likeNo = ref();
-const likeLists = ref([{}])
+const likeLists = ref([{}]);
 const attractionDetail = ref({});
 const attractionOverview = ref({});
 const attractionDetailIntro = ref({});
@@ -49,40 +46,46 @@ const likeChange = (check) => {
       startIndex.value -= 1;
     }
     getLike();
-  }
-  else getLikeOne();
-  
-}
+  } else getLikeOne();
+};
 
 const getLike = () => {
   likeList(
     {
-      "memberId": memberInfo.value.memberId
+      memberId: memberInfo.value.memberId,
     },
-      ({ data }) => { 
-        likeLists.value = data;
-        // if (likeLength.value > 0) likeNo.value = data[0].no;
+    ({ data }) => {
+      likeLists.value = data;
+      // if (likeLength.value > 0) likeNo.value = data[0].no;
     },
-    (err) => { 
-      console.log(err)
-    });
-}
+    (err) => {
+      console.log(err);
+    }
+  );
+};
 
 const getLikeOne = () => {
   likeList(
     {
-      "memberId": memberInfo.value.memberId,
-      "contentId": (attractionDetail.value.contentTypeId === 15) ? 0 : attractionDetail.value.contentId,
-      "contentFestivalId": (attractionDetail.value.contentTypeId === 15) ? attractionDetail.value.contentId : 0,
+      memberId: memberInfo.value.memberId,
+      contentId:
+        attractionDetail.value.contentTypeId === 15
+          ? 0
+          : attractionDetail.value.contentId,
+      contentFestivalId:
+        attractionDetail.value.contentTypeId === 15
+          ? attractionDetail.value.contentId
+          : 0,
     },
-    ({ data }) => { 
-        likeLength.value = data.length
-        if (likeLength.value > 0) likeNo.value = data[0].no;
+    ({ data }) => {
+      likeLength.value = data.length;
+      if (likeLength.value > 0) likeNo.value = data[0].no;
     },
-    (err) => { 
-      console.log(err)
-    });
-}
+    (err) => {
+      console.log(err);
+    }
+  );
+};
 
 onMounted(() => {
   getLike();
@@ -142,7 +145,7 @@ const showModal = (detail) => {
   // 상세화면이 음식점일 경우 음식점 정보 가져오기
   if (attractionDetail.value.contentTypeId != 15) {
     getAttractionIntro();
-  }  
+  }
   if (isLogin.value) {
     getLikeOne();
   }
@@ -151,8 +154,6 @@ const showModal = (detail) => {
   const modal = document.querySelector("#modal.modal-overlay");
   modal.classList.add("show");
 };
-
-
 </script>
 
 <template>
@@ -229,14 +230,14 @@ const showModal = (detail) => {
             :key="item.index"
             @click="showModal(item)"
           >
-          
             <a class="link" href="#">
-              <a class="item_list">list : {{ startIndex + 1 }} / {{ likeLists.length }}</a>
+              <a class="item_list"
+                >list : {{ startIndex + 1 }} / {{ likeLists.length }}</a
+              >
               <img class="image" :src="item.firstImage" alt="" />
               <a class="item_title">{{ item.title }}</a>
               <a class="item_addr">{{ item.addr1 }}</a>
             </a>
-          
           </div>
         </div>
         <div class="controls">
@@ -244,7 +245,7 @@ const showModal = (detail) => {
           <button class="right-btn" @click="moveRight">→</button>
         </div>
         <!-- 모달창(디테일) 테스트  -->
-        <div id="modal_div">          
+        <div id="modal_div">
           <teleport to="body" v-if="isModalOpen">
             <AttractionDetailModal
               :attractionDetail="attractionDetail"
@@ -253,7 +254,6 @@ const showModal = (detail) => {
               :likeLength="likeLength"
               :likeNo="likeNo"
               @likeChange="likeChange"
-              
             ></AttractionDetailModal>
           </teleport>
         </div>
@@ -263,46 +263,48 @@ const showModal = (detail) => {
 
     <div class="like_snow_circle_img">
       <!-- <img class="like_tree" src="@/assets/like/like_tree.png" alt="" /> -->
-      <img
-        class="gif1_bell"
-        src="@/assets/like/like-christmas-bell-unscreen.gif"
-        alt=""
-      />
-      <img
-        class="gif2_box"
-        src="@/assets/like/like-christmas-presentBox-unscreen.gif"
-        alt=""
-      />
-      <img
-        class="gif3_santa_ski"
-        src="@/assets/like/like-christmas-santa-ski-unscreen.gif"
-        alt=""
-      />
-      <img
-        class="gif4_santa_snow"
-        src="@/assets/like/like-christmas-snow-santa-unscreen.gif"
-        alt=""
-      />
-      <img
-        class="gif5_snowball"
-        src="@/assets/like/like-christmas-snowball-snowma-unscreen.gif"
-        alt=""
-      />
-      <img
-        class="gif6_snowman"
-        src="@/assets/like/like-christmas-snowman-unscreen.gif"
-        alt=""
-      />
-      <img
-        class="gif7_tree"
-        src="@/assets/like/like-christmas-tree-unscreen.gif"
-        alt=""
-      />
-      <img
-        class="gif8_tree2"
-        src="@/assets/like/like-christmas-tree2-unscreen.gif"
-        alt=""
-      />
+      <div id="gifs">
+        <img
+          class="gif1_bell"
+          src="@/assets/like/like-christmas-bell-unscreen.gif"
+          alt=""
+        />
+        <img
+          class="gif2_box"
+          src="@/assets/like/like-christmas-presentBox-unscreen.gif"
+          alt=""
+        />
+        <img
+          class="gif3_santa_ski"
+          src="@/assets/like/like-christmas-santa-ski-unscreen.gif"
+          alt=""
+        />
+        <img
+          class="gif4_santa_snow"
+          src="@/assets/like/like-christmas-snow-santa-unscreen.gif"
+          alt=""
+        />
+        <img
+          class="gif5_snowball"
+          src="@/assets/like/like-christmas-snowball-snowma-unscreen.gif"
+          alt=""
+        />
+        <img
+          class="gif6_snowman"
+          src="@/assets/like/like-christmas-snowman-unscreen.gif"
+          alt=""
+        />
+        <img
+          class="gif7_tree"
+          src="@/assets/like/like-christmas-tree-unscreen.gif"
+          alt=""
+        />
+        <img
+          class="gif8_tree2"
+          src="@/assets/like/like-christmas-tree2-unscreen.gif"
+          alt=""
+        />
+      </div>
     </div>
   </div>
   <!-- <img src="@/assets/like/like_snow_circle2.png" alt=""> -->
@@ -311,21 +313,26 @@ const showModal = (detail) => {
 <style scoped>
 /** 윗부분 */
 .like_top_background {
-  height: 470px;
+  height: 550px;
   /* margin: 0 auto; */
 }
 
 /** 눈 행성 위 꾸미기 */
 .like_snow_circle_img {
   background-image: url("@/assets/like/like_snow_circle.png");
-  width: 1300px;
+  width: 1400px;
   height: 1300px;
   justify-content: center;
 
   background-size: cover;
   text-align: center;
   margin: 0 auto;
-  /* margin: 0 auto; */
+
+  visibility: hidden; /** 나중에 풀자! */
+}
+
+#gifs {
+  transform: translate(35px, 0px);
 }
 
 /** 나무 */
@@ -340,7 +347,7 @@ const showModal = (detail) => {
   display: flex;
   position: absolute;
   width: 100px;
-  transform: translate(610px, -550px);
+  transform: translate(610px, -600px);
   z-index: 999;
   display: none;
 }

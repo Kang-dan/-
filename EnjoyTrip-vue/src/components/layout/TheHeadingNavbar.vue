@@ -172,7 +172,7 @@ const formatTime = (value) => {
   height: 90px;
   cursor: pointer;
   z-index: 999;
-  display: none; /* 나중에 풀기 */
+  display: none; /**나중에 풀기*/
 }
 
 @font-face {

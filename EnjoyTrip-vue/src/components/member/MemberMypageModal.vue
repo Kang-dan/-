@@ -1,13 +1,21 @@
 <script setup>
-import { ref } from "vue";
-import { likeInsert, likeList, likeDelete } from "@/api/member";
+import { ref, onMounted } from "vue";
 import { useMemberStore } from "@/stores/member";
 import { storeToRefs } from "pinia";
 
 const memberStore = useMemberStore();
-const { isLogin, memberInfo } = storeToRefs(memberStore);
+const { getMemberInfo, memberInfo } = memberStore;
+const { isLogin } = storeToRefs(memberStore);
 
 const isModalOpen = ref(false);
+
+const openModal = async () => {
+  // 페이지가 마운트될 때 회원 정보를 가져오기
+  if (isLogin.value) {
+    await getMemberInfo();
+  }
+  isModalOpen.value = true;
+};
 
 const closeModal = () => {
   isModalOpen.value = false;
@@ -17,20 +25,24 @@ const closeModal = () => {
     modal.classList.remove("show");
   }
 };
-
-
-
 /** 모달창(디테일) 테스트 끝 */
+
+onMounted(async () => {
+  // 페이지가 마운트될 때 회원 정보를 가져오기
+  if (isLogin.value) {
+    await getMemberInfo();
+  }
+});
 </script>
 
 <template>
   <div id="modal" class="modal-overlay" @click="closeModal">
     <div class="modal-window" @click.stop>
-      <div class="title">
-        <h2>할 수 이 따</h2>
-      </div>
-
       <div class="close-area" @click="closeModal">X</div>
+      <div class="title">
+        <h1>" Life is full of possibilities "</h1>
+        <h2>인생은 가능성으로 차 있어 - 소울-</h2>
+      </div>
       <div class="content">
         <img
           class="mypage_info_photo_img"
@@ -44,11 +56,16 @@ const closeModal = () => {
         />
         <div class="mypage_member_info">
           <h3>아이디</h3>
+          <p>{{ memberInfo?.value?.memberId }}</p>
           <h3>비밀번호</h3>
           <h3>이름</h3>
+          <p>{{ memberInfo?.value?.memberName }}</p>
           <h3>이메일</h3>
+          <p>{{ memberInfo?.value?.memberEmail }}</p>
           <h3>나이</h3>
+          <p>{{ memberInfo?.value?.age }}</p>
           <h3>우리 회원이 된 날</h3>
+          <!-- <p>{{ memberInfo.value.joinDate }}</p> -->
         </div>
       </div>
     </div>
@@ -62,6 +79,7 @@ const closeModal = () => {
 }
 .mypage_info_photo_img {
   padding-left: 30px;
+  visibility: hidden;
 }
 
 .mypage_winter_children_photo {
@@ -70,6 +88,7 @@ const closeModal = () => {
   transform: translate(69px, 100px);
   width: 365px;
   /* display: none; */
+  visibility: hidden;
 }
 
 #modal .modal-window {
@@ -119,13 +138,16 @@ const closeModal = () => {
   padding: 10px;
 }
 #modal .title {
-  padding-left: 10px;
-  display: inline;
+  /* display: inline; */
+  padding-left: 250px;
   text-shadow: 1px 1px 2px gray;
   color: white;
 }
 #modal .title h2 {
-  display: inline;
+  padding-left: 55px;
+  /* position: absolute; */
+  /* transform: translate(430px, 50%); */
+  /* display: inline; */
 }
 #modal .close-area {
   display: inline;
@@ -139,6 +161,7 @@ const closeModal = () => {
 /** 모달창 예쁘게 */
 #modal .content {
   margin-top: 20px;
+  align-content: center;
   /* padding: 0px 10px; */
   text-shadow: 1px 1px 2px rgb(68, 68, 68);
   font-size: 20px;
