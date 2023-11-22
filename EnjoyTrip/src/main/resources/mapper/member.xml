@@ -71,13 +71,13 @@
 	</select>
 	
 	<select id="memberInfo" parameterType="String" resultMap="memberMap">
-		select member_id, member_name, join_date, member_email, age, member_board_count
+		select member_id, member_pw, member_name, join_date, member_email, age, member_board_count
 		  from members
 		 where member_id = #{memberId}
 	</select>
 	
 	<select id="detailMember" parameterType="String" resultMap="memberMap">
-		select member_id, member_pw, member_name, join_date, member_email, age, member_board_count
+		select member_id, member_pw, member_name, , member_email, age, member_board_count
 		  from members
 		 where member_id = #{memberId}
 	</select>
@@ -96,12 +96,6 @@
 	<delete id="deleteMember" parameterType="String">
 		delete 
 		  from members
-		 where member_id = #{memberId}
-	</delete>
-	
-	<delete id="deleteMemberLikes">
-		delete
-		  from members_likes
 		 where member_id = #{memberId}
 	</delete>
 	
