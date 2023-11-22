@@ -18,26 +18,25 @@ const boards = ref([{}]);
 
 const getBoardList = () => {
   boardList(
-    route.params.sidoCode,
     ({ data }) => {
       boards.value = data;
     },
     (err) => {
       console.log(err);
     }
-  );
+  );  
 };
 
 onMounted(() => {
   getBoardList();
+  isModalOpen.value = true;
 });
 
 /** 게시글 작성 - 모달창 */
 const showModal = (detail) => {
   // 로그인이 되어있을 때에만 열리게 하기
   if (isLogin.value) {
-    // getMypage();
-    isModalOpen.value = true;
+    // getMypage();    
     // 모달이 나타날 때 show 클래스 추가
     const modal = document.querySelector("#modal.modal-overlay");
     modal.classList.add("show");
@@ -45,7 +44,6 @@ const showModal = (detail) => {
 };
 
 const moveBoardWrite = () => {
-  // mypage-bag 이미지를 클릭했을 때 모달창 열도록 설정
   showModal();
 };
 </script>
@@ -61,16 +59,11 @@ const moveBoardWrite = () => {
   <div class="board_background">
     <div class="board_tree">
       <div class="random_leaf">
-        <img class="board_leaf" src="@/assets/board/board_leaf_1.png" alt="" />
-        <img class="board_leaf" src="@/assets/board/board_leaf_2.png" alt="" />
-        <img class="board_leaf" src="@/assets/board/board_leaf_3.png" alt="" />
-        <img class="board_leaf" src="@/assets/board/board_leaf_4.png" alt="" />
-        <img class="board_leaf" src="@/assets/board/board_leaf_5.png" alt="" />
-        <img class="board_leaf" src="@/assets/board/board_leaf_6.png" alt="" />
-        <img class="board_leaf" src="@/assets/board/board_leaf_7.png" alt="" />
-        <img class="board_leaf" src="@/assets/board/board_leaf_8.png" alt="" />
-        <img class="board_leaf" src="@/assets/board/board_leaf_9.png" alt="" />
-        <img class="board_leaf" src="@/assets/board/board_leaf_10.png" alt="" />
+        <img class="board_leaf" v-for="board in boards"
+        :src="`src/assets/board/board_leaf_${board.boardImg}.png`"
+        :style="`left:${board.boardX}px; top:${board.boardY}px`"
+        />
+        
       </div>
       <img
         class="board_search"
@@ -89,13 +82,18 @@ const moveBoardWrite = () => {
   <div id="modal_div">
     <!-- <button @click="showModal">모달 열기</button> -->
     <teleport to="body" v-if="isModalOpen">
-      <BoardWriteModal></BoardWriteModal>
+      <BoardWriteModal @getBoardList="getBoardList"></BoardWriteModal>
     </teleport>
   </div>
 </template>
 
 
 <style scoped>
+
+.random_leaf {
+  position: relative;
+}
+
 .board_background {
   /* background-image: url("@/assets/board/board_background6.jpeg"); */
   background-color: darkblue;
@@ -118,8 +116,8 @@ const moveBoardWrite = () => {
 .board_tree {
   background-image: url("@/assets/board/board_tree.png");
   background-size: cover;
-  height: 500px;
-  width: 500px;
+  height: 600px;
+  width: 600px;
   margin: 0 auto;
   position: relative; /* 부모(.board_background)에 대해 상대 위치로 지정. */
   top: 60%; /* 부모(.board_background)의 세로 이동. */
@@ -131,7 +129,7 @@ const moveBoardWrite = () => {
 .board_leaf {
   width: 100px;
   z-index: 999;
-
+  position: absolute;
   /* visibility: hidden; */
 }
 

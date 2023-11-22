@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useMemberStore } from "@/stores/member";
+import { boardWrite } from "@/api/board";
 import { storeToRefs } from "pinia";
 
 const memberStore = useMemberStore();
@@ -8,9 +9,10 @@ const { memberInfo, getMemberInfo, memberLogout } = memberStore;
 const { isLogin } = storeToRefs(memberStore);
 
 const isModalOpen = ref(false);
-
+const emit = defineEmits(["getBoardList"]);
 const closeModal = () => {
   isModalOpen.value = false;
+  emit("getBoardList");
   // 모달을 닫을 때 show 클래스 제거
   const modal = document.querySelector("#modal.modal-overlay");
   if (modal) {
@@ -18,6 +20,121 @@ const closeModal = () => {
   }
 };
 /** 모달창(디테일) 테스트 끝 */
+
+const board = ref({
+  boardTitle: "",
+  memberId: memberInfo.memberId,
+  boardContent: "",
+  boardX: 0,
+  boardY: 0,
+  boardImg: 0,
+});
+
+const boardSubmit = () => {
+  let left = Math.floor(Math.random() * 701);
+  left = left - 100;
+  let top = 0;
+
+  if (left > 550 || left < -50) {
+    top = Math.floor(Math.random() * 361);
+    top = top - 30;
+    if (left > 550) {
+      if (top > 180) top = top - (left - 550);
+      else top = top + (left - 550);
+    }
+    else {
+      if (top > 180) top = top + (left + 50);
+      else top = top - (left + 50);
+    }
+  }
+  else if (left > 400 || left < 100) {
+    top = Math.floor(Math.random() * 431);
+    top = top - 100;
+    if (left > 400) {
+      if (top > 115) top = top - (left - 400);
+      else top = top + (left - 400);
+    }
+    else {
+      if (top > 115) top = top + (left - 100);
+      else top = top - (left - 100);
+    }
+  }
+  else {
+    top = Math.floor(Math.random() * 471);
+    top = top - 150;
+  }
+
+  board.value.boardX = left;
+  board.value.boardY = top;
+  board.value.boardImg = Math.floor(Math.random() * 10 + 1);
+  
+  boardWrite(
+    board.value,
+    ({data}) => { 
+      console.log(data);
+      board.value.boardTitle = "";
+      board.value.boardContent = "";
+      closeModal();
+    },
+    (err) => { 
+      console.log("에러");
+    }
+  );
+}
+
+
+function selectFile(element) {
+
+const file = element.files[0];
+const filename = element.closest('.file_input').firstElementChild;
+
+// 1. 파일 선택 창에서 취소 버튼이 클릭된 경우
+if ( !file ) {
+    filename.value = '';
+    return false;
+}
+
+// 2. 파일 크기가 10MB를 초과하는 경우
+const fileSize = Math.floor(file.size / 1024 / 1024);
+if (fileSize > 10) {
+    alert('10MB 이하의 파일로 업로드해 주세요.');
+    filename.value = '';
+    element.value = '';
+    return false;
+}
+
+// 3. 파일명 지정
+filename.value = file.name;
+}
+
+
+// 파일 추가
+function addFile() {
+const fileDiv = document.createElement('div');
+fileDiv.innerHTML =`
+    <div class="file_input">
+        <input type="text" readonly />
+        <label> 첨부파일
+            <input type="file" name="files" onchange="selectFile(this);" />
+        </label>
+    </div>
+    <button type="button" onclick="removeFile(this);" class="btns del_btn"><span>삭제</span></button>
+`;
+document.querySelector('.file_list').appendChild(fileDiv);
+}
+
+
+// 파일 삭제
+function removeFile(element) {
+  const fileAddBtn = element.nextElementSibling;
+  if (fileAddBtn) {
+      const inputs = element.previousElementSibling.querySelectorAll('input');
+      inputs.forEach(input => input.value = '')
+      return false;
+  }
+  element.parentElement.remove();
+}
+
 </script>
 
 <template>
@@ -25,17 +142,22 @@ const closeModal = () => {
     <div class="modal-window" @click.stop>
       <div class="close-area" @click="closeModal">X</div>
       <div class="title">
-        <!-- <h1>" Life is full of possibilities "</h1>
-        <h2>인생은 가능성으로 차 있어 - 소울-</h2> -->
       </div>
 
       <div class="content"></div>
 
       <div class="board_input">
-        <label>제목</label>
-        <input id="title" type="text" required />
-        <textarea id="content" cols="25" rows="10" type="text" required />
-        <span></span>
+        <form @submit.prevent="boardSubmit">
+          <label>제목</label>
+          <input id="title" v-model="board.boardTitle" type="text" required />
+          <textarea id="content" v-model="board.boardContent" cols="25" rows="10" type="text" required />
+          <label> 첨부파일
+            <input type="file" name="files" @click="selectFile(this);" />
+          </label>
+          <button type="button" @click="removeFile(this);" ><span>삭제</span></button>
+          <button type="button" @click="addFile();" ><span>파일 추가</span></button>
+          <span><button>글쓰기</button></span>
+        </form>
       </div>
     </div>
   </div>

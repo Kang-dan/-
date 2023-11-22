@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ssafy.enjoytrip.board.model.Board;
+import com.ssafy.enjoytrip.board.model.FileUpload;
 
 @Mapper
 public interface BoardMapper {
@@ -18,12 +19,17 @@ public interface BoardMapper {
 
 	void boardDelete(int boardNo);
 	
-	List<Board> boardList(int sidoCode);
+	List<Board> boardList();
 
 	void boardUpdateHit(int boardNo);
 
 	void boardUpdateLove(Map<String, Object> map);
 
 	void deleteMemberBoards(String memberId);
+
+	void boardCountUpdate(Map<String, Object> map);
+	
+	// 파일 관련
+	void saveAll(List<FileUpload> files);
 
 }

@@ -14,25 +14,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.enjoytrip.board.model.Board;
+import com.ssafy.enjoytrip.board.model.FileUpload;
 import com.ssafy.enjoytrip.board.model.service.BoardSerivce;
+import com.ssafy.enjoytrip.util.FileUtils;
 
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/board")
 public class BoardController {
 	private final BoardSerivce boardSerivce;
+	private final FileUtils fileUtils;
 	public BoardController(BoardSerivce boardSerivce) {
+		this.fileUtils = new FileUtils();
 		this.boardSerivce = boardSerivce;
 	}
 
-	@GetMapping("/list/{sidoCode}")
-	public ResponseEntity<List<Board>> list(@PathVariable int sidoCode) {
-		return ResponseEntity.ok(boardSerivce.list(sidoCode));
+	@GetMapping("/list")
+	public ResponseEntity<List<Board>> list() {
+		return ResponseEntity.ok(boardSerivce.list());
 	}
 	
 	@PostMapping("/write")
 	public ResponseEntity<String> write(@RequestBody Board board) {
 		boardSerivce.write(board);
+		List<FileUpload> files = fileUtils.uploadFiles(board.getFiles());
+		boardSerivce.saveFiles(board.getBoardNo(), files);
 		return ResponseEntity.ok("글쓰기 성공");
 	}	
 

@@ -90,13 +90,7 @@ const router = createRouter({
           path: "/list",
           name: "board-list",
           component: boardList,
-        },
-        // {
-        //   path: "list/:sidoCode", //sidoCode로 화면 넘김
-        //   name: "board-list",
-        //   component: () => import("@/components/board/BoardList.vue"),
-        //   beforeEnter: onlyAuthMember,
-        // },
+        },        
       ],
     },
   ],

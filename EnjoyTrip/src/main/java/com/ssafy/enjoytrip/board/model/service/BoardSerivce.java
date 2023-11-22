@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ssafy.enjoytrip.board.model.Board;
+import com.ssafy.enjoytrip.board.model.FileUpload;
 
 public interface BoardSerivce {
 
@@ -13,7 +14,7 @@ public interface BoardSerivce {
 
 	void delete(int no);
 	
-	List<Board> list(int sidoCode);
+	List<Board> list();
 
 	void update(Board board);
 
@@ -22,4 +23,7 @@ public interface BoardSerivce {
 	void updateLove(Map<String, Object> map);
 
 	void deleteMemberBoards(String memberId);
+	
+	
+	void saveFiles(int boardNo, List<FileUpload> files);
 }

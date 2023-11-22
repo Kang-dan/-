@@ -4,8 +4,8 @@ const local = localAxios(); // axios instance
 
 const url = "/board"
 
-async function boardList(sidoCode, success, fail) {
-    await local.get(`${url}/list/${sidoCode}`).then(success).catch(fail);
+async function boardList(success, fail) {
+    await local.get(`${url}/list`).then(success).catch(fail);
 }
 async function boardWrite(board, success, fail) {
     await local.post(`${url}/write`, JSON.stringify(board)).then(success).catch(fail);

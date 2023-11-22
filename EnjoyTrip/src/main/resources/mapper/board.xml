@@ -8,28 +8,33 @@
 		<result column="board_no" property="boardNo"/>
 		<result column="board_title" property="boardTitle"/>
 		<result column="member_id" property="memberId"/>
-		<result column="sido_code" property="sidoCode"/>
 		<result column="board_content" property="boardContent"/>
 		<result column="board_hit" property="boardHit"/>
 		<result column="board_love" property="boardLove"/>
 		<result column="board_x" property="boardX"/>
 		<result column="board_y" property="boardY"/>
+		<result column="board_img" property="boardImg" />
 		<result column="board_register_time" property="boardRegisterTime"/>
 	</resultMap>
 	
-	<insert id="boardInsert" parameterType="board">
-		insert into board (board_title, member_id, sido_code, board_content, board_x, board_y)
-		values (#{boardTitle}, #{memberId}, #{sidoCode}, #{boardContent}, #{boardX}, #{boardY})
+	<insert id="boardInsert" parameterType="board" useGeneratedKeys="true" keyProperty="boardNo">
+		insert into board (board_title, member_id, board_content, board_x, board_y, board_img)
+		values (#{boardTitle}, #{memberId}, #{boardContent}, #{boardX}, #{boardY}, #{boardImg})
 	</insert>
 	
-	<select id="boardList" parameterType="int" resultMap="boardMap">
-		select board_no, board_title, member_id, sido_code, board_hit, board_love, board_register_time, board_x, board_y
+	<update id="boardCountUpdate" parameterType="map">
+		update members
+		   set member_board_count = member_board_count + #{num}
+		 where member_id = #{memberId}
+	</update>
+	
+	<select id="boardList" resultMap="boardMap">
+		select board_no, board_title, member_id, board_hit, board_love, board_register_time, board_x, board_y, board_img
 		from board
-		where sido_code = #{sidoCode}
 	</select>
 	
 	<select id="boardView" resultMap="boardMap" parameterType="int">
-		select board_no, board_title, member_id, sido_code, board_content, board_hit, board_love, board_register_time, board_x, board_y
+		select board_no, board_title, member_id, board_content, board_hit, board_love, board_register_time, board_x, board_y, board_img
 		  from board
 		 where board_no = #{boardNo}
 	</select>
@@ -66,6 +71,14 @@
 		from board
 		where member_id = #{memberId}
 	</delete>
+	
+	
+	<insert id="saveAll" parameterType="list">
+		insert into file_upload no, board_no, original_name, save_name, size, delete_yn, created_date, deleted_date
+		values <foreach item="file" collection="list" separator=",">
+			(#{file.no}, #{file.boardNo}, #{originalName}, #{saveName}, #{size}, 0, now(), null)
+		</foreach>
+	</insert>
 	
 
 </mapper>
