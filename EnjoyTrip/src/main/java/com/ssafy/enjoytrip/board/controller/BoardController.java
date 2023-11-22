@@ -37,8 +37,8 @@ public class BoardController {
 	@PostMapping("/write")
 	public ResponseEntity<String> write(@RequestBody Board board) {
 		boardSerivce.write(board);
-		List<FileUpload> files = fileUtils.uploadFiles(board.getFiles());
-		boardSerivce.saveFiles(board.getBoardNo(), files);
+//		List<FileUpload> files = fileUtils.uploadFiles(board.getFiles());
+//		boardSerivce.saveFiles(board.getBoardNo(), files);
 		return ResponseEntity.ok("글쓰기 성공");
 	}	
 

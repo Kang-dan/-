@@ -7,6 +7,9 @@ create table letter (
     member_no_to int not null,
     member_id_from varchar(30) not null,
     member_id_to varchar(30) not null,
+    letter_x int not null,
+    letter_y int not null,
+    letter_img int not null,
     letter_content varchar(2000) not null,
     letter_hit int default 0,
     letter_register_time TIMESTAMP default CURRENT_TIMESTAMP

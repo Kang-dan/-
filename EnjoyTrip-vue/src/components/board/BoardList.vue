@@ -5,16 +5,22 @@ import { boardList, boardWrite, boardView, boardUpdateHit } from "@/api/board";
 import { useMemberStore } from "@/stores/member";
 import { storeToRefs } from "pinia";
 import BoardWriteModal from "@/components/board/BoardWriteModal.vue";
+import BoardDetailModal from "@/components/board/BoardDetailModal.vue";
+import BoardMyListModal from "@/components/board/BoardMyListModal.vue";
 
 const memberStore = useMemberStore();
 const { isLogin, memberInfo } = storeToRefs(memberStore);
 
 const isModalOpen = ref(false); //게시글 쓸 때 열 모달창
+const isDetailModalOpen = ref(false); //게시글 쓸 때 열 모달창
+const isMyListModalOpen = ref(false); //게시글 쓸 때 열 모달창
 
 const router = useRouter();
 const route = useRoute();
 
 const boards = ref([{}]);
+
+const boardDetail = ref({});
 
 const getBoardList = () => {
   boardList(
@@ -28,24 +34,55 @@ const getBoardList = () => {
 };
 
 onMounted(() => {
-  getBoardList();
-  isModalOpen.value = true;
+  getBoardList();  
 });
 
 /** 게시글 작성 - 모달창 */
 const showModal = (detail) => {
   // 로그인이 되어있을 때에만 열리게 하기
   if (isLogin.value) {
-    // getMypage();    
+    isModalOpen.value = true;
     // 모달이 나타날 때 show 클래스 추가
     const modal = document.querySelector("#modal.modal-overlay");
     modal.classList.add("show");
   }
 };
 
+const showModalDetail = async (no) => {
+  // 로그인이 되어있을 때에만 열리게 하기
+  if (isLogin.value) {
+    await boardUpdateHit(no, ({data}) => { console.log(data)}, (err) => { console.log(err)});
+    boardView(
+      no,
+      ({data}) => { 
+        boardDetail.value = data;
+        isDetailModalOpen.value = true;
+      },
+      (err) => { 
+        console.log(err);
+      }
+    );
+    // 모달이 나타날 때 show 클래스 추가
+    const modalDetail = document.querySelector("#modalDetail.modal-overlay");
+    modalDetail.classList.add("show");
+  }
+};
+
+const showModalMyList = () => {
+  // 로그인이 되어있을 때에만 열리게 하기
+  if (isLogin.value) {
+    isMyListModalOpen.value = true;
+    
+    // 모달이 나타날 때 show 클래스 추가
+    const modalDetail = document.querySelector("#modalMyList.modal-overlay");
+    modalDetail.classList.add("show");
+  }
+};
+
 const moveBoardWrite = () => {
   showModal();
 };
+
 </script>
 
 <template>
@@ -59,9 +96,11 @@ const moveBoardWrite = () => {
   <div class="board_background">
     <div class="board_tree">
       <div class="random_leaf">
+        
         <img class="board_leaf" v-for="board in boards"
         :src="`src/assets/board/board_leaf_${board.boardImg}.png`"
         :style="`left:${board.boardX}px; top:${board.boardY}px`"
+        @click="showModalDetail(board.boardNo)"
         />
         
       </div>
@@ -69,6 +108,7 @@ const moveBoardWrite = () => {
         class="board_search"
         src="@/assets/board/board_region_hole.png"
         alt=""
+        @click="showModalMyList()"
       />
       <img
         class="board_write"
@@ -79,12 +119,13 @@ const moveBoardWrite = () => {
     </div>
   </div>
 
-  <div id="modal_div">
-    <!-- <button @click="showModal">모달 열기</button> -->
-    <teleport to="body" v-if="isModalOpen">
-      <BoardWriteModal @getBoardList="getBoardList"></BoardWriteModal>
-    </teleport>
-  </div>
+  <BoardWriteModal @getBoardList="getBoardList" :isOpen="isModalOpen">
+  </BoardWriteModal>
+  <BoardDetailModal @getBoardList="getBoardList" :isOpen="isDetailModalOpen"
+  :boardDetail="boardDetail">
+  </BoardDetailModal>
+  <BoardMyListModal :isOpen="isMyListModalOpen" :boards="boards"></BoardMyListModal>
+  
 </template>
 
 
