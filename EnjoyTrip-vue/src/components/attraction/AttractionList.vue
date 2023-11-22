@@ -280,6 +280,7 @@ const showModal = (detail) => {
   isModalOpen.value = true;
   // 모달이 나타날 때 show 클래스 추가
   const modal = document.querySelector("#modal.modal-overlay");
+  console.log("쇼모달작동")
   modal.classList.add("show");
 };
 
@@ -403,21 +404,20 @@ const getLikeOne = () => {
               </a>
             </li>
           </ul>
-        </div>
-        <div class="listControl">
-          <img
-            class="listBtn"
-            src="@/assets/like/like_left_button.png"
-            alt=""
-            @click="btnScrolle(1)"
-          />
-          <img
-            class="listBtn"
-            src="@/assets/like/like_right_button.png"
-            alt=""
-            @click="btnScrolle(-1)"
-          />          
-        </div>
+        </div>        
+        <img
+          class="listLeftBtn"
+          src="@/assets/like/like_left_button.png"
+          alt=""
+          @click="btnScrolle(1)"
+        />
+        <img
+          class="listRightBtn"
+          src="@/assets/like/like_right_button.png"
+          alt=""
+          @click="btnScrolle(-1)"
+        />
+        
         <!-- 모달창(디테일) 테스트 -->
         <div id="modal_div">
           <!-- <button @click="showModal">모달 열기</button> -->
@@ -449,10 +449,19 @@ const getLikeOne = () => {
   display: flex;
 }
 
-.listBtn {
+.listLeftBtn {
   width: 50px;
   height: 50px;
   cursor: pointer;
+  position: absolute;
+  transform: translate(-610px, -385px);
+}
+.listRightBtn {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  position: absolute;
+  transform: translate(570px, -385px);
 }
 
 .item:hover {
