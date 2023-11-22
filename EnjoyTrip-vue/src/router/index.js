@@ -93,6 +93,11 @@ const router = createRouter({
         },        
       ],
     },
+    {
+      path: "/sse",
+      name: "sse",
+      component: () => import("@/components/sse/sseTest.vue"),
+    },
   ],
 });
 

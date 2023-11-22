@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.ssafy.enjoytrip.letter.model.mapper.LetterMapper">
+	
+	<resultMap type="letter" id="letterMap">
+		<result column="letter_no" property="letterNo"/>
+		<result column="letter_title" property="letterTitle"/>
+		<result column="member_no_from" property="memberNoFrom"/>
+		<result column="member_no_to" property="memberNoTo"/>
+		<result column="member_id_from" property="memberIdFrom"/>
+		<result column="member_id_to" property="memberIdTo"/>
+		<result column="letter_x" property="letterX"/>
+		<result column="letter_y" property="letterY"/>
+		<result column="letter_img" property="letterImg"/>
+		<result column="letter_content" property="letterContent"/>
+		<result column="letter_hit" property="letterHit" />
+		<result column="letter_register_time" property="letterRegisterTime"/>
+	</resultMap>
+	
+	<insert id="letterWrite" parameterType="letter">
+		insert into letter (letter_title, member_no_from, member_no_to, member_id_from, member_id_to, letter_x, letter_y, letter_img, letter_content)
+		values (#{letterTitle}, #{memberNoFrom}, 
+		(select member_no from members where member_id = #{memberIdTo}), 
+		#{memberIdFrom}, #{memberIdTo}, #{letterX}, #{letterY}, #{letterImg}, #{letterContent})
+	</insert>
+	
+	<select id="letterView" parameterType="int" resultMap="letterMap">
+		select letter_no, letter_title, member_no_from, member_no_to, member_id_from, member_id_to, letter_x, letter_y, letter_img, letter_content, letter_hit, letter_register_time
+		  from letter
+		 where letter_no = #{no}
+	</select>
+	
+	<delete id="letterDelete" parameterType="int">
+		delete
+		  from letter
+		 where letter_no = #{no}
+	</delete>
+	
+	<select id="letterList" parameterType="int" resultMap="letterMap">
+		select letter_no, letter_title, member_no_from, member_no_to, member_id_from, member_id_to, letter_x, letter_y, letter_img, letter_content, letter_hit, letter_register_time
+		  from letter
+		 where member_no_from = #{memberNo} or member_no_to = #{memberNo}
+	</select>
+	
+	<update id="letterUpdate" parameterType="letter">
+		update letter
+		<trim prefix="set" suffixOverrides=",">
+			<if test="letterTitle != null">letter_title = #{letterTitle},</if>
+			<if test="letterContent != null">letter_content = #{letterContent},</if>
+		</trim>
+		where letter_no = #{letterNo}
+	</update>
+	
+	<update id="letterUpdateHit" parameterType="int">
+		update letter
+		   set letter_hit = letter_hit + 1
+		 where letter_no = #{letterNo}
+	</update>
+	
+</mapper>

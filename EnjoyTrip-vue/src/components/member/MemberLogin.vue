@@ -85,6 +85,7 @@ const moveMain = () => {
 const moveJoin = () => {
   router.push({ name: "member-join" });
 };
+
 </script>
 
 <template>
