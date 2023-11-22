@@ -34,7 +34,8 @@ const infoChange = (command) => {
   const name = document.querySelector("#name");
   const email = document.querySelector("#email");
   const age = document.querySelector("#age");
-  if (command) { // true인 경우
+  if (command) {
+    // true인 경우
     name.classList.add("inputState");
     name.disabled = false;
     email.classList.add("inputState");
@@ -42,8 +43,7 @@ const infoChange = (command) => {
     age.classList.add("inputState");
     age.disabled = false;
     updateBtn.value = false;
-  }
-  else {
+  } else {
     name.classList.remove("inputState");
     name.disabled = true;
     email.classList.remove("inputState");
@@ -52,19 +52,21 @@ const infoChange = (command) => {
     age.disabled = true;
     updateBtn.value = true;
   }
-  
-}
+};
 
 const passwordCheck = (action) => {
   idCheck(
     member.value,
-    ({data}) => {
+    ({ data }) => {
       if (data === "성공") {
         console.log("비밀번호 체크 성공함");
-        if (action === 'update') infoChange(true);
-        else if (action === 'delete') infoDelete();
+        if (action === "update") {
+          infoChange(true);
+        } else if (action === "delete") infoDelete();
+      } else {
+        console.log("비밀번호 체크 실패함");
+        confirm("비밀번호를 다시 입력해주세요.");
       }
-      else console.log("비밀번호 체크 실패함");
     },
     (error) => {
       console.log(error);
@@ -73,14 +75,14 @@ const passwordCheck = (action) => {
 };
 
 const infoDelete = () => {
-  if (confirm("진짜 삭제함?")) {
-    console.log("yes")
+  if (confirm("기존 데이터는 모두 사라지게 됩니다. 회원 탈퇴를 원하시나요? ")) {
+    console.log("yes");
     memberLogout(member.value.memberId);
     boardDeleteMember(
       member.value.memberId,
       ({ data }) => {
-        console.log(data)
-        console.log("게시글 삭제 완료")
+        console.log(data);
+        console.log("게시글 삭제 완료");
       },
       (err) => {
         console.log(err);
@@ -89,8 +91,8 @@ const infoDelete = () => {
     deleteMember(
       member.value.memberId,
       ({ data }) => {
-        console.log(data)
-        console.log("아이디 삭제 완료")
+        console.log(data);
+        console.log("아이디 삭제 완료");
       },
       (err) => {
         console.log(err);
@@ -98,28 +100,26 @@ const infoDelete = () => {
     );
 
     closeModal();
-  }
-  else console.log("no")
-
-}
+  } else console.log("no");
+};
 
 const infoUpdate = () => {
   console.log("업데이트 시도");
   updateMember(
     member.value,
-    ({ data }) => { 
+    ({ data }) => {
       let token = sessionStorage.getItem("accessToken");
       getMemberInfo(token);
       console.log("업데이트 성공");
+      confirm("회원정보가 수정되었습니다.");
       infoChange(false);
       member.value.memberPw = "";
     },
-    (err) => { 
+    (err) => {
       console.log(err);
     }
   );
-}
-
+};
 </script>
 
 <template>
@@ -141,30 +141,86 @@ const infoUpdate = () => {
           src="@/assets/mypage/mypage_winter_children_photo.gif"
           alt=""
         />
+        <h3>
+          <input
+            class="photo_joinDate"
+            type="text"
+            disabled
+            :value="memberInfo.joinDate"
+          />
+        </h3>
         <div class="mypage_member_info">
           <form @submit.prevent="infoUpdate">
             <h3>
               아이디
-              <input id="id" class="inputInfo" type="text" disabled :value="memberInfo.memberId">
+              <input
+                id="id"
+                class="inputInfo"
+                type="text"
+                disabled
+                :value="memberInfo.memberId"
+              />
             </h3>
-            <h3>비밀번호
-              <input id="pw" class="inputInfo inputState" type="password" v-model="member.memberPw" placeholder="수정 또는 탈퇴시 비밀번호 입력" >
+            <h3>
+              비밀번호
+              <input
+                id="pw"
+                class="inputInfo inputState"
+                type="password"
+                v-model="member.memberPw"
+                placeholder="수정 또는 탈퇴시 비밀번호 입력"
+              />
             </h3>
-            <h3>이름
-              <input id="name" class="inputInfo" type="text" disabled v-model="member.memberName">
+            <h3>
+              이름
+              <input
+                id="name"
+                class="inputInfo"
+                type="text"
+                disabled
+                v-model="member.memberName"
+              />
             </h3>
-            <h3>이메일
-              <input id="email" class="inputInfo" type="text" disabled v-model="member.memberEmail">
+            <h3>
+              이메일
+              <input
+                id="email"
+                class="inputInfo"
+                type="text"
+                disabled
+                v-model="member.memberEmail"
+              />
             </h3>
-            <h3>나이
-              <input id="age" class="inputInfo" type="number" disabled v-model="member.age">
+            <h3>
+              나이
+              <input
+                id="age"
+                class="inputInfo"
+                type="number"
+                disabled
+                v-model="member.age"
+              />
             </h3>
-            <h3>우리 회원이 된 날
-              <input class="inputInfo" type="text" disabled :value="memberInfo.joinDate">
+            <h3>
+              우리 회원이 된 날
+              <input
+                class="inputInfo"
+                type="text"
+                disabled
+                :value="memberInfo.joinDate"
+              />
             </h3>
-            <button @click.prevent="passwordCheck('update')" v-show="updateBtn">비밀번호확인</button>
-            <button v-show="!updateBtn">수정하기</button>
-            <button @click.prevent="passwordCheck('delete')">탈퇴하기....</button>
+            <button
+              id="pwCheck_btn"
+              @click.prevent="passwordCheck('update')"
+              v-show="updateBtn"
+            >
+              비밀번호확인
+            </button>
+            <button id="update_btn" v-show="!updateBtn">수정하기</button>
+            <button id="remove_btn" @click.prevent="passwordCheck('delete')">
+              탈퇴하기
+            </button>
           </form>
         </div>
       </div>
@@ -173,26 +229,66 @@ const infoUpdate = () => {
 </template>
 
 <style scoped>
+/** 회원정보 띄우는 쪽 예쁘게 */
+.photo_joinDate {
+  position: absolute;
+  transform: translate(-350px, 430px);
+  color: rgb(0, 0, 0);
+  font-size: 19px;
+  border: none;
+  text-align: center;
+  font-family: UhBeeJJIBBABBA; 
+  background-color: rgba(51, 51, 51, 0);
+}
+
+@font-face {
+  font-family: "UhBeeJJIBBABBA";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_five@.2.0/UhBeeJJIBBABBA.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
 
 .inputInfo {
-  border-radius: 10%;
-  color: white;
-  height: 20px;
+  border-radius: 5%;
+  background-color: rgba(127, 143, 128, 0.37);
+  color: rgb(255, 255, 255);
+  height: 25px;
+  width: 170px;
   position: absolute;
   transform: translateX(650px);
-  left: 5px;  
+  left: 5px;
+  font-size: 16px;
 }
 .inputState {
-  background-color: black;
+  background-color: rgb(0, 0, 0);
+}
+
+.mypage_member_info button {
+  /* 생략 */
+  /* box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); */
+  background-color: rgba(255, 255, 255, 0.993);
+  cursor: pointer;
+  border: none;
+  border-radius: 5%;
+  /* margin: 30px 30px; */
+  outline: none;
+  margin-top: 40px;
+  margin-left: 55px;
+  padding: 10px;
+}
+
+button:disabled {
+  opacity: 0.5;
 }
 
 /** 마이페이지 (사진) */
 .mypage_member_info {
-  margin: auto 20px;
+  margin: 50px 20px;
 }
 .mypage_info_photo_img {
   padding-left: 30px;
-  visibility: hidden;
+  /* visibility: hidden; */
 }
 
 .mypage_winter_children_photo {
@@ -206,7 +302,7 @@ const infoUpdate = () => {
 
 #modal .modal-window {
   overflow-y: auto; /* 내용이 창을 벗어날 경우 스크롤 추가 */
-  max-height: 80vh; /* 모달창의 최대 높이를 지정하여 화면을 넘어가지 않도록 함 */
+  max-height: 85vh; /* 모달창의 최대 높이를 지정하여 화면을 넘어가지 않도록 함 */
 }
 
 #modal.modal-overlay {

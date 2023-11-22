@@ -10,7 +10,7 @@ import {
 } from "@/api/attraction";
 import AttractionDetailModal from "./AttractionDetailModal.vue";
 import { useMemberStore } from "@/stores/member";
-import { likeList } from '@/api/member';
+import { likeList } from "@/api/member";
 import { storeToRefs } from "pinia";
 
 const memberStore = useMemberStore();
@@ -61,7 +61,7 @@ onMounted(() => {
   });
   // window.scrollTo(0, scrollPosition);
   getAttractionList();
-  list = document.querySelector(".list");  
+  list = document.querySelector(".list");
   listClientWidth = list.clientWidth;
   bindEvents();
 });
@@ -98,7 +98,7 @@ const setTranslateX = (x) => {
   list.style.transform = `translateX(${x}px)`;
 };
 
-const getAttractionList = async () => {  
+const getAttractionList = async () => {
   //서버에서 사진, 관광지명, 주소 가져오기
   await listAttraction(
     param.value,
@@ -112,7 +112,7 @@ const getAttractionList = async () => {
   listX = getTranslateX();
   setTranslateX(0);
   listX = 0;
-  listScrollWidth = list.scrollWidth;  
+  listScrollWidth = list.scrollWidth;
 };
 
 const changeKey = (val) => {
@@ -127,7 +127,7 @@ const onPageChange = (val) => {
 
 const likeChange = (check) => {
   getLikeOne();
-}
+};
 
 //이미지 가로 스크롤
 let list = null;
@@ -144,8 +144,6 @@ const getClientX = (e) => {
   return isTouches ? e.touches[0].clientX : e.clientX;
 };
 
-
-
 //이벤트 연결
 const bindEvents = () => {
   list.addEventListener("mousedown", onScrollStart);
@@ -154,7 +152,7 @@ const bindEvents = () => {
 };
 
 //스크롤 진행 이벤트 구현
-const onScrollStart = (e) => {  
+const onScrollStart = (e) => {
   startX = getClientX(e);
   window.addEventListener("mousemove", onScrollMove);
   window.addEventListener("touchmove", onScrollMove);
@@ -163,9 +161,9 @@ const onScrollStart = (e) => {
 };
 
 const btnScrolle = (num) => {
-  setTranslateX(getTranslateX() + (850 * num));
+  setTranslateX(getTranslateX() + 850 * num);
   list.style.transition = `all 0.3s ease`;
-  listX = getTranslateX() + (850 * num);
+  listX = getTranslateX() + 850 * num;
 
   if (listX > 0) {
     setTranslateX(0);
@@ -174,16 +172,15 @@ const btnScrolle = (num) => {
     setTranslateX(listClientWidth - listScrollWidth);
     listX = listClientWidth - listScrollWidth;
   }
-  
-  setTimeout(() => {    
+
+  setTimeout(() => {
     bindEvents();
     list.style.transition = "";
-  }, 300);  
-
-}
+  }, 300);
+};
 
 // 스크롤 종료 이벤트 구현
-const onScrollEnd = (e) => {  
+const onScrollEnd = (e) => {
   endX = getClientX(e);
   listX = getTranslateX();
   if (listX > 0) {
@@ -204,7 +201,7 @@ const onScrollEnd = (e) => {
   window.removeEventListener("touchend", onScrollEnd);
   window.removeEventListener("click", onClick);
 
-  setTimeout(() => {    
+  setTimeout(() => {
     bindEvents();
     list.style.transition = "";
   }, 300);
@@ -273,32 +270,39 @@ const showModal = (detail) => {
   // 상세화면이 음식점일 경우 음식점 정보 가져오기
   if (attractionDetail.value.contentTypeId != 15) {
     getAttractionIntro();
-  }  
+  }
   if (isLogin.value) {
     getLikeOne();
   }
   isModalOpen.value = true;
   // 모달이 나타날 때 show 클래스 추가
   const modal = document.querySelector("#modal.modal-overlay");
-  console.log("쇼모달작동")
+  console.log("쇼모달작동");
   modal.classList.add("show");
 };
 
 const getLikeOne = () => {
   likeList(
     {
-      "memberId": memberInfo.value.memberId,
-      "contentId": (attractionDetail.value.contentTypeId === 15) ? 0 : attractionDetail.value.contentId,
-      "contentFestivalId": (attractionDetail.value.contentTypeId === 15) ? attractionDetail.value.contentId : 0,
+      memberId: memberInfo.value.memberId,
+      contentId:
+        attractionDetail.value.contentTypeId === 15
+          ? 0
+          : attractionDetail.value.contentId,
+      contentFestivalId:
+        attractionDetail.value.contentTypeId === 15
+          ? attractionDetail.value.contentId
+          : 0,
     },
-      ({ data }) => { 
-        likeLength.value = data.length
-        if (likeLength.value > 0) likeNo.value = data[0].no;
+    ({ data }) => {
+      likeLength.value = data.length;
+      if (likeLength.value > 0) likeNo.value = data[0].no;
     },
-    (err) => { 
-      console.log(err)
-    });
-}
+    (err) => {
+      console.log(err);
+    }
+  );
+};
 
 /** 모달창(디테일) 테스트 끝 */
 </script>
@@ -342,12 +346,11 @@ const getLikeOne = () => {
             @click="getAttractionList"
           >
             검색
-          </button>          
+          </button>
         </div>
 
         <!-- All -->
         <div class="img0" @click="loadAttractionByTheme('all')">
-          
           <img
             id="TripSnowButton0"
             src="@/assets/cityAttraction/TripListAllButtonImg.png"
@@ -383,7 +386,7 @@ const getLikeOne = () => {
         <div class="img3" @click="loadAttractionByTheme('family')">
           <img
             id="TripSnowButton3"
-            src="@/assets/cityAttraction/TripSnowButton.png"            
+            src="@/assets/cityAttraction/TripSnowButton.png"
           />
           <div class="TripSnowButton3_text">
             <h3>Family</h3>
@@ -404,7 +407,7 @@ const getLikeOne = () => {
               </a>
             </li>
           </ul>
-        </div>        
+        </div>
         <img
           class="listLeftBtn"
           src="@/assets/like/like_left_button.png"
@@ -417,7 +420,7 @@ const getLikeOne = () => {
           alt=""
           @click="btnScrolle(-1)"
         />
-        
+
         <!-- 모달창(디테일) 테스트 -->
         <div id="modal_div">
           <!-- <button @click="showModal">모달 열기</button> -->
@@ -429,7 +432,6 @@ const getLikeOne = () => {
               :likeLength="likeLength"
               :likeNo="likeNo"
               @likeChange="likeChange"
-              
             ></AttractionDetailModal>
           </teleport>
         </div>
@@ -440,7 +442,6 @@ const getLikeOne = () => {
 </template>
 
 <style scoped>
-
 .listControl {
   justify-content: space-between;
   width: 1100px;
@@ -449,19 +450,38 @@ const getLikeOne = () => {
   display: flex;
 }
 
+/** 왼쪽 오른쪽 버튼 */
 .listLeftBtn {
   width: 50px;
   height: 50px;
   cursor: pointer;
   position: absolute;
-  transform: translate(-610px, -385px);
+  transform: translate(-650px, -385px);
+  background-color: rgba(255, 255, 255, 0);
+  border-radius: 50%;
+  border-style: outset;
+  padding: 20px 20px;
 }
 .listRightBtn {
   width: 50px;
   height: 50px;
   cursor: pointer;
   position: absolute;
-  transform: translate(570px, -385px);
+  transform: translate(565px, -385px);
+  background-color: rgba(255, 255, 255, 0);
+  border-radius: 50%;
+  border-style: outset;
+  padding: 20px 20px;
+}
+
+.listLeftBtn:active {
+  margin-top: 3px;
+  margin-left: -3px;
+}
+
+.listRightBtn:active {
+  margin-top: 3px;
+  margin-left: 3px;
 }
 
 .item:hover {
