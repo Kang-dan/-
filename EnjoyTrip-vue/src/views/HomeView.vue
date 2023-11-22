@@ -220,6 +220,7 @@ const moveMypage = () => {
           />
           <span
             class="city-label"
+            @click="moveAttractionList(sidoCode[n + 1])"
             :style="`position: absolute; left: ${left[n + 1] + 50}px; top: ${
               top[n + 1] + 70
             }px; `"
@@ -292,7 +293,6 @@ const moveMypage = () => {
 }
 
 /** 폰트  */
-
 @font-face {
   font-family: "Bazzi";
   src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/Bazzi.woff")
@@ -423,8 +423,8 @@ const moveMypage = () => {
 
 .mypage-bag {
   position: absolute;
-  transform: translate(10px, -30px);
-  width: 215px;
+  transform: translate(-500px, -20px);
+  width: 190px;
   cursor: pointer;
   z-index: 999;
 }

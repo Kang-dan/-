@@ -4,6 +4,21 @@ import audioFile from "@/assets/music/Christmas.mp3";
 import { RouterLink, useRouter } from "vue-router";
 import { useMemberStore } from "@/stores/member";
 import { storeToRefs } from "pinia";
+import btnClickSound from "@/assets/sound/sound_btn_click.mp3";
+
+import { Howl } from "howler"; //효과음
+
+// 효과음을 위한 Howl 인스턴스 생성
+const buttonSound = new Howl({
+  src: [btnClickSound],
+});
+
+// 홈버튼 클릭 시 효과음 재생하는 함수
+const playButtonSound = () => {
+  buttonSound.play();
+  // 다른 로직 추가
+  headerMain(); // 홈버튼 클릭 시의 다른 로직 수행 (원래 있던 함수 호출)
+};
 
 const memberStore = useMemberStore();
 const { isLogin, memberInfo } = storeToRefs(memberStore);
@@ -129,7 +144,7 @@ const formatTime = (value) => {
 
 
 <template>
-  <button class="home-button" @click="headerMain()">
+  <button class="home-button" @click="playButtonSound()">
     <img class="home_btn_rudol" src="@/assets/home_btn_rudol.png" alt="" />
   </button>
 
