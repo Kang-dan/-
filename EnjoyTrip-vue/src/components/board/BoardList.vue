@@ -166,12 +166,14 @@ const showModal = (detail) => {
 };
 
 const getLoveOne = () => {
+  console.log(boardDetail.value)
   loveListOne(
     {
-      memberNo: memberInfo.value.memberNo,
-      boardNo: boardDetail.value.boardNo,
+      "memberNo": memberInfo.value.memberNo,
+      "boardNo": boardDetail.value.boardNo,
     },
     ({ data }) => {
+      console.log(data);
       console.log("좋아요 가져오기");
       loveLength.value = data.length;
       console.log(loveLength.value);
@@ -183,12 +185,12 @@ const getLoveOne = () => {
 };
 
 const loveChangeEmit = (no) => {
-  getLoveOne();
   getBoardDetail(no);
+  getLoveOne();
 };
 
-const getBoardDetail = (no) => {
-  boardView(
+const getBoardDetail = async (no) => {
+  await boardView(
     no,
     ({ data }) => {
       boardDetail.value = data;
@@ -212,8 +214,9 @@ const showModalDetail = async (no) => {
         console.log(err);
       }
     );
-    getBoardDetail(no);
-    getLoveOne();
+    console.log("쇼모달에서 주는 no : " + no)
+    await getBoardDetail(no);
+    await getLoveOne();
     // 모달이 나타날 때 show 클래스 추가
     const modalDetail = document.querySelector("#modalDetail.modal-overlay");
     modalDetail.classList.add("show");

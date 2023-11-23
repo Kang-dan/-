@@ -5,10 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import com.ssafy.enjoytrip.board.model.Board;
-import com.ssafy.enjoytrip.board.model.FileUpload;
 import com.ssafy.enjoytrip.board.model.mapper.BoardMapper;
 
 @Service
@@ -66,14 +64,6 @@ public class BoardServiceImpl implements BoardSerivce {
 		
 	}
 	
-	@Override
-	public void saveFiles(int boardNo, List<FileUpload> files) {
-		if (CollectionUtils.isEmpty(files)) return;
-		for (FileUpload file : files) {
-			file.setBoardNo(boardNo);
-		}
-		boardMapper.saveAll(files);
-	}
 
 	@Override
 	public void updateLoveAll(List<Integer> boardNo) {

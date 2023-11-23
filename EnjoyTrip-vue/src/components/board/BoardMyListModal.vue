@@ -84,32 +84,76 @@ const deleteLetter = (no) => {
         <p>마이리스트</p>
 
         <template v-if="checkMyListAction === 'board'">
-          <table class="myListTable">
-            <thead>
-              <tr>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>작성일</th>
-                <th>조회수</th>
-                <th>좋아요</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <template v-if="memberInfo">
-                <template v-for="board in boards">
-                  <template v-if="board.memberId === memberInfo.memberId">
+          <div class="tableDiv">
+            <table class="myListTable">
+              <thead>
+                <tr>
+                  <th>제목</th>
+                  <th>작성자</th>
+                  <th>작성일</th>
+                  <th>조회수</th>
+                  <th>좋아요</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <template v-if="memberInfo">
+                  <template v-for="board in boards">
+                    <template v-if="board.memberId === memberInfo.memberId">
+                      <tr>
+                        <td>{{ board.boardTitle }}</td>
+                        <td>{{ board.memberId }}</td>
+                        <td>{{ board.boardRegisterTime }}</td>
+                        <td>{{ board.boardHit }}</td>
+                        <td>{{ board.boardLove }}</td>
+                        <td>
+                          <button
+                            class="delete_btn"
+                            @click="deleteBoard(board.boardNo)"
+                            v-if="board.boardLove === 0"
+                          >
+                            삭제
+                          </button>
+                        </td>
+                      </tr>
+                    </template>
+                  </template>
+                </template>
+              </tbody>
+            </table>
+          </div>
+        </template>
+
+        <template v-if="checkMyListAction === 'letter'">
+          <div class="tableDiv">
+            <table class="myListTable">
+              <thead>
+                <tr>
+                  <th>제목</th>
+                  <th>보낸 사람</th>
+                  <th>받은 사람</th>
+                  <th>편지 확인 여부</th>
+                  <th>보낸 날짜</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <template v-if="memberInfo">
+                  <template v-for="letter in letters">
                     <tr>
-                      <td>{{ board.boardTitle }}</td>
-                      <td>{{ board.memberId }}</td>
-                      <td>{{ board.boardRegisterTime }}</td>
-                      <td>{{ board.boardHit }}</td>
-                      <td>{{ board.boardLove }}</td>
+                      <td>{{ letter.letterTitle }}</td>
+                      <td>{{ letter.memberIdFrom }}</td>
+                      <td>{{ letter.memberIdTo }}</td>
+                      <td>{{ letter.letterHit > 0 ? "확인함" : "확인안함" }}</td>
+                      <td>{{ letter.letterRegisterTime }}</td>
                       <td>
                         <button
                           class="delete_btn"
-                          @click="deleteBoard(board.boardNo)"
-                          v-if="board.boardLove === 0"
+                          @click="deleteLetter(letter.letterNo)"
+                          v-if="
+                            letter.memberIdTo === memberInfo.memberId ||
+                            letter.letterHit === 0
+                          "
                         >
                           삭제
                         </button>
@@ -117,49 +161,9 @@ const deleteLetter = (no) => {
                     </tr>
                   </template>
                 </template>
-              </template>
-            </tbody>
-          </table>
-        </template>
-
-        <template v-if="checkMyListAction === 'letter'">
-          <table class="myListTable">
-            <thead>
-              <tr>
-                <th>제목</th>
-                <th>보낸 사람</th>
-                <th>받은 사람</th>
-                <th>편지 확인 여부</th>
-                <th>보낸 날짜</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <template v-if="memberInfo">
-                <template v-for="letter in letters">
-                  <tr>
-                    <td>{{ letter.letterTitle }}</td>
-                    <td>{{ letter.memberIdFrom }}</td>
-                    <td>{{ letter.memberIdTo }}</td>
-                    <td>{{ letter.letterHit > 0 ? "확인함" : "확인안함" }}</td>
-                    <td>{{ letter.letterRegisterTime }}</td>
-                    <td>
-                      <button
-                        class="delete_btn"
-                        @click="deleteLetter(letter.letterNo)"
-                        v-if="
-                          letter.memberIdTo === memberInfo.memberId ||
-                          letter.letterHit === 0
-                        "
-                      >
-                        삭제
-                      </button>
-                    </td>
-                  </tr>
-                </template>
-              </template>
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
         </template>
       </div>
     </div>
@@ -167,6 +171,16 @@ const deleteLetter = (no) => {
 </template>
 
 <style scoped>
+/* 스크롤바 숨기기 */
+.tableDiv::-webkit-scrollbar {
+  display: none;
+}
+.tableDiv {
+  margin: 0 auto;
+  width: 490px;
+  height: 300px;
+  overflow: auto;
+}
 .delete_btn {
   border: none;
   border-radius: 10%;
@@ -187,25 +201,8 @@ const deleteLetter = (no) => {
 }
 
 .myListTable {
-  margin: 0 auto;
   color: white;
 }
-
-.myListTable {
-  /* 기존 스타일... */
-  max-height: calc(
-    40px * 5
-  ); /* 예시로 설정한 높이, 한 행의 높이에 따라서 계산해주세요 */
-  overflow-y: auto;
-}
-/* 
-tbody {
- display: block;
-  max-height: calc(
-    40px * 5
-  );
-  overflow-y: auto;
-} */
 
 .myListTable th,
 .myListTable td {

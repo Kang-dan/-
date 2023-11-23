@@ -16,17 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.enjoytrip.board.model.Board;
 import com.ssafy.enjoytrip.board.model.service.BoardSerivce;
 import com.ssafy.enjoytrip.configuration.WebSocketHandler;
-import com.ssafy.enjoytrip.util.FileUtils;
 
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/board")
 public class BoardController {
 	private final BoardSerivce boardSerivce;
-	private final FileUtils fileUtils;
 	private final WebSocketHandler webSocketHandler;
-	public BoardController(BoardSerivce boardSerivce, WebSocketHandler webSocketHandler, FileUtils fileUtils) {
-		this.fileUtils = fileUtils;
+	public BoardController(BoardSerivce boardSerivce, WebSocketHandler webSocketHandler) {
 		this.boardSerivce = boardSerivce;
 		this.webSocketHandler = webSocketHandler;
 	}

@@ -1,12 +1,9 @@
 package com.ssafy.enjoytrip.letter.model.mapper;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.ssafy.enjoytrip.board.model.Board;
-import com.ssafy.enjoytrip.board.model.FileUpload;
 import com.ssafy.enjoytrip.letter.model.Letter;
 
 @Mapper

@@ -1,10 +1,5 @@
 package com.ssafy.enjoytrip.board.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.web.multipart.MultipartFile;
-
 import lombok.Data;
 
 @Data
@@ -19,5 +14,4 @@ public class Board {
 	private int boardY;
 	private int boardImg;
 	private String boardRegisterTime;
-	private List<MultipartFile> files = new ArrayList<>();
 }
