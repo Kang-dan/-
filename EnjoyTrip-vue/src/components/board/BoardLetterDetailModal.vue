@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useMemberStore } from "@/stores/member";
-import { boardWrite, boardUpdateLove } from "@/api/board";
+import { boardWrite } from "@/api/board";
 import { storeToRefs } from "pinia";
 
 const memberStore = useMemberStore();
@@ -9,41 +9,25 @@ const { memberInfo, getMemberInfo, memberLogout } = memberStore;
 const { isLogin } = storeToRefs(memberStore);
 
 const props = defineProps({
-  boardDetail: Object,
+  letterDetail: Object,
 });
 
-const isDetailModalOpen = ref(false);
+const isLetterModalOpen = ref(false);
 // const emit = defineEmits(["getBoardList"]);
 const closeModal = () => {
-  isDetailModalOpen.value = false;
+  isLetterModalOpen.value = false;
   // emit("getBoardList");
   // 모달을 닫을 때 show 클래스 제거
-  const modalDetail = document.querySelector("#modalDetail.modal-overlay");
-  if (modalDetail) {
-    modalDetail.classList.remove("show");
+  const modalLetter = document.querySelector("#modalLetter.modal-overlay");
+  if (modalLetter) {
+    modalLetter.classList.remove("show");
   }
 };
 /** 모달창(디테일) 테스트 끝 */
-
-const loveChange = (num) => {
-  boardUpdateLove(
-    {
-      "boardNo": props.boardDetail.boardNo,
-      "num": num
-    },
-    ({data}) => {
-      console.log(data);
-    },
-    (err) => {
-      console.log(err);
-    }
-  );
-}
-
 </script>
 
 <template>
-  <div id="modalDetail" class="modal-overlay" @click="closeModal">
+  <div id="modalLetter" class="modal-overlay" @click="closeModal">
     <div class="modal-window" @click.stop>
       <div class="close-area" @click="closeModal">X</div>
       <div class="board_input">
@@ -55,24 +39,23 @@ const loveChange = (num) => {
         <p>좋아요 : {{ props.boardDetail.boardLove }}</p> -->
         <div class="title">
           <p>
-            <i>제목 : </i><i>{{ props.boardDetail.boardTitle }}</i>
+            <i>제목 : </i><i>{{ props.letterDetail.letterTitle }}</i>
           </p>
           <p>
-            <i>작성자 : </i> <i>{{ props.boardDetail.memberId }}</i>
+            <i>보낸 사람 : </i> <i>{{ props.letterDetail.memberIdFrom }}</i>
           </p>
           <p>
-            <i>작성일 : </i> <i>{{ props.boardDetail.boardRegisterTime }}</i>
+            <i>받은 사람 : </i> <i>{{ props.letterDetail.memberIdTo }}</i>
+          </p>
+          <p>
+            <i>받은 날짜 : </i> <i>{{ props.letterDetail.letterRegisterTime }}</i>
           </p>
         </div>
         <div class="content">
-          <p>{{ props.boardDetail.boardContent }}</p>
+          <p>{{ props.letterDetail.letterContent }}</p>
         </div>
         <div class="stats">
-          <i>조회수 : {{ props.boardDetail.boardHit }}</i>
-          <i><button class="like" @click="loveChange(1)">좋아요</button>
-            <button class="like" @click="loveChange(-1)">좋아요 취소</button>
-            {{ props.boardDetail.boardLove }}</i
-          >
+          <i>읽은 횟수 : {{ props.letterDetail.letterHit }}</i>          
         </div>
       </div>
     </div>
@@ -97,11 +80,11 @@ const loveChange = (num) => {
   background: #ff8989;
 }
 
-#modalDetail .title {
+#modalLetter .title {
   color: rgb(0, 0, 0);
 }
 
-#modalDetail .title p {
+#modalLetter .title p {
   text-shadow: 1px 1px 2px rgb(255, 154, 108);
   position: relative;
   /* transform: translateX(0px); */
@@ -111,7 +94,7 @@ const loveChange = (num) => {
   /* 추가적인 스타일링 */
 }
 
-#modalDetail .content p {
+#modalLetter .content p {
   margin-top: 20px;
   text-shadow: 1px 1px 2px rgb(224, 193, 92);
   font-size: 22px;
@@ -121,14 +104,14 @@ const loveChange = (num) => {
   align-items: center; /* 가운데 정렬 */
 }
 
-#modalDetail .stats {
+#modalLetter .stats {
   justify-content: space-around; /* 좌우 여백 동일하게 분배 */
   /* margin-top: 30px; 간격 조절 */
   margin-top: 30px;
   text-align: center;
 }
 
-#modalDetail .stats i {
+#modalLetter .stats i {
   justify-content: space-around; /* 좌우 여백 동일하게 분배 */
   /* margin-top: 30px; 간격 조절 */
   color: white;
@@ -142,7 +125,7 @@ const loveChange = (num) => {
 }
 
 /** 내용부분 */
-#modalDetail .content {
+#modalLetter .content {
   display: block;
   position: relative;
   margin: auto;
@@ -178,12 +161,12 @@ const loveChange = (num) => {
   z-index: 999;
 }
 
-#modalDetail .modal-window {
+#modalLetter .modal-window {
   overflow-y: auto; /* 내용이 창을 벗어날 경우 스크롤 추가 */
   max-height: 80vh; /* 모달창의 최대 높이를 지정하여 화면을 넘어가지 않도록 함 */
 }
 
-#modalDetail.modal-overlay {
+#modalLetter.modal-overlay {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -206,13 +189,13 @@ const loveChange = (num) => {
   z-index: 999; /* 적절한 값으로 조절 */
 }
 
-#modalDetail.modal-overlay.show {
+#modalLetter.modal-overlay.show {
   opacity: 1;
   pointer-events: auto;
   transform: translate(-50%, -50%) scale(1); /* 이동 및 크기 변경 */
 }
 
-#modalDetail .close-area {
+#modalLetter .close-area {
   display: inline;
   float: right;
   padding-right: 10px;
@@ -222,7 +205,7 @@ const loveChange = (num) => {
 }
 
 /** 모달창 예쁘게 */
-#modalDetail .content {
+#modalLetter .content {
   margin-top: 20px;
   align-content: center;
   /* padding: 0px 10px; */

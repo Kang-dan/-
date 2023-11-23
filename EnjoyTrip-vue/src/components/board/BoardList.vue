@@ -2,11 +2,13 @@
 import { ref, onMounted, inject } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { boardList, boardWrite, boardView, boardUpdateHit } from "@/api/board";
-import { letterList } from "@/api/letter";
+import { letterList, letterView, letterUpdateHit } from "@/api/letter";
+import { loveListOne } from "@/api/member";
 import { useMemberStore } from "@/stores/member";
 import { storeToRefs } from "pinia";
 import BoardWriteModal from "@/components/board/BoardWriteModal.vue";
 import BoardDetailModal from "@/components/board/BoardDetailModal.vue";
+import BoardLetterDetailModal from "@/components/board/BoardLetterDetailModal.vue";
 import BoardMyListModal from "@/components/board/BoardMyListModal.vue";
 import btnClickSound from "@/assets/sound/sound_btn_click.mp3";
 
@@ -43,8 +45,9 @@ const memberStore = useMemberStore();
 const { isLogin, memberInfo } = storeToRefs(memberStore);
 
 const isModalOpen = ref(false); //게시글 쓸 때 열 모달창
-const isDetailModalOpen = ref(false); //게시글 쓸 때 열 모달창
-const isMyListModalOpen = ref(false); //게시글 쓸 때 열 모달창
+const isDetailModalOpen = ref(false); //상세화면 모달창
+const isMyListModalOpen = ref(false); //마이리스트 모달창
+const isLetterModalOpen = ref(false);
 
 const router = useRouter();
 const route = useRoute();
@@ -54,8 +57,13 @@ const letters = ref([{}]);
 
 const boardDetail = ref({});
 const letterDetail = ref({});
+const loveLength = ref({});
 
 const listAction = ref("board");
+
+const getboardLoveOne = () => {
+  loveListOne();
+}
 
 const getBoardList = () => {
   boardList(
@@ -133,7 +141,7 @@ const showModalDetail = async (no) => {
         console.log(err);
       }
     );
-    boardView(
+    await boardView(
       no,
       ({ data }) => {
         boardDetail.value = data;
@@ -142,6 +150,19 @@ const showModalDetail = async (no) => {
       (err) => {
         console.log(err);
       }
+    );
+    await loveListOne(
+      {
+        "memberNo": memberInfo.value.memberNo,
+        "boardNo": boardDetail.value.boardNo
+      },
+      ({data}) => {
+        console.log(data);
+      },
+      (err) => {
+        console.log(err);
+      }
+
     );
     // 모달이 나타날 때 show 클래스 추가
     const modalDetail = document.querySelector("#modalDetail.modal-overlay");
@@ -155,8 +176,36 @@ const showModalMyList = () => {
     isMyListModalOpen.value = true;
 
     // 모달이 나타날 때 show 클래스 추가
-    const modalDetail = document.querySelector("#modalMyList.modal-overlay");
-    modalDetail.classList.add("show");
+    const modalMylist = document.querySelector("#modalMyList.modal-overlay");
+    modalMylist.classList.add("show");
+  }
+};
+
+const showModalLetter = async (no) => {  
+  // 로그인이 되어있을 때에만 열리게 하기
+ if (isLogin.value) {
+  await letterUpdateHit(
+      no,
+      ({ data }) => {
+        console.log(data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+    letterView(
+      no,
+      ({ data }) => {
+        letterDetail.value = data;
+        isLetterModalOpen.value = true;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+    // 모달이 나타날 때 show 클래스 추가
+    const modalLetter = document.querySelector("#modalLetter.modal-overlay");
+    modalLetter.classList.add("show");
   }
 };
 
@@ -205,7 +254,7 @@ const moveBoardWrite = () => {
               v-if="letter.memberNoTo == memberInfo.memberNo"
               :src="`src/assets/board/board_leaf_${letter.letterImg}.png`"
               :style="`left:${letter.letterX}px; top:${letter.letterY}px`"
-              @click="showModalDetail(letter.letterNo)"
+              @click="showModalLetter(letter.letterNo)"
             />
           </template>
         </template>
@@ -242,6 +291,11 @@ const moveBoardWrite = () => {
     :boards="boards"
     :letters="letters"
   ></BoardMyListModal>
+  <BoardLetterDetailModal
+    :isOpen="isLetterModalOpen"
+    :letterDetail="letterDetail"
+  >    
+  </BoardLetterDetailModal>
 </template>
 
 
