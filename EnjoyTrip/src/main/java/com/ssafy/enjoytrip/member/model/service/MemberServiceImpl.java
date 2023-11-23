@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.enjoytrip.member.model.Member;
 import com.ssafy.enjoytrip.member.model.MemberLikes;
+import com.ssafy.enjoytrip.member.model.MemberLoves;
 import com.ssafy.enjoytrip.member.model.mapper.MemberMapper;
 
 @Service
@@ -91,6 +92,31 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void deleteMemberLikes(String memberId) {
 		memberMapper.deleteMemberLikes(memberId);
+	}
+
+	@Override
+	public void memberLoveInsert(MemberLoves memberLoves) {
+		memberMapper.insertMemberLoves(memberLoves);
+	}
+
+	@Override
+	public void memberLoveDelete(MemberLoves memberLoves) {
+		memberMapper.deleteMemberLoves(memberLoves);
+	}
+
+	@Override
+	public void memberLoveDeleteAll(int memberNo) {
+		memberMapper.deleteMemberLovesAll(memberNo);
+	}
+
+	@Override
+	public List<MemberLoves> memberLoveListOne(MemberLoves memberLoves) {
+		return memberMapper.selectMemberLoveListOne(memberLoves);
+	}
+
+	@Override
+	public List<Integer> selectMemberLoveListBoardNo(int memberNo) {
+		return selectMemberLoveListBoardNo(memberNo);
 	}
 
 }

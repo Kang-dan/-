@@ -9,10 +9,13 @@ const { memberInfo, getMemberInfo, memberLogout } = memberStore;
 const { isLogin } = storeToRefs(memberStore);
 
 const isMyListModalOpen = ref(false);
+const checkMyListAction = ref('board');
 
 const props = defineProps({
   boards: Object,
+  letters: Object,
 });
+
 
 const closeModal = () => {
   isMyListModalOpen.value = false;
@@ -32,16 +35,70 @@ const closeModal = () => {
       <div class="title"></div>
 
       <div class="content"></div>
+      <label><input type="radio" v-model="checkMyListAction" name="actionMyList" value="board" checked>게시글</label>
+      <label><input type="radio" v-model="checkMyListAction" name="actionMyList" value="letter">편지</label>
 
       <div class="board_input">
         <p>마이리스트</p>
-        <template v-if="memberInfo">
-          <div v-for="board in boards">
-            <template v-if="board.memberId === memberInfo.memberId">
-              <p>{{ board.boardTitle }}</p>
-            </template>
-          </div>
+
+        <template v-if="checkMyListAction === 'board'">          
+          <table>          
+            <thead>
+              <tr>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일</th>
+                <th>조회수</th>
+                <th>좋아요</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template v-if="memberInfo">
+                <template v-for="board in boards">
+                  <template v-if="board.memberId === memberInfo.memberId">
+                    <tr>
+                      <td>{{ board.boardTitle }}</td>
+                      <td>{{ board.memberId }}</td>
+                      <td>{{ board.boardRegisterTime }}</td>
+                      <td>{{ board.boardHit }}</td>
+                      <td>{{ board.boardLove }}</td>
+                    </tr>
+                  </template>
+                </template>
+              </template>
+            </tbody>
+          </table>
         </template>
+
+        <template v-if="checkMyListAction === 'letter'">          
+          <table>          
+            <thead>
+              <tr>
+                <th>제목</th>
+                <th>보낸 사람</th>
+                <th>받은 사람</th>
+                <th>편지 확인 여부</th>
+                <th>보낸 날짜</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template v-if="memberInfo">
+                <template v-for="letter in letters">
+                  
+                  <tr>
+                    <td>{{ letter.letterTitle }}</td>
+                    <td>{{ letter.memberIdFrom }}</td>
+                    <td>{{ letter.memberIdTo }}</td>
+                    <td>{{ letter.letterHit > 0 ? '확인함' : '확인안함' }}</td>
+                    <td>{{ letter.letterRegisterTime }}</td>
+                  </tr>
+                  
+                </template>
+              </template>
+            </tbody>
+          </table>
+        </template>
+
       </div>
     </div>
   </div>

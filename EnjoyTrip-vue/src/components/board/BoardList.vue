@@ -68,7 +68,7 @@ const getBoardList = () => {
 };
 
 const getLetterList = () => {
-  if (memberInfo) {
+  if (memberInfo.value) {
     letterList(
       memberInfo.value.memberNo,
       ({ data }) => {
@@ -83,6 +83,7 @@ const getLetterList = () => {
 
 onMounted(() => {
   getBoardList();
+  getLetterList();
 });
 
 /** 게시글 작성 - 모달창 */
@@ -146,6 +147,8 @@ const moveBoardWrite = () => {
   <input v-model="responseMsg"> -->
 
   <div class="board_background">
+    <button v-if="listAction === 'letter'" @click="listAction = 'board'">보드 리스트로 변경</button>
+    <button v-if="listAction === 'board'" @click="listAction = 'letter'">쪽지 리스트로 변경</button>
     <div class="board_tree">
       <div class="random_leaf">
         <template v-if="listAction === 'board'">
@@ -158,13 +161,15 @@ const moveBoardWrite = () => {
           />          
         </template>
         <template v-if="listAction === 'letter'">
-          <img
-            class="board_leaf"
-            v-for="letter in letters"
-            :src="`src/assets/board/board_leaf_${letter.letterImg}.png`"
-            :style="`left:${letter.letterX}px; top:${letter.letterY}px`"
-            @click="showModalDetail(letter.letterNo)"
-          />          
+          <template v-for="letter in letters">
+            <img
+              class="board_leaf"
+              v-if="letter.memberNoTo == memberInfo.memberNo"
+              :src="`src/assets/board/board_leaf_${letter.letterImg}.png`"
+              :style="`left:${letter.letterX}px; top:${letter.letterY}px`"
+              @click="showModalDetail(letter.letterNo)"
+            />
+          </template>
         </template>
       </div>
       <img
@@ -193,6 +198,7 @@ const moveBoardWrite = () => {
   <BoardMyListModal
     :isOpen="isMyListModalOpen"
     :boards="boards"
+    :letters="letters"
   ></BoardMyListModal>
 </template>
 

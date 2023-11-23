@@ -23,6 +23,41 @@
 		<result column="content_title" property="contentTitle" />
 	</resultMap>
 	
+	<resultMap type="memberLoves" id="memberLovesMap">
+		<result column="no" property="no" />
+		<result column="member_no" property="memberNo" />
+		<result column="board_no" property="boardNo" />
+	</resultMap>
+	
+	<insert id="insertMemberLoves" parameterType="memberLoves">
+		insert into members_loves(member_no, board_no)
+		values (#{memberNo}, #{boardNo})
+	</insert>
+	
+	<delete id="deleteMemberLoves" parameterType="memberLoves">
+		delete
+		  from members_loves
+		 where board_no = #{boardNo} and member_no = {#memberNo}
+	</delete>
+	
+	<delete id="deleteMemberLovesAll" parameterType="int">
+		delete
+		  from members_loves
+		 where member_no = #{memberNo}
+	</delete>
+	
+	<select id="selectMemberLoveListOne" parameterType="memberLoves" resultMap="memberLovesMap">
+		select no, member_no, board_no
+		  from members_loves
+		 where board_no = #{boardNo} and member_no = {#memberNo} 
+	</select>
+	
+	<select id="selectMemberLoveListBoardNo" parameterType="int" resultType="int">
+		select board_no
+		  from members_loves
+		 where member_no = #{memberNo}
+	</select>
+	
 	<select id="memberLikeList" parameterType="map" resultType="map">
 		select no, member_id memberId, b.content_id contentId, content_type_id contentTypeId, b.title, addr1, first_image firstImage, latitude, longitude, event_start_date eventStartDate, event_end_date eventEndDate 
 		from (select * from members_likes where member_id = #{memberId}) a 

@@ -76,6 +76,14 @@ create table members_likes (
     FOREIGN KEY(content_id) REFERENCES attraction_info(content_id)
 );
 
+create table members_loves (
+	no int primary key auto_increment,
+    member_no int not null,
+    board_no int not null,
+    FOREIGN KEY(member_no) REFERENCES members(member_no),
+    FOREIGN KEY(board_no) REFERENCES board(board_no)
+);
+
 create table file_upload (
 	no int primary key auto_increment,
     board_no int not null,

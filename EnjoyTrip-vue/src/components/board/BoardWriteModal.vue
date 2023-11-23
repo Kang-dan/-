@@ -188,7 +188,7 @@ function removeFile(element) {
       </div>
 
       <div class="content"></div>
-      <label><input type="radio" v-model="checkAction" name="action" value="board">게시글</label>
+      <label><input type="radio" v-model="checkAction" name="action" value="board" checked>게시글</label>
       <label><input type="radio" v-model="checkAction" name="action" value="letter">편지</label>
 
       <template v-if="checkAction === 'board'">

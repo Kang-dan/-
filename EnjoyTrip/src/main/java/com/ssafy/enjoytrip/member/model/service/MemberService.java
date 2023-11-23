@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.ssafy.enjoytrip.member.model.Member;
 import com.ssafy.enjoytrip.member.model.MemberLikes;
+import com.ssafy.enjoytrip.member.model.MemberLoves;
 
 public interface MemberService{
 	
@@ -23,6 +24,11 @@ public interface MemberService{
 	void memberLikeInsert(MemberLikes memberLikes);
 	void memberLikeDelete(MemberLikes memberLikes);
 	List<Map<String, Object>> memberLikeList(Map<String, Object> map);
+	void memberLoveInsert(MemberLoves memberLoves);
+	void memberLoveDelete(MemberLoves memberLoves);
+	void memberLoveDeleteAll(int memberNo);
+	List<MemberLoves> memberLoveListOne(MemberLoves memberLoves);
+	List<Integer> selectMemberLoveListBoardNo(int memberNo);
 	
 
 }

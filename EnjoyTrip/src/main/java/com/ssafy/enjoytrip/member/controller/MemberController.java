@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.enjoytrip.member.model.Member;
 import com.ssafy.enjoytrip.member.model.MemberLikes;
+import com.ssafy.enjoytrip.member.model.MemberLoves;
 import com.ssafy.enjoytrip.member.model.service.MemberService;
 import com.ssafy.enjoytrip.util.JWTUtil;
 
@@ -36,9 +37,34 @@ public class MemberController {
 		this.jwtUtil = jwtUtil;
 	}
 	
+	@PostMapping("/love/list")
+	public ResponseEntity<List<MemberLoves>> loveListOne(@RequestBody MemberLoves memberLoves) {
+		return ResponseEntity.ok(memberService.memberLoveListOne(memberLoves));
+	}
+	
+	@PostMapping("/love/insert")
+	public ResponseEntity<String> loveInsert(@RequestBody MemberLoves memberLoves) {
+		System.out.println(memberLoves);
+		memberService.memberLoveInsert(memberLoves);
+		return ResponseEntity.ok("좋아요 추가 성공");
+	}
+	
+	@PostMapping("/love/delete")
+	public ResponseEntity<String> loveDelete(@RequestBody MemberLoves memberLoves) {
+		System.out.println(memberLoves);
+		memberService.memberLoveDelete(memberLoves);
+		return ResponseEntity.ok("좋아요 삭제 성공");
+	}
+	
+	@DeleteMapping("/love/delete/{memberNo}")
+	public ResponseEntity<String> loveDeleteAll(@PathVariable int memberNo) {
+		System.out.println(memberNo);
+		memberService.memberLoveDeleteAll(memberNo);
+		return ResponseEntity.ok("해당 ID 좋아요 전부 삭제 성공");
+	}
+	
 	@PostMapping("/like")
 	public ResponseEntity<List<?>> likeList(@RequestBody Map<String, Object> map) {
-		System.out.println("like list : " + map);
 		if (map.get("contentId") == null && map.get("contentFestivalId") == null) {			
 			return ResponseEntity.ok(memberService.memberLikeList(map));			
 		}
@@ -47,14 +73,12 @@ public class MemberController {
 	
 	@PostMapping("/like/insert")
 	public ResponseEntity<String> likeInsert(@RequestBody MemberLikes memberLikes) {
-		System.out.println(memberLikes);
 		memberService.memberLikeInsert(memberLikes);
 		return ResponseEntity.ok("성공");
 	}
 	
 	@PostMapping("/like/delete")
 	public ResponseEntity<String> likeDelete(@RequestBody MemberLikes memberLikes) {
-		System.out.println(memberLikes);
 		memberService.memberLikeDelete(memberLikes);
 		return ResponseEntity.ok("성공");
 	}
