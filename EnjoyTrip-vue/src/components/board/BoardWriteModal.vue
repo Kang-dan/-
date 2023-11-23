@@ -10,10 +10,11 @@ const { memberInfo, getMemberInfo, memberLogout } = memberStore;
 const { isLogin } = storeToRefs(memberStore);
 
 const isModalOpen = ref(false);
-const emit = defineEmits(["getBoardList"]);
+const emit = defineEmits(["getBoardList", "getLetterList"]);
 const closeModal = () => {
   isModalOpen.value = false;
   emit("getBoardList");
+  emit("getLetterList");
   // 모달을 닫을 때 show 클래스 제거
   const modal = document.querySelector("#modal.modal-overlay");
   if (modal) {

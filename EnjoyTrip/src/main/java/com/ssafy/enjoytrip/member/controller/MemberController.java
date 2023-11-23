@@ -37,6 +37,11 @@ public class MemberController {
 		this.jwtUtil = jwtUtil;
 	}
 	
+	@GetMapping("/love/list/{memberNo}")
+	public ResponseEntity<List<Integer>> loveList(@PathVariable int memberNo) {
+		return ResponseEntity.ok(memberService.memberLoveListBoardNo(memberNo));
+	}
+	
 	@PostMapping("/love/list")
 	public ResponseEntity<List<MemberLoves>> loveListOne(@RequestBody MemberLoves memberLoves) {
 		return ResponseEntity.ok(memberService.memberLoveListOne(memberLoves));

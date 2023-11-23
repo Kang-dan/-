@@ -187,7 +187,7 @@ const moveBoardWrite = () => {
     </div>
   </div>
 
-  <BoardWriteModal @getBoardList="getBoardList" :isOpen="isModalOpen">
+  <BoardWriteModal @getBoardList="getBoardList" @getLetterList="getLetterList" :isOpen="isModalOpen">
   </BoardWriteModal>
   <BoardDetailModal
     @getBoardList="getBoardList"

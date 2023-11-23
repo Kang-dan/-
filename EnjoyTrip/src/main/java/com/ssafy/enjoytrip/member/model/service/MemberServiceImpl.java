@@ -115,8 +115,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<Integer> selectMemberLoveListBoardNo(int memberNo) {
-		return selectMemberLoveListBoardNo(memberNo);
+	public List<Integer> memberLoveListBoardNo(int memberNo) {
+		return memberMapper.selectMemberLoveListBoardNo(memberNo);
 	}
 
 }

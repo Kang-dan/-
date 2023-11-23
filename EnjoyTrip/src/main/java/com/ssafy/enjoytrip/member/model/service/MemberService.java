@@ -28,7 +28,7 @@ public interface MemberService{
 	void memberLoveDelete(MemberLoves memberLoves);
 	void memberLoveDeleteAll(int memberNo);
 	List<MemberLoves> memberLoveListOne(MemberLoves memberLoves);
-	List<Integer> selectMemberLoveListBoardNo(int memberNo);
+	List<Integer> memberLoveListBoardNo(int memberNo);
 	
 
 }
