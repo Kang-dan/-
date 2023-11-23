@@ -745,14 +745,14 @@ input {
 .TripSnowButton2_text {
   cursor: pointer;
   position: absolute;
-  transform: translate(532px, 85px);
+  transform: translate(536px, 85px);
   color: rgb(61, 71, 67);
   transition: transform 0.5s ease; /* 트랜지션 효과 추가 */
 }
 
 .TripSnowButton2_text:hover {
   cursor: pointer;
-  transform: translate(532px, 85px) scale(1.5);
+  transform: translate(536px, 85px) scale(1.5);
 }
 
 #TripSnowButton3 {
@@ -771,13 +771,13 @@ input {
 .TripSnowButton3_text {
   cursor: pointer;
   position: absolute;
-  transform: translate(695px, 125px);
+  transform: translate(697px, 125px);
   color: rgb(61, 71, 67);
 }
 
 .TripSnowButton3_text:hover {
   cursor: pointer;
-  transform: translate(695px, 125px) scale(1.5);
+  transform: translate(697px, 125px) scale(1.5);
   transition: transform 0.5s ease; /* 트랜지션 효과 추가 */
 }
 

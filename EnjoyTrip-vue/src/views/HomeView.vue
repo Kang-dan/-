@@ -21,15 +21,15 @@ const randomBallImages = ref(
 );
 
 const left = [
-  0, 270, 360, 430, 530, 620, 450, 280, 360, 180, 300, 160, 280, 480, 500, 620,
-  720, 410,
+  0, 260, 340, 425, 520, 610, 450, 280, 360, 180, 300, 155, 280, 480, 500, 620,
+  720, 395,
 ];
 const top = [
-  0, 350, 270, 380, 320, 630, 560, 570, 670, 670, 800, 900, 960, 900, 750, 900,
+  0, 380, 285, 390, 325, 650, 560, 570, 670, 670, 810, 900, 975, 920, 750, 900,
   1000, 1050,
 ];
 const sidoCode = [
-  0, 2, 1, 31, 32, 35, 33, 8, 3, 34, 37, 5, 38, 36, 4, 7, 6, 39,
+  0, 2, 1, 31, 32, 35, 33, 8, 3, 34, 37, 15, 38, 36, 4, 7, 6, 39,
 ];
 const imgTitle = [
   "",
@@ -239,6 +239,7 @@ const moveMypage = () => {
           alt=""
           @click="moveMypage"
         />
+        <img class="mypage_camera" src="../assets/mypage/mypage_camera.gif" alt="" @click="moveMypage"/>
       </span>
       <span id="present">
         <!-- 선물상자(마이페이지) -->
@@ -286,10 +287,10 @@ const moveMypage = () => {
 /** 게시판 */
 .board_button {
   position: absolute;
-  transform: translate(40px, -190px);
-  width: 250px;
+  transform: translate(-220px, -470px);
+  width: 390px;
   cursor: pointer;
-  z-index: 999;
+  z-index: -1;
 }
 
 /** 전구 위 지역 글씨 */
@@ -328,7 +329,8 @@ const moveMypage = () => {
   padding: 6px 5px;
   border-radius: 15px;
   overflow: hidden;
-  background-color: rgba(192, 2, 2, 0.541);
+  background-color: rgba(190, 190, 190, 0.541);
+  /* background-color: rgba(192, 2, 2, 0.541); */
   width: 200px; /* 변경된 너비 설정 */
 }
 
@@ -381,7 +383,7 @@ const moveMypage = () => {
   position: absolute;
   width: 5px;
   height: 5px;
-  left: 375px;
+  left: 360px;
   top: 0px;
   z-index: 2;
   /* margin: auto; */
@@ -395,12 +397,12 @@ const moveMypage = () => {
   position: relative;
   /* display: block; */
   /* position: relative; */
-  /* top: 0px; */
+  top: 40px;
   /* left: 0px; */
   width: 100%;
   height: 100%;
   /* margin-left: 100px; */
-  z-index: 1;
+  z-index: 2;
   /* border: 1px solid; */
   margin: 0 auto;
   /* text-align: center; */
@@ -413,8 +415,8 @@ const moveMypage = () => {
   z-index: 1;
   text-align: center;
   margin-top: 150px;
-  width: 1150px;
-  left: -100px;
+  width: 900px;
+  left: 7px;
 }
 
 .city_ball {
@@ -424,27 +426,35 @@ const moveMypage = () => {
 /** (마이페이지) */
 #mypage {
   position: absolute;
-  right: 350px;
-  bottom: 100px;
+  /* right: 350px; */
+  /* bottom: 100px; */
+  transform: translate(630px, -150px);
   /* left: 850px; */
-  width: 100px;
+  /* width: 200px; */
   /* margin-top: 1010px; */
   z-index: 5;
 }
 
 .mypage-bag {
   position: absolute;
-  transform: translate(-500px, -20px);
-  width: 190px;
+  /* transform: translate(-500px, -20px); */
+  width: 210px;
   cursor: pointer;
   z-index: 999;
+}
+
+.mypage_camera {
+position: absolute;
+transform: translate(-90px, 90px);
+width: 150px;
+cursor: pointer;
+z-index: 999;
 }
 
 /** 선물(찜 목록) */
 #present {
   position: absolute;
-  right: 200px;
-  bottom: -60px;
+  transform: translate(800px, -250px);
   /* left: 850px; */
   width: 100px;
   /* margin-top: 1010px; */
@@ -452,16 +462,17 @@ const moveMypage = () => {
 }
 
 #PresentCloseGreen {
-  margin-left: 25px;
-  margin-bottom: 27px;
+  /* margin-left: 25px; */
+  /* margin-bottom: 27px; */
   width: 270px;
   /* margin-left: 100px; */
 }
 
 #PresentOpenGreen {
   width: 320px;
-  margin-bottom: 35px;
-  margin-left: -15px;
+  /* margin-bottom: 705px; */
+  /* margin-left: -15px; */
+  transform: translate(-39px, -63px);
   display: none;
   cursor: pointer;
 }

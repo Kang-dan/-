@@ -215,8 +215,8 @@ const formatTime = (value) => {
 }
 
 .home_btn_rudol {
-  width: 38px;
-  height: 38px;
+  width: 37px;
+  height: 37px;
   z-index: 999;
 }
 
@@ -233,7 +233,8 @@ const formatTime = (value) => {
   /* text-align: center; */
   /* text-decoration: none; */
   border-radius: 100%;
-  background-color: rgba(255, 157, 0, 0.835);
+  background-color: rgb(200, 206, 193);
+  /* background-color: rgba(255, 157, 0, 0.835); */
   color: #ffffff;
   cursor: pointer;
   /* position: relative; */
@@ -241,7 +242,7 @@ const formatTime = (value) => {
   border: none;
   transition: transform 0.3s, box-shadow 0.3s;
   /* transform: translateY(-3px); */
-  box-shadow: 4px 4px 13px 4px rgba(255, 255, 255, 0.9);
+  box-shadow: 4px 4px 13px 4px rgba(175, 166, 134, 0.9);
   z-index: 999;
 }
 

@@ -223,6 +223,23 @@ const showModal = (detail) => {
         <div class="carousel" ref="carousel">
           <div
             class="item"
+            v-if="likeLists.length === 0"
+            :key="0"
+            style="
+              border: 1px solid #fff;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              color: #fff;
+              font-size: 30px;
+            "
+          >
+            텅텅..
+            찜을 눌러주세요.
+          </div>
+          <div
+            v-else
+            class="item"
             v-for="item in likeLists.slice(
               startIndex,
               startIndex + visibleItemCount
@@ -337,7 +354,7 @@ const showModal = (detail) => {
   background-size: cover;
   text-align: center;
   margin: 0 auto;
-/* overflow: hidden;  */
+  /* overflow: hidden;  */
   visibility: hidden; /** 나중에 풀자! */
 }
 
@@ -484,7 +501,6 @@ const showModal = (detail) => {
   position: absolute;
   right: 0;
 }
-
 
 button {
   margin: 0;
