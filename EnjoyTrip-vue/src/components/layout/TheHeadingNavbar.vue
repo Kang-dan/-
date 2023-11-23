@@ -200,7 +200,7 @@ const formatTime = (value) => {
   height: 90px;
   cursor: pointer;
   z-index: 999;
-  display: none; /*나중에 풀기*/
+  /* display: none; 나중에 풀기 */
 }
 
 @font-face {
@@ -233,7 +233,7 @@ const formatTime = (value) => {
   /* text-align: center; */
   /* text-decoration: none; */
   border-radius: 100%;
-  background-color: rgb(200, 206, 193);
+  background-color: rgb(255, 198, 10);
   /* background-color: rgba(255, 157, 0, 0.835); */
   color: #ffffff;
   cursor: pointer;
@@ -242,7 +242,7 @@ const formatTime = (value) => {
   border: none;
   transition: transform 0.3s, box-shadow 0.3s;
   /* transform: translateY(-3px); */
-  box-shadow: 4px 4px 13px 4px rgba(175, 166, 134, 0.9);
+  box-shadow: 4px 4px 13px 4px rgba(245, 244, 209, 0.9);
   z-index: 999;
 }
 

@@ -234,8 +234,7 @@ const showModal = (detail) => {
               font-size: 30px;
             "
           >
-            텅텅..
-            찜을 눌러주세요.
+            텅텅.. 찜한 장소가 없습니다.
           </div>
           <div
             v-else
@@ -355,7 +354,7 @@ const showModal = (detail) => {
   text-align: center;
   margin: 0 auto;
   /* overflow: hidden;  */
-  visibility: hidden; /** 나중에 풀자! */
+  /* visibility: hidden; * 나중에 풀자! */
 }
 
 #gifs {
@@ -376,7 +375,7 @@ const showModal = (detail) => {
   width: 100px;
   transform: translate(610px, -600px);
   z-index: 999;
-  display: none;
+  /* display: none; */
 }
 .gif2_box {
   display: flex;
@@ -384,7 +383,7 @@ const showModal = (detail) => {
   width: 80px;
   transform: translate(570px, 25px);
   z-index: 998;
-  display: none;
+  /* display: none; */
 }
 .gif3_santa_ski {
   display: flex;
@@ -392,7 +391,7 @@ const showModal = (detail) => {
   width: 150px;
   transform: translate(450px, 0px);
   z-index: 999;
-  display: none;
+  /* display: none; */
 }
 .gif4_santa_snow {
   display: flex;
@@ -413,7 +412,7 @@ const showModal = (detail) => {
   position: absolute;
   width: 150px;
   transform: translate(650px, 0px);
-  display: none;
+  /* display: none; */
 }
 .gif7_tree {
   display: flex;
@@ -427,7 +426,7 @@ const showModal = (detail) => {
   position: absolute;
   width: 150px;
   transform: translate(580px, -70px);
-  display: none;
+  /* display: none; */
 }
 
 /* 캐러셀 스타일 */

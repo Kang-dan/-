@@ -30,7 +30,6 @@ const closeModal = () => {
   }
 };
 /** 모달창(디테일) 테스트 끝 */
-
 const infoChange = (command) => {
   const name = document.querySelector("#name");
   const email = document.querySelector("#email");
@@ -66,7 +65,7 @@ const passwordCheck = (action) => {
         } else if (action === "delete") infoDelete();
       } else {
         console.log("비밀번호 체크 실패함");
-        confirm("비밀번호를 다시 입력해주세요.");
+        confirm("비밀번호가 맞지 않습니다.");
       }
     },
     (error) => {
@@ -315,7 +314,7 @@ button:disabled {
 }
 .mypage_info_photo_img {
   padding-left: 30px;
-  visibility: hidden;
+  /* visibility: hidden; */
 }
 
 .mypage_winter_children_photo {

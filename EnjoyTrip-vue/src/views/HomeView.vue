@@ -62,6 +62,7 @@ const moveAttractionList = (sidoCode) => {
 
 const moveLike = () => {
   if (isLogin.value) router.push({ name: "member-like" });
+  else if (!isLogin.value) confirm("로그인을 해주세요.");
 };
 
 const moveBoard = () => {
@@ -131,11 +132,11 @@ const showModal = (detail) => {
   // 로그인이 되어있을 때에만 열리게 하기
   if (isLogin.value) {
     // getMypage();
-    
+
     // 모달이 나타날 때 show 클래스 추가
     const modal = document.querySelector("#modal.modal-overlay");
     modal.classList.add("show");
-  }
+  } else if (!isLogin.value) confirm("로그인을 해주세요.");
 };
 
 const moveMypage = () => {
@@ -155,6 +156,10 @@ const moveMypage = () => {
 // };
 </script>
 <template>
+  <p v-if="isLogin" class="welcome_text">반가워요!</p>
+
+  <p v-if="!isLogin" class="not_login_text">별을 클릭해 로그인을 해주세요</p>
+
   <div class="timer-container">
     <div class="timer-section">
       <div class="timer-value">{{ timer.days }}</div>
@@ -181,6 +186,16 @@ const moveMypage = () => {
       <div id="star" @click="moveLogin">
         <img
           id="TreeStar"
+          :style="{
+            transform: isLogin
+              ? 'scale(1)'
+              : hovered
+              ? 'scale(1.5)'
+              : 'scale(1)',
+            cursor: isLogin ? 'default' : 'pointer',
+          }"
+          @mouseover="hovered = true"
+          @mouseout="hovered = false"
           src="../assets/TreeStar.png"
           alt="별"
           title="로그인"
@@ -240,7 +255,12 @@ const moveMypage = () => {
           alt=""
           @click="moveMypage"
         />
-        <img class="mypage_camera" src="../assets/mypage/mypage_camera.gif" alt="" @click="moveMypage"/>
+        <img
+          class="mypage_camera"
+          src="../assets/mypage/mypage_camera.gif"
+          alt=""
+          @click="moveMypage"
+        />
       </span>
       <span id="present">
         <!-- 선물상자(마이페이지) -->
@@ -276,13 +296,34 @@ const moveMypage = () => {
 </template>
 
 <style scoped>
+/** 로그인 텍스트 */
+.welcome_text {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 30px;
+  text-shadow: 5px 5px 10px rgb(255, 238, 0); /* 텍스트 주위에 흐릿한 빛 효과 추가 */
+}
+
+.not_login_text {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 30px;
+  text-shadow: 5px 5px 10px rgb(255, 238, 0); /* 텍스트 주위에 흐릿한 빛 효과 추가 */
+}
+
 #snow_footer {
   position: absolute;
   margin-top: 220px;
   width: 100%;
-  height: 1200px;
+  height: 1300px;
   z-index: 1;
-  visibility: hidden; /** 나중에 풀자! */
+  /* visibility: hidden; * 나중에 풀자! */
 }
 
 /** 게시판 */
@@ -445,11 +486,11 @@ const moveMypage = () => {
 }
 
 .mypage_camera {
-position: absolute;
-transform: translate(-90px, 90px);
-width: 150px;
-cursor: pointer;
-z-index: 999;
+  position: absolute;
+  transform: translate(-90px, 90px);
+  width: 150px;
+  cursor: pointer;
+  z-index: 999;
 }
 
 /** 선물(찜 목록) */

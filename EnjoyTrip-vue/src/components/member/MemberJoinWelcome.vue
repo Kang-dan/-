@@ -71,8 +71,20 @@ onMounted(() => {
 </template>
 
 <style scoped>
+h1 {
+  font-family: "Bazzi";
+}
+@font-face {
+  font-family: "Bazzi";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/Bazzi.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 .text {
   margin-top: 13px;
+  font-family: "Bazzi";
 }
 
 .welcome_content {
@@ -88,7 +100,7 @@ onMounted(() => {
   text-align: center;
   align-content: center;
   padding: 5px;
-  font-size: 19px;
+  font-size: 23px;
 }
 
 .welcome_content p {
@@ -125,6 +137,7 @@ h1 {
   width: 200px;
   transition: all ease 1s;
   padding-top: 0;
+  cursor: pointer;
 }
 
 #WelcomeKoreaFlower:hover {
