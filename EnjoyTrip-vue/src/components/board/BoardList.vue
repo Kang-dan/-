@@ -136,8 +136,8 @@ const moveBoardWrite = () => {
 }
 
 .board_background {
-  /* background-image: url("@/assets/board/board_background6.jpeg"); */
-  background-color: darkblue;
+  background-image: url("@/assets/board/board_background6.jpeg");
+  /* background-color: darkblue; */
   /* width: 1000px;
   height: 1000px; */
   background-size: cover;

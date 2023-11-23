@@ -338,7 +338,7 @@ const showModal = (detail) => {
   text-align: center;
   margin: 0 auto;
 /* overflow: hidden;  */
-  /* visibility: hidden; * 나중에 풀자! */
+  visibility: hidden; /** 나중에 풀자! */
 }
 
 #gifs {

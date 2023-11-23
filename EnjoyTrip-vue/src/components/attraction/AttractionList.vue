@@ -63,6 +63,7 @@ onMounted(() => {
   getAttractionList();
   list = document.querySelector(".list");
   listClientWidth = list.clientWidth;
+
   bindEvents();
 });
 

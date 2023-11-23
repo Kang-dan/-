@@ -173,6 +173,8 @@ const moveMypage = () => {
     </div>
   </div>
 
+  <img id="snow_footer" src="@/assets/back_footter.png" />
+
   <div id="treeMap">
     <div id="treeParent">
       <div id="star" @click="moveLogin">
@@ -272,6 +274,15 @@ const moveMypage = () => {
 </template>
 
 <style scoped>
+#snow_footer {
+  position: absolute;
+  margin-top: 220px;
+  width: 100%;
+  height: 1200px;
+  z-index: 1;
+  visibility: hidden; /** 나중에 풀자! */
+}
+
 /** 게시판 */
 .board_button {
   position: absolute;

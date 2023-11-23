@@ -288,7 +288,7 @@ button:disabled {
 }
 .mypage_info_photo_img {
   padding-left: 30px;
-  /* visibility: hidden; */
+  visibility: hidden;
 }
 
 .mypage_winter_children_photo {
@@ -297,7 +297,7 @@ button:disabled {
   transform: translate(69px, 100px);
   width: 365px;
   /* display: none; */
-  visibility: hidden;
+  /* visibility: hidden; */
 }
 
 #modal .modal-window {
