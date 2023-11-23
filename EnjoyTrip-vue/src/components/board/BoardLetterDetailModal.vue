@@ -11,12 +11,12 @@ const { isLogin } = storeToRefs(memberStore);
 const props = defineProps({
   letterDetail: Object,
 });
-
+const emit = defineEmits(["getBoardList", "getLetterList"]);
 const isLetterModalOpen = ref(false);
-// const emit = defineEmits(["getBoardList"]);
 const closeModal = () => {
   isLetterModalOpen.value = false;
-  // emit("getBoardList");
+  emit("getBoardList");
+  emit("getLetterList");
   // 모달을 닫을 때 show 클래스 제거
   const modalLetter = document.querySelector("#modalLetter.modal-overlay");
   if (modalLetter) {

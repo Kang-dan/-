@@ -44,6 +44,7 @@ public class MemberController {
 	
 	@PostMapping("/love/list")
 	public ResponseEntity<List<MemberLoves>> loveListOne(@RequestBody MemberLoves memberLoves) {
+		System.out.println(memberLoves);
 		return ResponseEntity.ok(memberService.memberLoveListOne(memberLoves));
 	}
 	

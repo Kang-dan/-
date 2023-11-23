@@ -10,7 +10,6 @@ const { isLogin } = storeToRefs(memberStore);
 
 const isMyListModalOpen = ref(false);
 const checkMyListAction = ref('board');
-
 const props = defineProps({
   boards: Object,
   letters: Object,
@@ -20,6 +19,7 @@ const props = defineProps({
 const closeModal = () => {
   isMyListModalOpen.value = false;
   // 모달을 닫을 때 show 클래스 제거
+  
   const modalMyList = document.querySelector("#modalMyList.modal-overlay");
   if (modalMyList) {
     modalMyList.classList.remove("show");

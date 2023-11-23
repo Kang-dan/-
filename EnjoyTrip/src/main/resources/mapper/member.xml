@@ -37,7 +37,7 @@
 	<delete id="deleteMemberLoves" parameterType="memberLoves">
 		delete
 		  from members_loves
-		 where board_no = #{boardNo} and member_no = {#memberNo}
+		 where board_no = #{boardNo} and member_no = #{memberNo}
 	</delete>
 	
 	<delete id="deleteMemberLovesAll" parameterType="int">
@@ -49,7 +49,7 @@
 	<select id="selectMemberLoveListOne" parameterType="memberLoves" resultMap="memberLovesMap">
 		select no, member_no, board_no
 		  from members_loves
-		 where board_no = #{boardNo} and member_no = {#memberNo} 
+		 where board_no = #{boardNo} and member_no = #{memberNo} 
 	</select>
 	
 	<select id="selectMemberLoveListBoardNo" parameterType="int" resultType="int">

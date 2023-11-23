@@ -2,6 +2,7 @@
 import { ref, onMounted } from "vue";
 import { useMemberStore } from "@/stores/member";
 import { boardWrite, boardUpdateLove } from "@/api/board";
+import { loveInsert, loveDelete } from "@/api/member";
 import { storeToRefs } from "pinia";
 
 const memberStore = useMemberStore();
@@ -10,13 +11,16 @@ const { isLogin } = storeToRefs(memberStore);
 
 const props = defineProps({
   boardDetail: Object,
+  loveLength: Number
 });
-
+const emit = defineEmits(["getBoardList", "getLetterList", "loveChangeEmit"]);
 const isDetailModalOpen = ref(false);
-// const emit = defineEmits(["getBoardList"]);
+
 const closeModal = () => {
   isDetailModalOpen.value = false;
-  // emit("getBoardList");
+  emit("getBoardList");
+  emit("getLetterList");
+
   // 모달을 닫을 때 show 클래스 제거
   const modalDetail = document.querySelector("#modalDetail.modal-overlay");
   if (modalDetail) {
@@ -31,8 +35,24 @@ const loveChange = (num) => {
       "boardNo": props.boardDetail.boardNo,
       "num": num
     },
-    ({data}) => {
-      console.log(data);
+    (response) => {
+      if (num === 1) {
+        loveInsert(
+          {
+            "memberNo": memberInfo.memberNo,
+            "boardNo": props.boardDetail.boardNo
+          }, () => { emit("loveChangeEmit", props.boardDetail.boardNo);}, () => { }
+        );
+      }
+      else if (num === -1) {
+        loveDelete(
+          {
+            "memberNo": memberInfo.memberNo,
+            "boardNo": props.boardDetail.boardNo
+          }, () => { emit("loveChangeEmit", props.boardDetail.boardNo);}, () => { }
+        )
+      }
+      
     },
     (err) => {
       console.log(err);
@@ -69,8 +89,8 @@ const loveChange = (num) => {
         </div>
         <div class="stats">
           <i>조회수 : {{ props.boardDetail.boardHit }}</i>
-          <i><button class="like" @click="loveChange(1)">좋아요</button>
-            <button class="like" @click="loveChange(-1)">좋아요 취소</button>
+          <i><button class="like" v-show="loveLength === 0" @click="loveChange(1)">좋아요</button>
+            <button class="like" v-show="loveLength !== 0" @click="loveChange(-1)">좋아요 취소</button>
             {{ props.boardDetail.boardLove }}</i
           >
         </div>

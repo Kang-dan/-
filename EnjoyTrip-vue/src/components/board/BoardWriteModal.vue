@@ -4,6 +4,7 @@ import { useMemberStore } from "@/stores/member";
 import { boardWrite } from "@/api/board";
 import { letterWrite } from "@/api/letter";
 import { storeToRefs } from "pinia";
+import { Howl } from "howler";
 import btnClickSound from "@/assets/sound/pick.mp3";
 
 const memberStore = useMemberStore();
@@ -11,7 +12,7 @@ const { memberInfo, getMemberInfo, memberLogout } = memberStore;
 const { isLogin } = storeToRefs(memberStore);
 
 const isModalOpen = ref(false);
-const emit = defineEmits(["getBoardList", "getLetterList"]);
+const emit = defineEmits(["getBoardList", "getLetterList", "changeListAction"]);
 const closeModal = () => {
   isModalOpen.value = false;
   emit("getBoardList");
@@ -92,6 +93,7 @@ const boardSubmit = (left, top) => {
       console.log(data);
       board.value.boardTitle = "";
       board.value.boardContent = "";
+      emit("changeListAction");
       closeModal();
     },
     (err) => {
@@ -122,7 +124,7 @@ const letterSubmit = (left, top) => {
 };
 
 /** 사운드 */
-import { Howl } from "howler";
+
 
 const buttonSound = new Howl({
   src: [btnClickSound],

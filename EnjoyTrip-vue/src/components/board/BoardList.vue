@@ -90,6 +90,7 @@ const getLetterList = () => {
   }
 };
 
+
 onMounted(() => {
   getBoardList();
   getLetterList();
@@ -107,6 +108,10 @@ const playButtonSound = () => {
     console.error("playButtonSound 함수에서 에러:", error);
   }
 };
+
+const changeListAction = () => {
+  listAction.value = "board";
+}
 
 const toggleSound = (listType) => {
   playButtonSound(); // 소리 재생
@@ -129,6 +134,41 @@ const showModal = (detail) => {
   }
 };
 
+const getLoveOne = () => {
+  loveListOne(
+    {
+      "memberNo": memberInfo.value.memberNo,
+      "boardNo": boardDetail.value.boardNo
+    },
+    ({ data }) => {
+      console.log("좋아요 가져오기");
+      loveLength.value = data.length;
+      console.log(loveLength.value);
+    },
+    (err) => {
+      console.log(err);
+    }
+  );
+}
+
+const loveChangeEmit = (no) => {
+  getLoveOne();
+  getBoardDetail(no);
+}
+
+const getBoardDetail = (no) => {
+  boardView(
+      no,
+      ({ data }) => {
+        boardDetail.value = data;
+        isDetailModalOpen.value = true;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+}
+
 const showModalDetail = async (no) => {
   // 로그인이 되어있을 때에만 열리게 하기
   if (isLogin.value) {
@@ -141,29 +181,8 @@ const showModalDetail = async (no) => {
         console.log(err);
       }
     );
-    await boardView(
-      no,
-      ({ data }) => {
-        boardDetail.value = data;
-        isDetailModalOpen.value = true;
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-    await loveListOne(
-      {
-        "memberNo": memberInfo.value.memberNo,
-        "boardNo": boardDetail.value.boardNo
-      },
-      ({data}) => {
-        console.log(data);
-      },
-      (err) => {
-        console.log(err);
-      }
-
-    );
+    getBoardDetail(no);
+    getLoveOne();
     // 모달이 나타날 때 show 클래스 추가
     const modalDetail = document.querySelector("#modalDetail.modal-overlay");
     modalDetail.classList.add("show");
@@ -277,21 +296,27 @@ const moveBoardWrite = () => {
   <BoardWriteModal
     @getBoardList="getBoardList"
     @getLetterList="getLetterList"
+    @changeListAction="changeListAction"
     :isOpen="isModalOpen"
   >
   </BoardWriteModal>
   <BoardDetailModal
-    @getBoardList="getBoardList"
-    :isOpen="isDetailModalOpen"
-    :boardDetail="boardDetail"
+  @getBoardList="getBoardList"
+  @getLetterList="getLetterList"
+  :isOpen="isDetailModalOpen"
+  :boardDetail="boardDetail"
+  :loveLength="loveLength"
+  @loveChangeEmit="loveChangeEmit"
   >
   </BoardDetailModal>
-  <BoardMyListModal
+  <BoardMyListModal    
     :isOpen="isMyListModalOpen"
     :boards="boards"
     :letters="letters"
   ></BoardMyListModal>
   <BoardLetterDetailModal
+  @getBoardList="getBoardList"
+  @getLetterList="getLetterList"
     :isOpen="isLetterModalOpen"
     :letterDetail="letterDetail"
   >    
