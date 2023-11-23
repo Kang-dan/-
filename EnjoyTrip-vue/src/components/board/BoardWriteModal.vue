@@ -125,7 +125,6 @@ const letterSubmit = (left, top) => {
 
 /** 사운드 */
 
-
 const buttonSound = new Howl({
   src: [btnClickSound],
 });
@@ -296,6 +295,19 @@ function removeFile(element) {
 </template>
 
 <style scoped>
+* {
+  font-family: Bazzi;
+}
+
+/** 폰트  */
+@font-face {
+  font-family: "Bazzi";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/Bazzi.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 /** 라디오 버튼 (동그라미) */
 .radio_btn {
   color: white;
@@ -317,7 +329,6 @@ function removeFile(element) {
   font-size: 16px;
   cursor: pointer;
   margin-top: 20px;
-
 }
 
 .letter_write_btn:hover,

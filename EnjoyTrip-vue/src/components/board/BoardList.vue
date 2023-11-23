@@ -469,4 +469,17 @@ const moveBoardWrite = () => {
 .board_write:hover {
   transform: translate(-440px, 455px) scale(1.2);
 }
+
+* {
+  font-family: Bazzi;
+}
+
+/** 폰트  */
+@font-face {
+  font-family: "Bazzi";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/Bazzi.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
 </style>
