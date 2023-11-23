@@ -2,6 +2,7 @@
 import { ref, onMounted, inject } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { boardList, boardWrite, boardView, boardUpdateHit } from "@/api/board";
+import { letterList } from "@/api/letter";
 import { useMemberStore } from "@/stores/member";
 import { storeToRefs } from "pinia";
 import BoardWriteModal from "@/components/board/BoardWriteModal.vue";
@@ -48,8 +49,12 @@ const router = useRouter();
 const route = useRoute();
 
 const boards = ref([{}]);
+const letters = ref([{}]);
 
 const boardDetail = ref({});
+const letterDetail = ref({});
+
+const listAction = ref('board');
 
 const getBoardList = () => {
   boardList(
@@ -61,6 +66,20 @@ const getBoardList = () => {
     }
   );
 };
+
+const getLetterList = () => {
+  if (memberInfo) {
+    letterList(
+      memberInfo.value.memberNo,
+      ({ data }) => {
+        letters.value = data;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );    
+  }
+}
 
 onMounted(() => {
   getBoardList();
@@ -122,26 +141,31 @@ const moveBoardWrite = () => {
 </script>
 
 <template>
-  <!-- <div>
-    test보드{{ route.params.sidoCode }}
-    <div v-for="board in boards" :key="board.index">
-      글번호 : {{ board.boardNo }} 글제목 : {{ board.boardTitle }}
-    </div>
-  </div> -->
-  <input v-model="text"/>
+  <!-- <input v-model="text"/>
     <button @click="sendMessage">Send a message</button>
-  <input v-model="responseMsg">
+  <input v-model="responseMsg"> -->
 
   <div class="board_background">
     <div class="board_tree">
       <div class="random_leaf">
-        <img
-          class="board_leaf"
-          v-for="board in boards"
-          :src="`src/assets/board/board_leaf_${board.boardImg}.png`"
-          :style="`left:${board.boardX}px; top:${board.boardY}px`"
-          @click="showModalDetail(board.boardNo)"
-        />
+        <template v-if="listAction === 'board'">
+          <img
+            class="board_leaf"
+            v-for="board in boards"
+            :src="`src/assets/board/board_leaf_${board.boardImg}.png`"
+            :style="`left:${board.boardX}px; top:${board.boardY}px`"
+            @click="showModalDetail(board.boardNo)"
+          />          
+        </template>
+        <template v-if="listAction === 'letter'">
+          <img
+            class="board_leaf"
+            v-for="letter in letters"
+            :src="`src/assets/board/board_leaf_${letter.letterImg}.png`"
+            :style="`left:${letter.letterX}px; top:${letter.letterY}px`"
+            @click="showModalDetail(letter.letterNo)"
+          />          
+        </template>
       </div>
       <img
         class="board_search"

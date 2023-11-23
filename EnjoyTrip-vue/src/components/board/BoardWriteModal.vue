@@ -2,6 +2,7 @@
 import { ref, onMounted } from "vue";
 import { useMemberStore } from "@/stores/member";
 import { boardWrite } from "@/api/board";
+import { letterWrite } from "@/api/letter";
 import { storeToRefs } from "pinia";
 
 const memberStore = useMemberStore();
@@ -30,7 +31,20 @@ const board = ref({
   boardImg: 0,
 });
 
-const boardSubmit = () => {
+const letter = ref({
+  letterTitle: "",
+  memberNoFrom: 0,
+  memberIdFrom: "",
+  memberIdTo: "",
+  letterContent: "",
+  letterX: 0,
+  letterY: 0,
+  letterImg: 0,
+});
+
+const checkAction = ref('board');
+
+const formSubmit = (action) => {
   let left = Math.floor(Math.random() * 701);
   left = left - 100;
   let top = 0;
@@ -64,6 +78,12 @@ const boardSubmit = () => {
     top = top - 150;
   }
 
+  if (action === 'board') boardSubmit(left, top);
+  else if (action === 'letter') letterSubmit(left, top);
+
+}
+
+const boardSubmit = (left, top) => {
   board.value.memberId = memberInfo.memberId;
   board.value.boardX = left;
   board.value.boardY = top;
@@ -81,6 +101,28 @@ const boardSubmit = () => {
       console.log("에러");
     }
   );
+}
+
+const letterSubmit = (left, top) => {
+  letter.value.memberIdFrom = memberInfo.memberId;
+  letter.value.memberNoFrom = memberInfo.memberNo;
+  letter.value.letterX = left;
+  letter.value.letterY = top;
+  letter.value.letterImg = Math.floor(Math.random() * 10 + 1);
+
+  letterWrite(
+    letter.value,
+    ({data}) => { 
+      console.log(data);
+      letter.value.letterTitle = "";
+      letter.value.letterContent = "";
+      closeModal();
+    },
+    (err) => { 
+      console.log("에러");
+    }
+  );
+  
 }
 
 
@@ -146,20 +188,42 @@ function removeFile(element) {
       </div>
 
       <div class="content"></div>
+      <label><input type="radio" v-model="checkAction" name="action" value="board">게시글</label>
+      <label><input type="radio" v-model="checkAction" name="action" value="letter">편지</label>
 
-      <div class="board_input">
-        <form @submit.prevent="boardSubmit">
-          <label>제목</label>
-          <input id="title" v-model="board.boardTitle" type="text" required />
-          <textarea id="content" v-model="board.boardContent" cols="25" rows="10" type="text" required />
-          <!-- <label> 첨부파일
-            <input type="file" name="files" @click="selectFile(this);" />
-          </label>
-          <button type="button" @click="removeFile(this);" ><span>삭제</span></button>
-          <button type="button" @click="addFile();" ><span>파일 추가</span></button> -->
-          <span><button>글쓰기</button></span>
-        </form>
-      </div>
+      <template v-if="checkAction === 'board'">
+        <div class="board_input">
+          <form @submit.prevent="formSubmit('board')">
+            <label>제목</label>
+            <input id="title" v-model="board.boardTitle" type="text" required />
+            <textarea id="content" v-model="board.boardContent" cols="25" rows="10" type="text" required />
+            <!-- <label> 첨부파일
+              <input type="file" name="files" @click="selectFile(this);" />
+            </label>
+            <button type="button" @click="removeFile(this);" ><span>삭제</span></button>
+            <button type="button" @click="addFile();" ><span>파일 추가</span></button> -->
+            <span><button>글쓰기</button></span>
+          </form>
+        </div>      
+      </template>
+
+      <template v-if="checkAction === 'letter'">
+        <div class="board_input">
+          <form @submit.prevent="formSubmit('letter')">
+            <p><label>To</label><input id="title" v-model="letter.memberIdTo" type="text" required /></p>
+            <label>제목</label>
+            <input id="title" v-model="letter.letterTitle" type="text" required />
+            <textarea id="content" v-model="letter.letterContent" cols="25" rows="10" type="text" required />
+            <!-- <label> 첨부파일
+              <input type="file" name="files" @click="selectFile(this);" />
+            </label>
+            <button type="button" @click="removeFile(this);" ><span>삭제</span></button>
+            <button type="button" @click="addFile();" ><span>파일 추가</span></button> -->
+            <span><button>글쓰기</button></span>
+          </form>
+        </div>      
+      </template>
+
     </div>
   </div>
 </template>
