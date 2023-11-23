@@ -8,34 +8,35 @@ import { storeToRefs } from "pinia";
 import BoardWriteModal from "@/components/board/BoardWriteModal.vue";
 import BoardDetailModal from "@/components/board/BoardDetailModal.vue";
 import BoardMyListModal from "@/components/board/BoardMyListModal.vue";
+import btnClickSound from "@/assets/sound/sound_btn_click.mp3";
 
-import { onMessage, onOpen, onClose, onError } from 'vue3-websocket'
+import { onMessage, onOpen, onClose, onError } from "vue3-websocket";
 
-const text = ref('');
-const responseMsg = ref('');
+const text = ref("");
+const responseMsg = ref("");
 
-const socket = inject('socket');
+const socket = inject("socket");
 
 const sendMessage = () => socket.value.send(text.value);
 
 onOpen((obj) => {
   console.log(obj);
-  console.log('소켓 연결 성공');
+  console.log("소켓 연결 성공");
 });
 
 onMessage((message) => {
   responseMsg.value = message.data;
-  console.log('소켓으로 메시지 받음! ', message);
+  console.log("소켓으로 메시지 받음! ", message);
   getBoardList();
 });
 
 onClose((obj) => {
   console.log(obj);
-  console.log('소켓 연결 끊김');
+  console.log("소켓 연결 끊김");
 });
 
 onError((error) => {
-  console.error('소켓 에러 발생: ', error);
+  console.error("소켓 에러 발생: ", error);
 });
 
 const memberStore = useMemberStore();
@@ -54,7 +55,7 @@ const letters = ref([{}]);
 const boardDetail = ref({});
 const letterDetail = ref({});
 
-const listAction = ref('board');
+const listAction = ref("board");
 
 const getBoardList = () => {
   boardList(
@@ -77,14 +78,37 @@ const getLetterList = () => {
       (err) => {
         console.log(err);
       }
-    );    
+    );
   }
-}
+};
 
 onMounted(() => {
   getBoardList();
   getLetterList();
 });
+
+/** 사운드 */
+const buttonSound = new Howl({
+  src: [btnClickSound],
+});
+
+const playButtonSound = () => {
+  try {
+    buttonSound.play();
+  } catch (error) {
+    console.error("playButtonSound 함수에서 에러:", error);
+  }
+};
+
+const toggleSound = (listType) => {
+  playButtonSound(); // 소리 재생
+
+  if (listType === "letter") {
+    listAction.value = "board"; // 쪽지 리스트로 변경
+  } else {
+    listAction.value = "letter"; // 보드 리스트로 변경
+  }
+};
 
 /** 게시글 작성 - 모달창 */
 const showModal = (detail) => {
@@ -147,8 +171,22 @@ const moveBoardWrite = () => {
   <input v-model="responseMsg"> -->
 
   <div class="board_background">
-    <button v-if="listAction === 'letter'" @click="listAction = 'board'">보드 리스트로 변경</button>
-    <button v-if="listAction === 'board'" @click="listAction = 'letter'">쪽지 리스트로 변경</button>
+    <div class="board_letter_change_btn">
+      <button
+        class="letter_btn"
+        v-if="listAction === 'letter'"
+        @click="toggleSound('letter')"
+      >
+        보드 리스트로 변경
+      </button>
+      <button
+        class="every_btn"
+        v-if="listAction === 'board'"
+        @click="toggleSound('board')"
+      >
+        쪽지 리스트로 변경
+      </button>
+    </div>
     <div class="board_tree">
       <div class="random_leaf">
         <template v-if="listAction === 'board'">
@@ -158,7 +196,7 @@ const moveBoardWrite = () => {
             :src="`src/assets/board/board_leaf_${board.boardImg}.png`"
             :style="`left:${board.boardX}px; top:${board.boardY}px`"
             @click="showModalDetail(board.boardNo)"
-          />          
+          />
         </template>
         <template v-if="listAction === 'letter'">
           <template v-for="letter in letters">
@@ -187,7 +225,11 @@ const moveBoardWrite = () => {
     </div>
   </div>
 
-  <BoardWriteModal @getBoardList="getBoardList" @getLetterList="getLetterList" :isOpen="isModalOpen">
+  <BoardWriteModal
+    @getBoardList="getBoardList"
+    @getLetterList="getLetterList"
+    :isOpen="isModalOpen"
+  >
   </BoardWriteModal>
   <BoardDetailModal
     @getBoardList="getBoardList"
@@ -204,6 +246,29 @@ const moveBoardWrite = () => {
 
 
 <style scoped>
+/** 보드 쪽지 토글 버튼 꾸미기*/
+.board_letter_change_btn {
+  position: relative;
+  margin: 0 auto;
+  top: 30%;
+  transform: translateY(-40%);
+}
+.board_letter_change_btn button {
+  padding: 10px;
+  border: none;
+  border-radius: 10%;
+  outline: none;
+  color: white;
+}
+
+.board_letter_change_btn .letter_btn {
+  background-color: rgb(255, 208, 0);
+}
+
+.board_letter_change_btn .every_btn {
+  background-color: rgb(78, 165, 223);
+}
+
 .random_leaf {
   position: relative;
 }
@@ -253,7 +318,7 @@ const moveBoardWrite = () => {
 
 .board_search {
   position: absolute;
-  transform: translate(-560px, -50px) rotate(-50deg);
+  transform: translate(-560px, 290px) rotate(-50deg);
   height: 100px;
   cursor: pointer;
   transition: transform 1s ease;
@@ -262,19 +327,19 @@ const moveBoardWrite = () => {
 }
 
 .board_search:hover {
-  transform: translate(-560px, -50px) rotate(310deg);
+  transform: translate(-560px, 290px) rotate(310deg);
 }
 
 .board_write {
   width: 130px;
   position: absolute;
-  transform: translate(-440px, 110px);
+  transform: translate(-440px, 455px);
   cursor: pointer;
 
   /* visibility: hidden; */
 }
 
 .board_write:hover {
-  transform: translate(-440px, 110px) scale(1.2);
+  transform: translate(-440px, 455px) scale(1.2);
 }
 </style>

@@ -4,6 +4,7 @@ import { useMemberStore } from "@/stores/member";
 import { boardWrite } from "@/api/board";
 import { letterWrite } from "@/api/letter";
 import { storeToRefs } from "pinia";
+import btnClickSound from "@/assets/sound/pick.mp3";
 
 const memberStore = useMemberStore();
 const { memberInfo, getMemberInfo, memberLogout } = memberStore;
@@ -43,7 +44,7 @@ const letter = ref({
   letterImg: 0,
 });
 
-const checkAction = ref('board');
+const checkAction = ref("board");
 
 const formSubmit = (action) => {
   let left = Math.floor(Math.random() * 701);
@@ -56,53 +57,48 @@ const formSubmit = (action) => {
     if (left > 550) {
       if (top > 180) top = top - (left - 550);
       else top = top + (left - 550);
-    }
-    else {
+    } else {
       if (top > 180) top = top + (left + 50);
       else top = top - (left + 50);
     }
-  }
-  else if (left > 400 || left < 100) {
+  } else if (left > 400 || left < 100) {
     top = Math.floor(Math.random() * 431);
     top = top - 100;
     if (left > 400) {
       if (top > 115) top = top - (left - 400);
       else top = top + (left - 400);
-    }
-    else {
+    } else {
       if (top > 115) top = top + (left - 100);
       else top = top - (left - 100);
     }
-  }
-  else {
+  } else {
     top = Math.floor(Math.random() * 471);
     top = top - 150;
   }
 
-  if (action === 'board') boardSubmit(left, top);
-  else if (action === 'letter') letterSubmit(left, top);
-
-}
+  if (action === "board") boardSubmit(left, top);
+  else if (action === "letter") letterSubmit(left, top);
+};
 
 const boardSubmit = (left, top) => {
   board.value.memberId = memberInfo.memberId;
   board.value.boardX = left;
   board.value.boardY = top;
   board.value.boardImg = Math.floor(Math.random() * 10 + 1);
-  
+
   boardWrite(
     board.value,
-    ({data}) => { 
+    ({ data }) => {
       console.log(data);
       board.value.boardTitle = "";
       board.value.boardContent = "";
       closeModal();
     },
-    (err) => { 
+    (err) => {
       console.log("에러");
     }
   );
-}
+};
 
 const letterSubmit = (left, top) => {
   letter.value.memberIdFrom = memberInfo.memberId;
@@ -113,49 +109,65 @@ const letterSubmit = (left, top) => {
 
   letterWrite(
     letter.value,
-    ({data}) => { 
+    ({ data }) => {
       console.log(data);
       letter.value.letterTitle = "";
       letter.value.letterContent = "";
       closeModal();
     },
-    (err) => { 
+    (err) => {
       console.log("에러");
     }
   );
-  
-}
+};
 
+/** 사운드 */
+import { Howl } from "howler";
+
+const buttonSound = new Howl({
+  src: [btnClickSound],
+});
+
+const playButtonSound = () => {
+  try {
+    buttonSound.play();
+  } catch (error) {
+    console.error("Error in playButtonSound function:", error);
+  }
+};
+
+const handleWriteClick = () => {
+  playButtonSound();
+};
+/** 사운드 끝 */
 
 function selectFile(element) {
+  const file = element.files[0];
+  const filename = element.closest(".file_input").firstElementChild;
 
-const file = element.files[0];
-const filename = element.closest('.file_input').firstElementChild;
-
-// 1. 파일 선택 창에서 취소 버튼이 클릭된 경우
-if ( !file ) {
-    filename.value = '';
+  // 1. 파일 선택 창에서 취소 버튼이 클릭된 경우
+  if (!file) {
+    filename.value = "";
     return false;
-}
+  }
 
-// 2. 파일 크기가 10MB를 초과하는 경우
-const fileSize = Math.floor(file.size / 1024 / 1024);
-if (fileSize > 10) {
-    alert('10MB 이하의 파일로 업로드해 주세요.');
-    filename.value = '';
-    element.value = '';
+  // 2. 파일 크기가 10MB를 초과하는 경우
+  const fileSize = Math.floor(file.size / 1024 / 1024);
+  if (fileSize > 10) {
+    alert("10MB 이하의 파일로 업로드해 주세요.");
+    filename.value = "";
+    element.value = "";
     return false;
-}
+  }
 
-// 3. 파일명 지정
-filename.value = file.name;
+  // 3. 파일명 지정
+  filename.value = file.name;
 }
-
 
 // 파일 추가
 function addFile() {
-const fileDiv = document.createElement('div');
-fileDiv.innerHTML =`
+  const fileDiv = document.createElement("div");
+  fileDiv.innerHTML = `
     <div class="file_input">
         <input type="text" readonly />
         <label> 첨부파일
@@ -164,72 +176,165 @@ fileDiv.innerHTML =`
     </div>
     <button type="button" @click="removeFile(this);"><span>삭제</span></button>
 `;
-document.querySelector('.file_list').appendChild(fileDiv);
+  document.querySelector(".file_list").appendChild(fileDiv);
 }
-
 
 // 파일 삭제
 function removeFile(element) {
   const fileAddBtn = element.nextElementSibling;
   if (fileAddBtn) {
-      const inputs = element.previousElementSibling.querySelectorAll('input');
-      inputs.forEach(input => input.value = '')
-      return false;
+    const inputs = element.previousElementSibling.querySelectorAll("input");
+    inputs.forEach((input) => (input.value = ""));
+    return false;
   }
   element.parentElement.remove();
 }
-
 </script>
 
 <template>
   <div id="modal" class="modal-overlay">
     <div class="modal-window" @click.stop>
       <div class="close-area" @click="closeModal">X</div>
-      <div class="title">
-      </div>
+      <div class="title"></div>
 
       <div class="content"></div>
-      <label><input type="radio" v-model="checkAction" name="action" value="board" checked>게시글</label>
-      <label><input type="radio" v-model="checkAction" name="action" value="letter">편지</label>
+      <label class="radio_btn" for="boardRadio">
+        <input
+          id="boardRadio"
+          type="radio"
+          v-model="checkAction"
+          name="action"
+          value="board"
+          checked
+        />
+        게시글
+      </label>
+
+      <label class="radio_btn" for="letterRadio">
+        <input
+          id="letterRadio"
+          type="radio"
+          v-model="checkAction"
+          name="action"
+          value="letter"
+        />
+        편지
+      </label>
 
       <template v-if="checkAction === 'board'">
         <div class="board_input">
           <form @submit.prevent="formSubmit('board')">
             <label>제목</label>
             <input id="title" v-model="board.boardTitle" type="text" required />
-            <textarea id="content" v-model="board.boardContent" cols="25" rows="10" type="text" required />
+            <textarea
+              id="content"
+              v-model="board.boardContent"
+              cols="25"
+              rows="10"
+              type="text"
+              required
+            />
             <!-- <label> 첨부파일
               <input type="file" name="files" @click="selectFile(this);" />
             </label>
             <button type="button" @click="removeFile(this);" ><span>삭제</span></button>
             <button type="button" @click="addFile();" ><span>파일 추가</span></button> -->
-            <span><button>글쓰기</button></span>
+            <span
+              ><button class="board_write_btn" @click="handleWriteClick()">
+                글쓰기
+              </button></span
+            >
           </form>
-        </div>      
+        </div>
       </template>
 
       <template v-if="checkAction === 'letter'">
         <div class="board_input">
           <form @submit.prevent="formSubmit('letter')">
-            <p><label>To</label><input id="title" v-model="letter.memberIdTo" type="text" required /></p>
+            <p>
+              <label>To</label
+              ><input
+                id="title"
+                v-model="letter.memberIdTo"
+                type="text"
+                required
+                placeholder=" 보낼 사람의 ID를 입력해주세요."
+              />
+            </p>
             <label>제목</label>
-            <input id="title" v-model="letter.letterTitle" type="text" required />
-            <textarea id="content" v-model="letter.letterContent" cols="25" rows="10" type="text" required />
+            <input
+              id="title"
+              v-model="letter.letterTitle"
+              type="text"
+              required
+            />
+            <textarea
+              id="content"
+              v-model="letter.letterContent"
+              cols="25"
+              rows="10"
+              type="text"
+              required
+            />
             <!-- <label> 첨부파일
               <input type="file" name="files" @click="selectFile(this);" />
             </label>
             <button type="button" @click="removeFile(this);" ><span>삭제</span></button>
             <button type="button" @click="addFile();" ><span>파일 추가</span></button> -->
-            <span><button>글쓰기</button></span>
+            <span
+              ><button class="letter_write_btn" @click="handleWriteClick()">
+                글쓰기
+              </button></span
+            >
           </form>
-        </div>      
+        </div>
       </template>
-
     </div>
   </div>
 </template>
 
 <style scoped>
+/** 라디오 버튼 (동그라미) */
+.radio_btn {
+  color: white;
+  padding: 10px;
+}
+
+#title::placeholder {
+  color: rgba(255, 255, 255, 0.404);
+}
+
+/** 게시글 버튼 */
+.letter_write_btn {
+  padding: 1%;
+  border: none;
+  border-radius: 10%;
+  background-color: rgba(255, 255, 255, 0.966);
+  color: rgba(209, 84, 0, 0.966);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.letter_write_btn:hover {
+  background-color: rgba(209, 84, 0, 0.966);
+  color: rgba(255, 255, 255, 0.966);
+}
+
+.board_write_btn {
+  padding: 1%;
+  border: none;
+  border-radius: 10%;
+  background-color: rgba(255, 255, 255, 0.966);
+  color: rgba(209, 84, 0, 0.966);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.board_write_btn:hover {
+  background-color: rgba(209, 84, 0, 0.966);
+  color: rgba(255, 255, 255, 0.966);
+}
+
 /** 게시글 입력 */
 .board_input {
   margin-top: 60px;
@@ -237,7 +342,7 @@ function removeFile(element) {
 
 .board_input #title {
   font-size: 15px;
-  color: #222222;
+  color: #ffffff;
   width: 300px;
   border: none;
   border-bottom: solid #aaaaaa 1px;
@@ -285,10 +390,10 @@ function removeFile(element) {
   background: none;
   z-index: 5;
   font-size: 15px;
-  color: #222222;
+  color: #ffffff;
   width: 350px;
   max-width: 100%; /* 최대 가로 너비 설정 */
-  height: 300px;
+  height: 250px;
   border-color: #aaaaaa;
   border-radius: 2%;
   border-style: ridge;
@@ -299,9 +404,12 @@ function removeFile(element) {
   vertical-align: top; /* 텍스트가 상단에서부터 시작되도록 설정 */
 }
 
+.board_input #content {
+}
+
 .board_input input {
   font-size: 15px;
-  color: #222222;
+  color: #ffffff;
   width: 100%; /* 입력 필드를 가로 전체로 확장 */
   border: none;
   border-bottom: solid #aaaaaa 1px;
