@@ -9,7 +9,7 @@ const { memberInfo, getMemberInfo, memberLogout } = memberStore;
 const { isLogin } = storeToRefs(memberStore);
 
 const props = defineProps({
-  boardDetail: Object
+  boardDetail: Object,
 });
 
 const isDetailModalOpen = ref(false);
@@ -24,80 +24,109 @@ const closeModal = () => {
   }
 };
 /** 모달창(디테일) 테스트 끝 */
-
 </script>
 
 <template>
-  <div id="modalDetail" class="modal-overlay">
+  <div id="modalDetail" class="modal-overlay" @click="closeModal">
     <div class="modal-window" @click.stop>
       <div class="close-area" @click="closeModal">X</div>
-      <div class="title">
-      </div>
-
-      <div class="content"></div>
-
       <div class="board_input">
-        <p>제목 : {{ props.boardDetail.boardTitle }}</p>
+        <!-- <p>제목 : {{ props.boardDetail.boardTitle }}</p>
         <p>작성자 : {{ props.boardDetail.memberId }}</p>
         <p>작성일 : {{ props.boardDetail.boardRegisterTime }}</p>
         <p>내용 : {{ props.boardDetail.boardContent }}</p>
         <p>조회수 : {{ props.boardDetail.boardHit }}</p>
-        <p>좋아요 : {{ props.boardDetail.boardLove }}</p>
-        
+        <p>좋아요 : {{ props.boardDetail.boardLove }}</p> -->
+        <div class="title">
+          <p>
+            <i>제목 : </i><i>{{ props.boardDetail.boardTitle }}</i>
+          </p>
+          <p>
+            <i>작성자 : </i> <i>{{ props.boardDetail.memberId }}</i>
+          </p>
+          <p>
+            <i>작성일 : </i> <i>{{ props.boardDetail.boardRegisterTime }}</i>
+          </p>
+        </div>
+        <div class="content">
+          <p>{{ props.boardDetail.boardContent }}</p>
+        </div>
+        <div class="stats">
+          <i>조회수 : {{ props.boardDetail.boardHit }}</i>
+          <i
+            ><button class="like">좋아요</button>
+            {{ props.boardDetail.boardLove }}</i
+          >
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+/** 글 배치 예쁘게 */
+.like {
+  border: none;
+  border-radius: 10%;
+  padding: 5px;
+  margin-right: 5px;
+  color: #ff7979;
+  background: #ffffff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.like:hover {
+  color: #ffffff;
+  background: #ff8989;
+}
+
+#modalDetail .title {
+  color: rgb(0, 0, 0);
+}
+
+#modalDetail .title p {
+  text-shadow: 1px 1px 2px rgb(255, 154, 108);
+  position: relative;
+  /* transform: translateX(0px); */
+  margin-left: 160px;
+  color: rgb(255, 255, 255);
+  font-size: 20px;
+  /* 추가적인 스타일링 */
+}
+
+#modalDetail .content p {
+  margin-top: 20px;
+  text-shadow: 1px 1px 2px rgb(224, 193, 92);
+  font-size: 22px;
+  color: rgb(255, 255, 255);
+  display: flex;
+  flex-direction: column; /* 세로로 요소들을 배열합니다. */
+  align-items: center; /* 가운데 정렬 */
+}
+
+#modalDetail .stats {
+  justify-content: space-around; /* 좌우 여백 동일하게 분배 */
+  /* margin-top: 30px; 간격 조절 */
+  margin-top: 30px;
+  text-align: center;
+}
+
+#modalDetail .stats i {
+  justify-content: space-around; /* 좌우 여백 동일하게 분배 */
+  /* margin-top: 30px; 간격 조절 */
+  color: white;
+  font-size: 25px;
+  padding: 20px;
+}
+
 /** 게시글 입력 */
 .board_input {
-  margin-top: 60px;
-}
-
-.board_input #title {
-  font-size: 15px;
-  color: #222222;
-  width: 300px;
-  border: none;
-  border-bottom: solid #aaaaaa 1px;
-  padding-bottom: 10px;
-  padding-left: 10px;
-  position: relative;
-  background: none;
-  z-index: 5;
-}
-
-.board_input input::placeholder {
-  color: #aaaaaa;
-}
-.board_input input:focus {
-  outline: none;
-}
-
-.board_input label {
-  /* position: absolute; */
-  color: rgb(107, 107, 107);
-  font-size: 20px;
-  bottom: 8px;
-  transition: all 0.2s;
-}
-
-.board_input input:focus ~ label,
-.board_input input:valid ~ label {
-  font-size: 16px;
-  bottom: 40px;
-  color: #666;
-  font-weight: bold;
-}
-
-.board_input input:focus ~ span,
-.board_input input:valid ~ span {
-  width: 100%;
+  margin-top: 70px;
 }
 
 /** 내용부분 */
-#content {
+#modalDetail .content {
   display: block;
   position: relative;
   margin: auto;
@@ -105,13 +134,15 @@ const closeModal = () => {
   background: none;
   z-index: 5;
   font-size: 15px;
-  color: #222222;
+  color: #ffffff;
   width: 350px;
   max-width: 100%; /* 최대 가로 너비 설정 */
-  height: 300px;
-  border-color: #aaaaaa;
-  border-radius: 2%;
-  border-style: ridge;
+  height: 250px;
+  border-color: #ffffff;
+  border-radius: 10%;
+  border-style: double;
+  background-color: rgba(250, 0, 0, 0.1);
+  border-color: rgba(255, 205, 205, 0.5);
   text-align: left;
   overflow: auto; /* 내용이 넘칠 경우 스크롤 생성 */
   word-wrap: break-word; /* 단어가 가로로 길어질 때 자동으로 줄 바꿈 */
@@ -119,26 +150,12 @@ const closeModal = () => {
   vertical-align: top; /* 텍스트가 상단에서부터 시작되도록 설정 */
 }
 
-.board_input input {
-  font-size: 15px;
-  color: #222222;
-  width: 100%; /* 입력 필드를 가로 전체로 확장 */
-  border: none;
-  border-bottom: solid #aaaaaa 1px;
-  padding-bottom: 10px;
-  padding-left: 10px;
-  position: relative;
-  background: none;
-  z-index: 5;
-  margin-bottom: 10px; /* 입력 필드 간격을 조절하기 위해 마진 추가 */
-}
-
 /** 모달 디자인 */
 .modal-window {
   background-image: url("@/assets/board/board_leaf_10.png");
   background-size: cover;
   background-position: center;
-  text-align: center;
+  /* text-align: center; */
   vertical-align: middle;
   width: 600px;
   height: 600px;
@@ -178,28 +195,7 @@ const closeModal = () => {
   pointer-events: auto;
   transform: translate(-50%, -50%) scale(1); /* 이동 및 크기 변경 */
 }
-/* 
-#modal .modal-window {
-  background: rgba(0, 0, 0, 0.87);
-  box-shadow: 0 8px 32px 0 rgba(171, 175, 235, 0.37);
-  backdrop-filter: blur(13.5px);
-  -webkit-backdrop-filter: blur(13.5px);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  width: 900px;
-  height: 700px;
-  position: relative;
-  padding: 10px;
-} */
-#modalDetail .title {
-  /* display: inline; */
-  padding-left: 250px;
-  text-shadow: 1px 1px 2px gray;
-  color: white;
-}
-#modalDetail .title h2 {
-  padding-left: 55px;
-}
+
 #modalDetail .close-area {
   display: inline;
   float: right;
