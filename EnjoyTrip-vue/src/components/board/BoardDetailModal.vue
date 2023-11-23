@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useMemberStore } from "@/stores/member";
-import { boardWrite, boardUpdateLove } from "@/api/board";
+import { boardWrite, boardUpdateLove, boardDelete } from "@/api/board";
 import { loveInsert, loveDelete } from "@/api/member";
 import { storeToRefs } from "pinia";
 
@@ -28,6 +28,14 @@ const closeModal = () => {
   }
 };
 /** 모달창(디테일) 테스트 끝 */
+
+const deleteBoard = () => { 
+  if (confirm("삭제하시겠습니까?")) {
+    boardDelete(
+      props.boardDetail.boardNo, () => { closeModal(); }, () => { }
+    );
+  }
+}
 
 const loveChange = (num) => {
   boardUpdateLove(
@@ -93,6 +101,9 @@ const loveChange = (num) => {
             <button class="like" v-show="loveLength !== 0" @click="loveChange(-1)">좋아요 취소</button>
             {{ props.boardDetail.boardLove }}</i
           >
+          <template v-if="props.boardDetail.boardLove === 0">
+            <button class="like" @click="deleteBoard" v-if="props.boardDetail.memberId === memberInfo.memberId">삭제</button>
+          </template>
         </div>
       </div>
     </div>

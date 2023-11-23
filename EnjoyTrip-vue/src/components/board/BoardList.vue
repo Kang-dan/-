@@ -340,6 +340,8 @@ const moveBoardWrite = () => {
   >
   </BoardDetailModal>
   <BoardMyListModal
+    @getBoardList="getBoardList"
+    @getLetterList="getLetterList"
     :isOpen="isMyListModalOpen"
     :boards="boards"
     :letters="letters"

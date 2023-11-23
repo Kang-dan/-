@@ -2,6 +2,7 @@
 import { ref, onMounted } from "vue";
 import { useMemberStore } from "@/stores/member";
 import { boardWrite } from "@/api/board";
+import { letterDelete } from "@/api/letter";
 import { storeToRefs } from "pinia";
 
 const memberStore = useMemberStore();
@@ -24,6 +25,14 @@ const closeModal = () => {
   }
 };
 /** 모달창(디테일) 테스트 끝 */
+
+const deleteLetter = () => {
+  if (confirm("삭제하시겠습니까?")) {
+    letterDelete(
+      props.letterDetail.letterNo, () => {closeModal();}, () => {}
+    );
+  }
+}
 </script>
 
 <template>
@@ -55,7 +64,8 @@ const closeModal = () => {
           <p>{{ props.letterDetail.letterContent }}</p>
         </div>
         <div class="stats">
-          <i>읽은 횟수 : {{ props.letterDetail.letterHit }}</i>          
+          <i>읽은 횟수 : {{ props.letterDetail.letterHit }}</i>
+          <button class="like" @click="deleteLetter">삭제</button>
         </div>
       </div>
     </div>

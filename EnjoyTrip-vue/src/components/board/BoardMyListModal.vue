@@ -1,7 +1,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useMemberStore } from "@/stores/member";
-import { boardWrite } from "@/api/board";
+import { boardWrite, boardDelete } from "@/api/board";
+import { letterDelete } from "@/api/letter";
 import { storeToRefs } from "pinia";
 
 const memberStore = useMemberStore();
@@ -14,7 +15,7 @@ const props = defineProps({
   boards: Object,
   letters: Object,
 });
-
+const emit = defineEmits(["getBoardList", "getLetterList"]);
 
 const closeModal = () => {
   isMyListModalOpen.value = false;
@@ -26,6 +27,24 @@ const closeModal = () => {
   }
 };
 /** 모달창(디테일) 테스트 끝 */
+
+const deleteBoard = (no) => { 
+  if (confirm("삭제하시겠습니까?")) {
+    boardDelete(
+      no, () => { emit("getBoardList"); }, () => { }
+    );
+  }
+}
+
+const deleteLetter = (no) => {
+  if (confirm("삭제하시겠습니까?")) {
+    letterDelete(
+      no, () => {emit("getLetterList");}, (err) => {console.log(err)}
+    );
+  }
+}
+
+
 </script>
 
 <template>
@@ -40,9 +59,9 @@ const closeModal = () => {
 
       <div class="board_input">
         <p>마이리스트</p>
-
+        
         <template v-if="checkMyListAction === 'board'">          
-          <table>          
+          <table class="myListTable">          
             <thead>
               <tr>
                 <th>제목</th>
@@ -50,6 +69,7 @@ const closeModal = () => {
                 <th>작성일</th>
                 <th>조회수</th>
                 <th>좋아요</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -62,6 +82,7 @@ const closeModal = () => {
                       <td>{{ board.boardRegisterTime }}</td>
                       <td>{{ board.boardHit }}</td>
                       <td>{{ board.boardLove }}</td>
+                      <td><button @click="deleteBoard(board.boardNo)" v-if="board.boardLove === 0">삭제</button></td>
                     </tr>
                   </template>
                 </template>
@@ -71,7 +92,7 @@ const closeModal = () => {
         </template>
 
         <template v-if="checkMyListAction === 'letter'">          
-          <table>          
+          <table class="myListTable">          
             <thead>
               <tr>
                 <th>제목</th>
@@ -79,6 +100,7 @@ const closeModal = () => {
                 <th>받은 사람</th>
                 <th>편지 확인 여부</th>
                 <th>보낸 날짜</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -91,6 +113,10 @@ const closeModal = () => {
                     <td>{{ letter.memberIdTo }}</td>
                     <td>{{ letter.letterHit > 0 ? '확인함' : '확인안함' }}</td>
                     <td>{{ letter.letterRegisterTime }}</td>
+                    <td>                      
+                      <button @click="deleteLetter(letter.letterNo)" 
+                      v-if="letter.memberIdTo === memberInfo.memberId || letter.letterHit === 0">삭제</button>
+                    </td>
                   </tr>
                   
                 </template>
@@ -105,6 +131,10 @@ const closeModal = () => {
 </template>
 
 <style scoped>
+
+.myListTable {
+  margin: 0 auto;
+}
 /** 게시글 입력 */
 .board_input {
   margin-top: 60px;

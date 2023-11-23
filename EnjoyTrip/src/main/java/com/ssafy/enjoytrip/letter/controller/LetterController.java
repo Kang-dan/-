@@ -42,6 +42,7 @@ public class LetterController {
 	
 	@DeleteMapping("/delete/{no}")
 	public ResponseEntity<String> delete(@PathVariable int no) {
+		System.out.println("편지삭제요청");
 		letterSerivce.delete(no);
 		return ResponseEntity.ok("편지삭제 성공");
 	}
