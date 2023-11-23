@@ -277,6 +277,7 @@ const closeModal = () => {
   opacity: 0;
   pointer-events: none;
   transition: opacity 1s ease, transform 1s ease;
+  z-index: 10;
 }
 
 #modal.modal-overlay.show {

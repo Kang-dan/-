@@ -24,6 +24,8 @@ public interface BoardSerivce {
 
 	void deleteMemberBoards(String memberId);
 	
+	void updateLoveAll(List<Integer> boardNo);
+	
 	
 	void saveFiles(int boardNo, List<FileUpload> files);
 }

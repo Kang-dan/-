@@ -75,5 +75,10 @@ public class BoardServiceImpl implements BoardSerivce {
 		boardMapper.saveAll(files);
 	}
 
+	@Override
+	public void updateLoveAll(List<Integer> boardNo) {
+		boardMapper.boardUpdateLoveAll(boardNo);
+	}
+
 	
 }

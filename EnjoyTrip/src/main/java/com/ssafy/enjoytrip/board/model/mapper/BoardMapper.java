@@ -32,4 +32,6 @@ public interface BoardMapper {
 	// 파일 관련
 	void saveAll(List<FileUpload> files);
 
+	void boardUpdateLoveAll(List<Integer> boardNo);
+
 }

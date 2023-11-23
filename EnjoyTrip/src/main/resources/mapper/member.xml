@@ -94,6 +94,12 @@
 		delete from members_likes
 		 where no = #{no}
 	</delete>
+	
+	<delete id="deleteMemberLikes" parameterType="String">
+		delete
+		  from members_likes
+		 where member_id = #{memberId}
+	</delete>
 
 	<insert id="registMember" parameterType="member">
 		insert into members (member_id, member_pw, member_name, member_email, age)

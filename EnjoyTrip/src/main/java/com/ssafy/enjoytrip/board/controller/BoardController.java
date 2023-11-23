@@ -80,6 +80,13 @@ public class BoardController {
 		boardSerivce.updateLove(map);
 		return ResponseEntity.ok("좋아요 변경 성공");
 	}
+	
+	@PostMapping("/update/love/all")
+	public ResponseEntity<String> updateLoveAll(@RequestBody Map<String, Object> boardNo) {
+		List<Integer> list = (List<Integer>) boardNo.get("boardNo");
+		boardSerivce.updateLoveAll(list);
+		return ResponseEntity.ok("좋아요 변경 성공");
+	}
 
 }
 

@@ -63,7 +63,7 @@ onMounted(() => {
   getAttractionList();
   list = document.querySelector(".list");
   listClientWidth = list.clientWidth;
-
+  isModalOpen.value = true;
   bindEvents();
 });
 
@@ -275,10 +275,8 @@ const showModal = (detail) => {
   if (isLogin.value) {
     getLikeOne();
   }
-  isModalOpen.value = true;
   // 모달이 나타날 때 show 클래스 추가
   const modal = document.querySelector("#modal.modal-overlay");
-  console.log("쇼모달작동");
   modal.classList.add("show");
 };
 

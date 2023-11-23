@@ -86,6 +86,7 @@ const timer = ref({
 let intervalId;
 
 onMounted(() => {
+  isModalOpen.value = true;
   startTimer();
 });
 
@@ -130,7 +131,7 @@ const showModal = (detail) => {
   // 로그인이 되어있을 때에만 열리게 하기
   if (isLogin.value) {
     // getMypage();
-    isModalOpen.value = true;
+    
     // 모달이 나타날 때 show 클래스 추가
     const modal = document.querySelector("#modal.modal-overlay");
     modal.classList.add("show");

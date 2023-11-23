@@ -50,6 +50,26 @@ async function likeDelete(like, success, fail) {
   await local.post(`${url}/like/delete`, JSON.stringify(like)).then(success).catch(fail);
 }
 
+async function loveInsert(love, success, fail) {
+  await local.post(`${url}/love/insert`, JSON.stringify(love)).then(success).catch(fail);
+}
+
+async function loveListOne(love, success, fail) {
+  await local.post(`${url}/love/list`, JSON.stringify(love)).then(success).catch(fail);
+}
+
+async function loveList(memberNo, success, fail) {
+  await local.get(`${url}/love/list/${memberNo}`).then(success).catch(fail);
+}
+
+async function loveDelete(love, success, fail) {
+  await local.post(`${url}/love/delete`, JSON.stringify(love)).then(success).catch(fail);
+}
+
+async function loveDeleteAll(memberNo, success, fail) {
+  await local.delete(`${url}/love/delete/${memberNo}`).then(success).catch(fail);
+}
+
 export {
   loginMember,
   registMember,
@@ -61,5 +81,10 @@ export {
   likeDelete,
   idCheck,
   updateMember,
-  deleteMember
+  deleteMember,
+  loveInsert,
+  loveDeleteAll,
+  loveDelete,
+  loveList,
+  loveListOne,
 };

@@ -1,8 +1,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useMemberStore } from "@/stores/member";
-import { idCheck, updateMember, deleteMember } from "@/api/member";
-import { boardDeleteMember } from "@/api/board";
+import { idCheck, updateMember, deleteMember, loveList, loveDeleteAll } from "@/api/member";
+import { boardDeleteMember, boardUpdateLoveAll } from "@/api/board";
 import { storeToRefs } from "pinia";
 
 const memberStore = useMemberStore();
@@ -12,6 +12,7 @@ const { isLogin } = storeToRefs(memberStore);
 const isModalOpen = ref(false);
 
 const member = ref({
+  memberNo: memberInfo.memberNo,
   memberId: memberInfo.memberId,
   memberPw: "",
   memberName: memberInfo.memberName,
@@ -78,6 +79,32 @@ const infoDelete = () => {
   if (confirm("기존 데이터는 모두 사라지게 됩니다. 회원 탈퇴를 원하시나요? ")) {
     console.log("yes");
     memberLogout(member.value.memberId);
+    loveList(
+      member.value.memberNo,
+      ({ data }) => {
+        boardUpdateLoveAll(
+          { boardNo: data },
+          ({data}) => {
+            console.log("좋아요 전부 취소 완료");
+          },
+          (err) => {
+            console.log(err);
+          }
+        );        
+      }, 
+      (err) => { 
+        console.log(err);
+      }
+    );
+    loveDeleteAll(
+      member.value.memberNo,
+      ({data}) => {
+        console.log("좋아요 기록 삭제");
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
     boardDeleteMember(
       member.value.memberId,
       ({ data }) => {

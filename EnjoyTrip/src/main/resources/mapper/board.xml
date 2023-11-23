@@ -72,6 +72,15 @@
 		where member_id = #{memberId}
 	</delete>
 	
+	<update id="boardUpdateLoveAll" parameterType="list">
+		update board
+		   set board_love = board_love - 1
+		 where board_no in 
+		 <foreach collection="list" item="boardNo" open="(" separator="," close=")">
+	        #{boardNo}
+	    </foreach>
+	</update>
+	
 	
 	<insert id="saveAll" parameterType="list">
 		insert into file_upload no, board_no, original_name, save_name, size, delete_yn, created_date, deleted_date
