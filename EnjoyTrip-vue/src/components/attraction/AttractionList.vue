@@ -409,18 +409,20 @@ const getLikeOne = () => {
             </li>
           </ul>
         </div>
-        <img
-          class="listLeftBtn"
-          src="@/assets/like/like_left_button.png"
-          alt=""
-          @click="btnScrolle(1)"
-        />
-        <img
-          class="listRightBtn"
-          src="@/assets/like/like_right_button.png"
-          alt=""
-          @click="btnScrolle(-1)"
-        />
+        <template v-if="attractions.length">
+          <img
+            class="listLeftBtn"
+            src="@/assets/like/like_left_button.png"
+            alt=""
+            @click="btnScrolle(1)"
+          />
+          <img
+            class="listRightBtn"
+            src="@/assets/like/like_right_button.png"
+            alt=""
+            @click="btnScrolle(-1)"
+          />
+        </template>
 
         <!-- 모달창(디테일) 테스트 -->
         <div id="modal_div">
