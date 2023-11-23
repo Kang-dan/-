@@ -8,6 +8,8 @@ import btnClickSound from "@/assets/sound/sound_btn_click.mp3";
 
 import { Howl } from "howler"; //효과음
 
+const router = useRouter();
+
 // 효과음을 위한 Howl 인스턴스 생성
 const buttonSound = new Howl({
   src: [btnClickSound],
@@ -15,15 +17,22 @@ const buttonSound = new Howl({
 
 // 홈버튼 클릭 시 효과음 재생하는 함수
 const playButtonSound = () => {
-  buttonSound.play();
-  // 다른 로직 추가
-  headerMain(); // 홈버튼 클릭 시의 다른 로직 수행 (원래 있던 함수 호출)
+  try {
+    buttonSound.play();
+  } catch (error) {
+    console.error("playButtonSound 함수에서 에러:", error);
+  }
+};
+
+const handleHomeClick = () => {
+  playButtonSound(); // Play button sound
+  moveMain(); // Always move to the main view
 };
 
 const memberStore = useMemberStore();
 const { isLogin, memberInfo } = storeToRefs(memberStore);
 
-const router = useRouter();
+// const router = useRouter();
 function moveMain() {
   // router.replace({ path: "/" }); // 현재 라우트를 대체
   // router.push({ path: "/", replace: true }); // 위와 같음
@@ -144,9 +153,13 @@ const formatTime = (value) => {
 
 
 <template>
-  <button class="home-button" @click="playButtonSound()">
+  <button class="home-button" @click="handleHomeClick()">
     <img class="home_btn_rudol" src="@/assets/home_btn_rudol.png" alt="" />
   </button>
+
+  <!-- <button class="home-button" @click="playButtonSound()">
+    <img class="home_btn_rudol" src="@/assets/home_btn_rudol.png" alt="" />
+  </button> -->
 
   <button v-if="isLogin" @click.prevent="logout()" class="logout-button">
     로그아웃

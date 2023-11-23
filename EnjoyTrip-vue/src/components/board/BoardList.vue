@@ -30,11 +30,11 @@ const getBoardList = () => {
     (err) => {
       console.log(err);
     }
-  );  
+  );
 };
 
 onMounted(() => {
-  getBoardList();  
+  getBoardList();
 });
 
 /** 게시글 작성 - 모달창 */
@@ -51,14 +51,22 @@ const showModal = (detail) => {
 const showModalDetail = async (no) => {
   // 로그인이 되어있을 때에만 열리게 하기
   if (isLogin.value) {
-    await boardUpdateHit(no, ({data}) => { console.log(data)}, (err) => { console.log(err)});
+    await boardUpdateHit(
+      no,
+      ({ data }) => {
+        console.log(data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
     boardView(
       no,
-      ({data}) => { 
+      ({ data }) => {
         boardDetail.value = data;
         isDetailModalOpen.value = true;
       },
-      (err) => { 
+      (err) => {
         console.log(err);
       }
     );
@@ -72,7 +80,7 @@ const showModalMyList = () => {
   // 로그인이 되어있을 때에만 열리게 하기
   if (isLogin.value) {
     isMyListModalOpen.value = true;
-    
+
     // 모달이 나타날 때 show 클래스 추가
     const modalDetail = document.querySelector("#modalMyList.modal-overlay");
     modalDetail.classList.add("show");
@@ -82,7 +90,6 @@ const showModalMyList = () => {
 const moveBoardWrite = () => {
   showModal();
 };
-
 </script>
 
 <template>
@@ -96,13 +103,13 @@ const moveBoardWrite = () => {
   <div class="board_background">
     <div class="board_tree">
       <div class="random_leaf">
-        
-        <img class="board_leaf" v-for="board in boards"
-        :src="`src/assets/board/board_leaf_${board.boardImg}.png`"
-        :style="`left:${board.boardX}px; top:${board.boardY}px`"
-        @click="showModalDetail(board.boardNo)"
+        <img
+          class="board_leaf"
+          v-for="board in boards"
+          :src="`src/assets/board/board_leaf_${board.boardImg}.png`"
+          :style="`left:${board.boardX}px; top:${board.boardY}px`"
+          @click="showModalDetail(board.boardNo)"
         />
-        
       </div>
       <img
         class="board_search"
@@ -121,23 +128,27 @@ const moveBoardWrite = () => {
 
   <BoardWriteModal @getBoardList="getBoardList" :isOpen="isModalOpen">
   </BoardWriteModal>
-  <BoardDetailModal @getBoardList="getBoardList" :isOpen="isDetailModalOpen"
-  :boardDetail="boardDetail">
+  <BoardDetailModal
+    @getBoardList="getBoardList"
+    :isOpen="isDetailModalOpen"
+    :boardDetail="boardDetail"
+  >
   </BoardDetailModal>
-  <BoardMyListModal :isOpen="isMyListModalOpen" :boards="boards"></BoardMyListModal>
-  
+  <BoardMyListModal
+    :isOpen="isMyListModalOpen"
+    :boards="boards"
+  ></BoardMyListModal>
 </template>
 
 
 <style scoped>
-
 .random_leaf {
   position: relative;
 }
 
 .board_background {
-  background-image: url("@/assets/board/board_background6.jpeg");
-  /* background-color: darkblue; */
+  /* background-image: url("@/assets/board/board_background6.jpeg"); */
+  background-color: darkblue;
   /* width: 1000px;
   height: 1000px; */
   background-size: cover;
@@ -186,7 +197,6 @@ const moveBoardWrite = () => {
   transition: transform 1s ease;
 
   /* visibility: hidden; */
-  
 }
 
 .board_search:hover {

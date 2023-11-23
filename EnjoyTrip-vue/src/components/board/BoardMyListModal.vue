@@ -11,7 +11,7 @@ const { isLogin } = storeToRefs(memberStore);
 const isMyListModalOpen = ref(false);
 
 const props = defineProps({
-  boards: Object
+  boards: Object,
 });
 
 const closeModal = () => {
@@ -23,25 +23,25 @@ const closeModal = () => {
   }
 };
 /** 모달창(디테일) 테스트 끝 */
-
 </script>
 
 <template>
   <div id="modalMyList" class="modal-overlay">
     <div class="modal-window" @click.stop>
       <div class="close-area" @click="closeModal">X</div>
-      <div class="title">
-      </div>
+      <div class="title"></div>
 
       <div class="content"></div>
 
       <div class="board_input">
         <p>마이리스트</p>
-        <div v-for="board in boards">
-          <template v-if="board.memberId === memberInfo.memberId">
-            <p>{{ board.boardTitle }}</p>
-          </template>
-        </div>        
+        <template v-if="memberInfo">
+          <div v-for="board in boards">
+            <template v-if="board.memberId === memberInfo.memberId">
+              <p>{{ board.boardTitle }}</p>
+            </template>
+          </div>
+        </template>
       </div>
     </div>
   </div>
