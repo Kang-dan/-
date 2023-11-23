@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, inject } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { boardList, boardWrite, boardView, boardUpdateHit } from "@/api/board";
 import { useMemberStore } from "@/stores/member";
@@ -7,6 +7,35 @@ import { storeToRefs } from "pinia";
 import BoardWriteModal from "@/components/board/BoardWriteModal.vue";
 import BoardDetailModal from "@/components/board/BoardDetailModal.vue";
 import BoardMyListModal from "@/components/board/BoardMyListModal.vue";
+
+import { onMessage, onOpen, onClose, onError } from 'vue3-websocket'
+
+const text = ref('');
+const responseMsg = ref('');
+
+const socket = inject('socket');
+
+const sendMessage = () => socket.value.send(text.value);
+
+onOpen((obj) => {
+  console.log(obj);
+  console.log('소켓 연결 성공');
+});
+
+onMessage((message) => {
+  responseMsg.value = message.data;
+  console.log('소켓으로 메시지 받음! ', message);
+  getBoardList();
+});
+
+onClose((obj) => {
+  console.log(obj);
+  console.log('소켓 연결 끊김');
+});
+
+onError((error) => {
+  console.error('소켓 에러 발생: ', error);
+});
 
 const memberStore = useMemberStore();
 const { isLogin, memberInfo } = storeToRefs(memberStore);
@@ -99,6 +128,9 @@ const moveBoardWrite = () => {
       글번호 : {{ board.boardNo }} 글제목 : {{ board.boardTitle }}
     </div>
   </div> -->
+  <input v-model="text"/>
+    <button @click="sendMessage">Send a message</button>
+  <input v-model="responseMsg">
 
   <div class="board_background">
     <div class="board_tree">

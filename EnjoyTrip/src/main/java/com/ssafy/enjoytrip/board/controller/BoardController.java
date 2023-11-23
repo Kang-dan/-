@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.enjoytrip.board.model.Board;
 import com.ssafy.enjoytrip.board.model.FileUpload;
 import com.ssafy.enjoytrip.board.model.service.BoardSerivce;
+import com.ssafy.enjoytrip.configuration.WebSocketHandler;
 import com.ssafy.enjoytrip.util.FileUtils;
 
 @CrossOrigin("*")
@@ -24,9 +25,11 @@ import com.ssafy.enjoytrip.util.FileUtils;
 public class BoardController {
 	private final BoardSerivce boardSerivce;
 	private final FileUtils fileUtils;
-	public BoardController(BoardSerivce boardSerivce) {
-		this.fileUtils = new FileUtils();
+	private final WebSocketHandler webSocketHandler;
+	public BoardController(BoardSerivce boardSerivce, WebSocketHandler webSocketHandler, FileUtils fileUtils) {
+		this.fileUtils = fileUtils;
 		this.boardSerivce = boardSerivce;
+		this.webSocketHandler = webSocketHandler;
 	}
 
 	@GetMapping("/list")
@@ -39,6 +42,7 @@ public class BoardController {
 		boardSerivce.write(board);
 //		List<FileUpload> files = fileUtils.uploadFiles(board.getFiles());
 //		boardSerivce.saveFiles(board.getBoardNo(), files);
+		webSocketHandler.changeMessage();
 		return ResponseEntity.ok("글쓰기 성공");
 	}	
 
