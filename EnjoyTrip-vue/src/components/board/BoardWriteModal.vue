@@ -226,7 +226,7 @@ function removeFile(element) {
       <template v-if="checkAction === 'board'">
         <div class="board_input">
           <form @submit.prevent="formSubmit('board')">
-            <label>제목</label>
+            <label class="board_title">제목</label>
             <input id="title" v-model="board.boardTitle" type="text" required />
             <textarea
               id="content"
@@ -300,6 +300,7 @@ function removeFile(element) {
 .radio_btn {
   color: white;
   padding: 10px;
+  cursor: pointer;
 }
 
 #title::placeholder {
@@ -315,9 +316,12 @@ function removeFile(element) {
   color: rgba(209, 84, 0, 0.966);
   font-size: 16px;
   cursor: pointer;
+  margin-top: 20px;
+
 }
 
-.letter_write_btn:hover {
+.letter_write_btn:hover,
+.board_write_btn:hover {
   background-color: rgba(209, 84, 0, 0.966);
   color: rgba(255, 255, 255, 0.966);
 }
@@ -330,6 +334,7 @@ function removeFile(element) {
   color: rgba(209, 84, 0, 0.966);
   font-size: 16px;
   cursor: pointer;
+  margin-top: 40px;
 }
 
 .board_write_btn:hover {
@@ -339,7 +344,7 @@ function removeFile(element) {
 
 /** 게시글 입력 */
 .board_input {
-  margin-top: 60px;
+  margin-top: 40px;
 }
 
 .board_input #title {
@@ -395,9 +400,9 @@ function removeFile(element) {
   color: #ffffff;
   width: 350px;
   max-width: 100%; /* 최대 가로 너비 설정 */
-  height: 250px;
+  height: 240px;
   border-color: #aaaaaa;
-  border-radius: 2%;
+  border-radius: 10%;
   border-style: ridge;
   text-align: left;
   overflow: auto; /* 내용이 넘칠 경우 스크롤 생성 */
@@ -433,6 +438,10 @@ function removeFile(element) {
   width: 600px;
   height: 600px;
   z-index: 999;
+}
+
+.modal-window input {
+  margin-top: 20px;
 }
 
 #modal .modal-window {

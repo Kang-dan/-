@@ -101,7 +101,7 @@ onMounted(() => {
   getLetterList();
   // 화면 로드 시 맨 아래로 스크롤
   const targetPosition = 400; // 멈추길 원하는 스크롤 위치
-  const scrollDuration = 2000; // 전체 스크롤에 걸리는 시간 (밀리초)
+  const scrollDuration = 1800; // 전체 스크롤에 걸리는 시간 (밀리초)
 
   const startScroll = () => {
     const startTime = performance.now(); // 시작 시간
@@ -275,14 +275,14 @@ const moveBoardWrite = () => {
         v-if="listAction === 'letter'"
         @click="toggleSound('letter')"
       >
-        보드 리스트로 변경
+        보드 리스트 보기
       </button>
       <button
         class="every_btn"
         v-if="listAction === 'board'"
         @click="toggleSound('board')"
       >
-        쪽지 리스트로 변경
+        쪽지 리스트 보기
       </button>
     </div>
     <div class="board_tree">
@@ -370,14 +370,30 @@ const moveBoardWrite = () => {
   border-radius: 10%;
   outline: none;
   color: white;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.5); /* 그림자 효과 */
+  transition: transform 0.3s, box-shadow 0.3s; /* 애니메이션 효과 */
 }
 
 .board_letter_change_btn .letter_btn {
-  background-color: rgb(255, 208, 0);
+  background-color: rgba(212, 190, 92, 0.685);
+  cursor: pointer;
 }
 
 .board_letter_change_btn .every_btn {
-  background-color: rgb(78, 165, 223);
+  background-color: rgba(45, 123, 175, 0.753);
+  cursor: pointer;
+}
+
+.board_letter_change_btn .letter_btn:hover,
+.board_letter_change_btn .every_btn:hover {
+  transform: translateY(-2px); /* 마우스 호버 시 약간 위로 이동 */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 그림자 크게 */
+}
+
+/* 클릭 시 버튼이 약간 아래로 이동하는 애니메이션 */
+.board_letter_change_btn .letter_btn:active,
+.board_letter_change_btn .every_btn:active {
+  transform: translateY(2px); /* 클릭 시 아래로 이동 */
 }
 
 .random_leaf {

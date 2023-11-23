@@ -77,17 +77,17 @@ const deleteLetter = () => {
 .like {
   border: none;
   border-radius: 10%;
-  padding: 5px;
+  padding: 4px;
   margin-right: 5px;
-  color: #ff7979;
+  color: #410000;
   background: #ffffff;
-  font-size: 20px;
+  font-size: 17px;
   cursor: pointer;
 }
 
 .like:hover {
   color: #ffffff;
-  background: #ff8989;
+  background:#410000;
 }
 
 #modalLetter .title {
@@ -117,7 +117,7 @@ const deleteLetter = () => {
 #modalLetter .stats {
   justify-content: space-around; /* 좌우 여백 동일하게 분배 */
   /* margin-top: 30px; 간격 조절 */
-  margin-top: 30px;
+  margin-top: 15px;
   text-align: center;
 }
 
@@ -125,7 +125,7 @@ const deleteLetter = () => {
   justify-content: space-around; /* 좌우 여백 동일하게 분배 */
   /* margin-top: 30px; 간격 조절 */
   color: white;
-  font-size: 25px;
+  font-size: 20px;
   padding: 20px;
 }
 

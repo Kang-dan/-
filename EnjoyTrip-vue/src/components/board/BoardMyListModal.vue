@@ -10,7 +10,7 @@ const { memberInfo, getMemberInfo, memberLogout } = memberStore;
 const { isLogin } = storeToRefs(memberStore);
 
 const isMyListModalOpen = ref(false);
-const checkMyListAction = ref('board');
+const checkMyListAction = ref("board");
 const props = defineProps({
   boards: Object,
   letters: Object,
@@ -20,7 +20,7 @@ const emit = defineEmits(["getBoardList", "getLetterList"]);
 const closeModal = () => {
   isMyListModalOpen.value = false;
   // 모달을 닫을 때 show 클래스 제거
-  
+
   const modalMyList = document.querySelector("#modalMyList.modal-overlay");
   if (modalMyList) {
     modalMyList.classList.remove("show");
@@ -28,23 +28,31 @@ const closeModal = () => {
 };
 /** 모달창(디테일) 테스트 끝 */
 
-const deleteBoard = (no) => { 
+const deleteBoard = (no) => {
   if (confirm("삭제하시겠습니까?")) {
     boardDelete(
-      no, () => { emit("getBoardList"); }, () => { }
+      no,
+      () => {
+        emit("getBoardList");
+      },
+      () => {}
     );
   }
-}
+};
 
 const deleteLetter = (no) => {
   if (confirm("삭제하시겠습니까?")) {
     letterDelete(
-      no, () => {emit("getLetterList");}, (err) => {console.log(err)}
+      no,
+      () => {
+        emit("getLetterList");
+      },
+      (err) => {
+        console.log(err);
+      }
     );
   }
-}
-
-
+};
 </script>
 
 <template>
@@ -54,14 +62,29 @@ const deleteLetter = (no) => {
       <div class="title"></div>
 
       <div class="content"></div>
-      <label><input type="radio" v-model="checkMyListAction" name="actionMyList" value="board" checked>게시글</label>
-      <label><input type="radio" v-model="checkMyListAction" name="actionMyList" value="letter">편지</label>
+      <label class="radio_btn"
+        ><input
+          type="radio"
+          v-model="checkMyListAction"
+          name="actionMyList"
+          value="board"
+          checked
+        />게시글</label
+      >
+      <label class="radio_btn"
+        ><input
+          type="radio"
+          v-model="checkMyListAction"
+          name="actionMyList"
+          value="letter"
+        />편지</label
+      >
 
       <div class="board_input">
         <p>마이리스트</p>
-        
-        <template v-if="checkMyListAction === 'board'">          
-          <table class="myListTable">          
+
+        <template v-if="checkMyListAction === 'board'">
+          <table class="myListTable">
             <thead>
               <tr>
                 <th>제목</th>
@@ -82,7 +105,15 @@ const deleteLetter = (no) => {
                       <td>{{ board.boardRegisterTime }}</td>
                       <td>{{ board.boardHit }}</td>
                       <td>{{ board.boardLove }}</td>
-                      <td><button @click="deleteBoard(board.boardNo)" v-if="board.boardLove === 0">삭제</button></td>
+                      <td>
+                        <button
+                          class="delete_btn"
+                          @click="deleteBoard(board.boardNo)"
+                          v-if="board.boardLove === 0"
+                        >
+                          삭제
+                        </button>
+                      </td>
                     </tr>
                   </template>
                 </template>
@@ -91,8 +122,8 @@ const deleteLetter = (no) => {
           </table>
         </template>
 
-        <template v-if="checkMyListAction === 'letter'">          
-          <table class="myListTable">          
+        <template v-if="checkMyListAction === 'letter'">
+          <table class="myListTable">
             <thead>
               <tr>
                 <th>제목</th>
@@ -106,38 +137,103 @@ const deleteLetter = (no) => {
             <tbody>
               <template v-if="memberInfo">
                 <template v-for="letter in letters">
-                  
                   <tr>
                     <td>{{ letter.letterTitle }}</td>
                     <td>{{ letter.memberIdFrom }}</td>
                     <td>{{ letter.memberIdTo }}</td>
-                    <td>{{ letter.letterHit > 0 ? '확인함' : '확인안함' }}</td>
+                    <td>{{ letter.letterHit > 0 ? "확인함" : "확인안함" }}</td>
                     <td>{{ letter.letterRegisterTime }}</td>
-                    <td>                      
-                      <button @click="deleteLetter(letter.letterNo)" 
-                      v-if="letter.memberIdTo === memberInfo.memberId || letter.letterHit === 0">삭제</button>
+                    <td>
+                      <button
+                        class="delete_btn"
+                        @click="deleteLetter(letter.letterNo)"
+                        v-if="
+                          letter.memberIdTo === memberInfo.memberId ||
+                          letter.letterHit === 0
+                        "
+                      >
+                        삭제
+                      </button>
                     </td>
                   </tr>
-                  
                 </template>
               </template>
             </tbody>
           </table>
         </template>
-
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.delete_btn {
+  border: none;
+  border-radius: 10%;
+  background-color: white;
+  color: rgb(134, 0, 0);
+  cursor: pointer;
+}
+
+.delete_btn:hover {
+  background-color: rgb(134, 0, 0);
+  color: white;
+}
+
+.radio_btn {
+  color: white;
+  padding: 10px;
+  cursor: pointer;
+}
 
 .myListTable {
   margin: 0 auto;
+  color: white;
 }
+
+.myListTable {
+  /* 기존 스타일... */
+  max-height: calc(
+    40px * 5
+  ); /* 예시로 설정한 높이, 한 행의 높이에 따라서 계산해주세요 */
+  overflow-y: auto;
+}
+/* 
+tbody {
+ display: block;
+  max-height: calc(
+    40px * 5
+  );
+  overflow-y: auto;
+} */
+
+.myListTable th,
+.myListTable td {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10%;
+  padding: 8px; /* Adjust padding for cell content */
+  color: rgba(255, 255, 255, 0.8); /* Light gray text color */
+}
+
+/* Add light vertical lines between table cells */
+.myListTable th:not(:last-child),
+.myListTable td:not(:last-child) {
+  border-right: none;
+}
+
+/* Add light horizontal lines between table rows */
+.myListTable tr:not(:last-child) td {
+  border-bottom: none;
+}
+
 /** 게시글 입력 */
 .board_input {
-  margin-top: 60px;
+  margin-top: 40px;
+  color: white;
+  font-size: 17px;
+}
+.board_input p {
+  font-size: 25px;
 }
 
 .board_input #title {
@@ -228,6 +324,10 @@ const deleteLetter = (no) => {
   width: 600px;
   height: 600px;
   z-index: 999;
+}
+
+.modal-window input {
+  margin-top: 17px;
 }
 
 #modalMyList .modal-window {
