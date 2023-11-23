@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.enjoytrip.configuration.WebSocketHandler;
 import com.ssafy.enjoytrip.letter.model.Letter;
 import com.ssafy.enjoytrip.letter.model.service.LetterSerivce;
 
@@ -20,8 +21,10 @@ import com.ssafy.enjoytrip.letter.model.service.LetterSerivce;
 @RequestMapping("/letter")
 public class LetterController {
 	private final LetterSerivce letterSerivce;
-	public LetterController(LetterSerivce letterSerivce) {
+	private final WebSocketHandler webSocketHandler;
+	public LetterController(LetterSerivce letterSerivce, WebSocketHandler webSocketHandler) {
 		this.letterSerivce = letterSerivce;
+		this.webSocketHandler = webSocketHandler;
 	}
 
 	@GetMapping("/list/{memberNo}")
@@ -32,6 +35,7 @@ public class LetterController {
 	@PostMapping("/write")
 	public ResponseEntity<String> write(@RequestBody Letter letter) {
 		letterSerivce.write(letter);
+		webSocketHandler.changeMessage();
 		return ResponseEntity.ok("편지쓰기 성공");
 	}	
 
@@ -44,6 +48,7 @@ public class LetterController {
 	public ResponseEntity<String> delete(@PathVariable int no) {
 		System.out.println("편지삭제요청");
 		letterSerivce.delete(no);
+		webSocketHandler.changeMessage();
 		return ResponseEntity.ok("편지삭제 성공");
 	}
 	

@@ -154,6 +154,8 @@ const moveMypage = () => {
 //     }
 //   );
 // };
+
+const hovered = ref(false);
 </script>
 <template>
   <p v-if="isLogin" class="welcome_text">반가워요!</p>

@@ -30,7 +30,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     
     public void changeMessage() {
     	CLIENTS.entrySet().forEach( arg->{
-            if(true) {  //같은 아이디가 아니면 메시지를 전달합니다.
+            if(true) { 
                 try {
                 	System.out.println("메시지를 전달함");
                     arg.getValue().sendMessage(new TextMessage("테스트메시지"));

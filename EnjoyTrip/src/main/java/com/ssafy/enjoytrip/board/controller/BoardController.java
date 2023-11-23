@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.enjoytrip.board.model.Board;
-import com.ssafy.enjoytrip.board.model.FileUpload;
 import com.ssafy.enjoytrip.board.model.service.BoardSerivce;
 import com.ssafy.enjoytrip.configuration.WebSocketHandler;
 import com.ssafy.enjoytrip.util.FileUtils;
@@ -54,12 +53,14 @@ public class BoardController {
 	@DeleteMapping("/delete/{no}")
 	public ResponseEntity<String> delete(@PathVariable int no) {
 		boardSerivce.delete(no);
+		webSocketHandler.changeMessage();
 		return ResponseEntity.ok("글삭제 성공");
 	}
 	
 	@DeleteMapping("/{memberId}")
 	public ResponseEntity<String> deleteMemberBoards(@PathVariable String memberId) {
 		boardSerivce.deleteMemberBoards(memberId);
+		webSocketHandler.changeMessage();
 		return ResponseEntity.ok("글삭제 성공");
 	} 
 	

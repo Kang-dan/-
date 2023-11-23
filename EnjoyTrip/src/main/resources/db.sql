@@ -83,15 +83,3 @@ create table members_loves (
     FOREIGN KEY(member_no) REFERENCES members(member_no),
     FOREIGN KEY(board_no) REFERENCES board(board_no)
 );
-
-create table file_upload (
-	no int primary key auto_increment,
-    board_no int not null,
-    original_name varchar(255) not null,
-    save_name varchar(100) not null,
-    size int not null,
-    delete_yn int not null,
-    created_date TIMESTAMP default CURRENT_TIMESTAMP,
-    deleted_date TIMESTAMP default null,
-    FOREIGN KEY(board_no) REFERENCES board(board_no)
-);

@@ -36,6 +36,7 @@ onMessage((message) => {
   responseMsg.value = message.data;
   console.log("소켓으로 메시지 받음! ", message);
   getBoardList();
+  getLetterList();
 });
 
 onClose((obj) => {
