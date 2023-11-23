@@ -21,6 +21,12 @@ const socket = inject("socket");
 
 const sendMessage = () => socket.value.send(text.value);
 
+// 스크롤을 맨 아래로 자동으로 내림
+window.scrollTo({
+  top: document.documentElement.scrollHeight, // 문서 전체의 높이
+  behavior: "smooth", // 부드러운 스크롤 적용
+});
+
 onOpen((obj) => {
   console.log(obj);
   console.log("소켓 연결 성공");
@@ -63,7 +69,7 @@ const listAction = ref("board");
 
 const getboardLoveOne = () => {
   loveListOne();
-}
+};
 
 const getBoardList = () => {
   boardList(
@@ -90,10 +96,34 @@ const getLetterList = () => {
   }
 };
 
-
 onMounted(() => {
   getBoardList();
   getLetterList();
+  // 화면 로드 시 맨 아래로 스크롤
+  const targetPosition = 400; // 멈추길 원하는 스크롤 위치
+  const scrollDuration = 2000; // 전체 스크롤에 걸리는 시간 (밀리초)
+
+  const startScroll = () => {
+    const startTime = performance.now(); // 시작 시간
+    const startTop = window.pageYOffset || document.documentElement.scrollTop; // 시작 지점
+
+    const scroll = (currentTime) => {
+      const timeElapsed = currentTime - startTime; // 경과 시간
+      const progress = Math.min(timeElapsed / scrollDuration, 1); // 진행률 (0부터 1까지)
+
+      window.scrollTo(0, startTop + (targetPosition - startTop) * progress); // 스크롤 이동
+
+      if (timeElapsed < scrollDuration) {
+        // 스크롤이 완료되지 않았으면 애니메이션 계속
+        requestAnimationFrame(scroll);
+      }
+    };
+
+    // 애니메이션 시작
+    requestAnimationFrame(scroll);
+  };
+
+  startScroll(); // 스크롤 시작
 });
 
 /** 사운드 */
@@ -111,7 +141,7 @@ const playButtonSound = () => {
 
 const changeListAction = () => {
   listAction.value = "board";
-}
+};
 
 const toggleSound = (listType) => {
   playButtonSound(); // 소리 재생
@@ -137,8 +167,8 @@ const showModal = (detail) => {
 const getLoveOne = () => {
   loveListOne(
     {
-      "memberNo": memberInfo.value.memberNo,
-      "boardNo": boardDetail.value.boardNo
+      memberNo: memberInfo.value.memberNo,
+      boardNo: boardDetail.value.boardNo,
     },
     ({ data }) => {
       console.log("좋아요 가져오기");
@@ -149,25 +179,25 @@ const getLoveOne = () => {
       console.log(err);
     }
   );
-}
+};
 
 const loveChangeEmit = (no) => {
   getLoveOne();
   getBoardDetail(no);
-}
+};
 
 const getBoardDetail = (no) => {
   boardView(
-      no,
-      ({ data }) => {
-        boardDetail.value = data;
-        isDetailModalOpen.value = true;
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-}
+    no,
+    ({ data }) => {
+      boardDetail.value = data;
+      isDetailModalOpen.value = true;
+    },
+    (err) => {
+      console.log(err);
+    }
+  );
+};
 
 const showModalDetail = async (no) => {
   // 로그인이 되어있을 때에만 열리게 하기
@@ -200,10 +230,10 @@ const showModalMyList = () => {
   }
 };
 
-const showModalLetter = async (no) => {  
+const showModalLetter = async (no) => {
   // 로그인이 되어있을 때에만 열리게 하기
- if (isLogin.value) {
-  await letterUpdateHit(
+  if (isLogin.value) {
+    await letterUpdateHit(
       no,
       ({ data }) => {
         console.log(data);
@@ -301,25 +331,25 @@ const moveBoardWrite = () => {
   >
   </BoardWriteModal>
   <BoardDetailModal
-  @getBoardList="getBoardList"
-  @getLetterList="getLetterList"
-  :isOpen="isDetailModalOpen"
-  :boardDetail="boardDetail"
-  :loveLength="loveLength"
-  @loveChangeEmit="loveChangeEmit"
+    @getBoardList="getBoardList"
+    @getLetterList="getLetterList"
+    :isOpen="isDetailModalOpen"
+    :boardDetail="boardDetail"
+    :loveLength="loveLength"
+    @loveChangeEmit="loveChangeEmit"
   >
   </BoardDetailModal>
-  <BoardMyListModal    
+  <BoardMyListModal
     :isOpen="isMyListModalOpen"
     :boards="boards"
     :letters="letters"
   ></BoardMyListModal>
   <BoardLetterDetailModal
-  @getBoardList="getBoardList"
-  @getLetterList="getLetterList"
+    @getBoardList="getBoardList"
+    @getLetterList="getLetterList"
     :isOpen="isLetterModalOpen"
     :letterDetail="letterDetail"
-  >    
+  >
   </BoardLetterDetailModal>
 </template>
 
@@ -353,8 +383,8 @@ const moveBoardWrite = () => {
 }
 
 .board_background {
-  /* background-image: url("@/assets/board/board_background6.jpeg"); */
-  background-color: darkblue;
+  background-image: url("@/assets/board/board_background6.jpeg");
+  /* background-color: darkblue; */
   /* width: 1000px;
   height: 1000px; */
   background-size: cover;
