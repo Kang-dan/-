@@ -11,7 +11,6 @@ import BoardDetailModal from "@/components/board/BoardDetailModal.vue";
 import BoardLetterDetailModal from "@/components/board/BoardLetterDetailModal.vue";
 import BoardMyListModal from "@/components/board/BoardMyListModal.vue";
 import btnClickSound from "@/assets/sound/sound_btn_click.mp3";
-
 import { onMessage, onOpen, onClose, onError } from "vue3-websocket";
 
 const text = ref("");
@@ -166,11 +165,11 @@ const showModal = (detail) => {
 };
 
 const getLoveOne = () => {
-  console.log(boardDetail.value)
+  console.log(boardDetail.value);
   loveListOne(
     {
-      "memberNo": memberInfo.value.memberNo,
-      "boardNo": boardDetail.value.boardNo,
+      memberNo: memberInfo.value.memberNo,
+      boardNo: boardDetail.value.boardNo,
     },
     ({ data }) => {
       console.log(data);
@@ -214,7 +213,7 @@ const showModalDetail = async (no) => {
         console.log(err);
       }
     );
-    console.log("쇼모달에서 주는 no : " + no)
+    console.log("쇼모달에서 주는 no : " + no);
     await getBoardDetail(no);
     await getLoveOne();
     // 모달이 나타날 때 show 클래스 추가
@@ -271,7 +270,6 @@ const moveBoardWrite = () => {
   <!-- <input v-model="text"/>
     <button @click="sendMessage">Send a message</button>
   <input v-model="responseMsg"> -->
-
   <div class="board_background">
     <div class="board_letter_change_btn">
       <button

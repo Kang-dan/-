@@ -202,6 +202,7 @@ const deleteLetter = (no) => {
 
 .myListTable {
   color: white;
+  margin: 0 auto;
 }
 
 .myListTable th,
