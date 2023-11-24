@@ -86,8 +86,7 @@ const timer = ref({
 
 let intervalId;
 
-onMounted(() => {
-  isModalOpen.value = true;
+onMounted(() => {  
   startTimer();
 });
 
@@ -128,16 +127,19 @@ const formatTime = (value) => {
 };
 
 /** 마이페이지 - 모달창 */
-const showModal = (detail) => {
+const showModal = async () => {
   // 로그인이 되어있을 때에만 열리게 하기
   if (isLogin.value) {
-    // getMypage();
-
+    await changeModalOpen();
     // 모달이 나타날 때 show 클래스 추가
     const modal = document.querySelector("#modal.modal-overlay");
     modal.classList.add("show");
   } else if (!isLogin.value) confirm("로그인을 해주세요.");
 };
+
+const changeModalOpen = () => {
+  isModalOpen.value = true;
+}
 
 const moveMypage = () => {
   // mypage-bag 이미지를 클릭했을 때 모달창 열도록 설정
