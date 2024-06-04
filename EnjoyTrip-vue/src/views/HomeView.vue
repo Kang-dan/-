@@ -73,8 +73,8 @@ const moveBoard = () => {
 const targetTime = new Date(); // 현재 날짜와 시간으로 초기화
 
 // D-day를 설정 (예: 12월 25일 00:00:00)
-targetTime.setDate(26);
-targetTime.setMonth(11); // 0부터 시작하므로 11은 12월을 의미합니다.
+targetTime.setDate(1);
+targetTime.setMonth(12); // 0부터 시작하므로 11은 12월을 의미합니다.
 targetTime.setHours(0, 0, 0, 0);
 
 const timer = ref({
@@ -86,7 +86,7 @@ const timer = ref({
 
 let intervalId;
 
-onMounted(() => {  
+onMounted(() => {
   startTimer();
 });
 
@@ -139,7 +139,7 @@ const showModal = async () => {
 
 const changeModalOpen = () => {
   isModalOpen.value = true;
-}
+};
 
 const moveMypage = () => {
   // mypage-bag 이미지를 클릭했을 때 모달창 열도록 설정
@@ -235,7 +235,7 @@ const hovered = ref(false);
             :src="randomBallImages[n]"
             :alt="n + 1"
             :title="city"
-            :style="`position: absolute; width: 130px; left: ${
+            :style="` position: absolute; width: 130px; left: ${
               left[n + 1]
             }px; top: ${top[n + 1]}px; z-index: 3`"
             @click="moveAttractionList(sidoCode[n + 1])"
@@ -327,7 +327,7 @@ const hovered = ref(false);
   width: 100%;
   height: 1300px;
   z-index: 1;
-  /* visibility: hidden; * 나중에 풀자! */
+  /*visibility: hidden; /* 나중에 풀자! */
 }
 
 /** 게시판 */
@@ -341,6 +341,7 @@ const hovered = ref(false);
 
 /** 전구 위 지역 글씨 */
 .city-label {
+  display: none;
   color: #ffffff;
   text-align: center;
   z-index: 4;
@@ -499,6 +500,7 @@ const hovered = ref(false);
 
 /** 선물(찜 목록) */
 #present {
+  /* display: none; */
   position: absolute;
   transform: translate(800px, -250px);
   /* left: 850px; */

@@ -69,7 +69,7 @@ const login = async () => {
     getMemberInfo(token);
     moveMain();
   } else {
-    alert("아이디 또는 비밀번호를 확인해 주셈");
+    alert("아이디 또는 비밀번호를 확인해 주세요!");
   }
 };
 
@@ -85,7 +85,6 @@ const moveMain = () => {
 const moveJoin = () => {
   router.push({ name: "member-join" });
 };
-
 </script>
 
 <template>
