@@ -1,6 +1,6 @@
 # 동행트립
 
-<img src="./img/main1.png" width="100%"/>
+<img src="./img/main.png" width="100%"/>
 
 <br/>
 
